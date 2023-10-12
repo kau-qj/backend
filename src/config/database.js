@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
 // DB 계정
 const pool = mysql.createPool({
@@ -6,10 +6,8 @@ const pool = mysql.createPool({
     user: 'root',
     port: '3306',
     password: '2021125027',
-    database: 'sanhakDB',
+    database: 'qj',
     multipleStatements: true
 });
 
-module.exports = {
-    pool: pool
-};
+export { pool };
