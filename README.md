@@ -53,9 +53,13 @@ DB에서 검증해야 하는 의미적 Validation은 Service에서 처리하면 
 │ 	│   ├── userController.js
 │   ├── dao                             # query 처리
 │ 	│   ├── userDao.js
+│   ├── middleware                      # 미들웨어
+│ 	│   ├── jwtMiddleware.js
+│   ├── provider                        # R 처리
+│ 	│   ├── userProvider.js
 │   ├── route                           # route(endpoint) 처리
 │ 	│   ├── userRouter.js
-│   ├── service                         # CRUD 처리
+│   ├── service                         # CUD 처리
 │ 	│   ├── userService.js
 │   ├── app.js                          # 포트 설정 및 시작 파일
 ├── .env                        # 환경 변수 값 저장
