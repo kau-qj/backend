@@ -1,9 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { pool } from './config/database.js';
-import { logger } from './config/winston.js';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const { pool } = require('./config/database.js');
+const { logger } = require('./config/winston.js');
 
 dotenv.config();
 
