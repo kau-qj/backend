@@ -1,4 +1,4 @@
-# QJ README
+# QJ
 
 ### [Node.js]
 -  `npm run start` 를 통해서 js 파일을 실행한다.
@@ -40,29 +40,29 @@ DB에서 검증해야 하는 의미적 Validation은 Service에서 처리하면 
 ## Structure
 앞에 (*)이 붙어있는 파일(or 폴더)은 추가적인 과정 이후에 생성된다.
 ```
-├── * logs                              # 생성된 로그 폴더
-├── * node_modules                      # 외부 라이브러리 폴더 (package.json 의 dependencies)
+├── * logs                      # 생성된 로그 폴더
+├── * node_modules              # 외부 라이브러리 폴더 (package.json 의 dependencies)
 ├── src
-│   ├── config                              # HTTP 요청에 대한 응답을 구성
-│   │   ├── baseResponseStatus.js           # Response 시의 Status 모음. 
-│   │   ├── database.js                     # 데이터베이스 관련 설정
-│   │   ├── express.js                      # express Framework 설정 파일
-│   │   ├── response.js                    
-│   │   ├── winston.js                      # logger 라이브러리 설정
-│   ├── controller                          # req, res 처리
+│   ├── config                              
+│   │   ├── baseResponseStatus.js       # Response 시의 Status 모음. 
+│   │   ├── database.js                 # 데이터베이스 관련 설정
+│   │   ├── express.js                  # express Framework 설정 파일
+│   │   ├── response.js                 # HTTP 요청에 대한 응답을 구성
+│   │   ├── winston.js                  # logger 라이브러리 설정
+│   ├── controller                      # req, res 처리
 │ 	│   ├── userController.js
-│   ├── dao                                 # query 처리
+│   ├── dao                             # query 처리
 │ 	│   ├── userDao.js
-│   ├── route                               # route(endpoint) 처리
+│   ├── route                           # route(endpoint) 처리
 │ 	│   ├── userRouter.js
-│   ├── service                             # CRUD 처리
+│   ├── service                         # CRUD 처리
 │ 	│   ├── userService.js
-│   ├── app.js                              # 포트 설정 및 시작 파일
-├── .env                                # 환경 변수 값 저장
-├── .gitignore                     		  # git 에 포함되지 않아야 하는 폴더, 파일들을 작성 해놓는 곳
+│   ├── app.js                          # 포트 설정 및 시작 파일
+├── .env                        # 환경 변수 값 저장
+├── .gitignore                  # git 에 포함되지 않아야 하는 폴더, 파일들을 작성 해놓는 곳
 ├── LICENSE     		
 ├── package-lock.json
-├── package.json                        # 프로그램 이름, 버전, 필요한 모듈 등 노드 프로그램의 정보를 기술
+├── package.json                # 프로그램 이름, 버전, 필요한 모듈 등 노드 프로그램의 정보를 기술
 └── README.md
 ```
 
