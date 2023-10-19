@@ -10,9 +10,12 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+const userRouter = require('./route/userRouter.js')
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use('/', userRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
