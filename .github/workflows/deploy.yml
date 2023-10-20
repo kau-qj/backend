@@ -13,13 +13,19 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - name: Set up SSH key
+        run: echo "$SSH_KEY" >> $HOME/key.pem
+
+      - name: Change key file permissions
+        run: chmod 400 $HOME/key.pem
+        
       - name: excuting remote ssh commands
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          script:
+          script: |
             cd ~/backend
             pm2 kill
             git pull
