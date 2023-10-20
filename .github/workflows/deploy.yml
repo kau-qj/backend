@@ -9,23 +9,21 @@ on:
 
 jobs:
   deploy:
-    name: deploy
+    name: deploy to EC2
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Set up SSH key
-        run: echo "$SSH_KEY" >> $HOME/key.pem
+      - uses: actions/checkout@v2
+      - name: Build & Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          HOSTNAME: ${{ secrets.HOST }}
+          USER_NAME: ${{ secrets.USER }}
 
-      - name: Change key file permissions
-        run: chmod 400 $HOME/key.pem
-        
-      - name: excuting remote ssh commands
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
             cd ~/backend
             pm2 kill
             git pull
