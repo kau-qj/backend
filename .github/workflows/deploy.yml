@@ -15,15 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build & Deploy
-        env:
-          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          HOSTNAME: ${{ secrets.HOST }}
-          USER_NAME: ${{ secrets.USER }}
-
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
-
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PASSWORD }}
+          script: |
             cd ~/backend
             pm2 kill
             git pull
