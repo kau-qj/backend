@@ -32,20 +32,25 @@ async function selectUser(connection) {
     return userRow;
 }
   
-  // 유저 생성
-  async function insertUserInfo(connection, userInfo) {
-    console.log("33333");
-    const { userId, userPw, grade, major, phoneNum, school, jobIdx } = userInfo;
-    const insertUserInfoQuery = `
-        INSERT INTO User(userId, userPw, grade, major, phoneNum, school, jobIdx)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
-    `;
-    const insertUserInfoRow = await connection.query(
-        insertUserInfoQuery,
-        [userId, userPw, grade, major, phoneNum, school, jobIdx]
-    );
-    console.log("44444");
-    return insertUserInfoRow;
+// 유저 생성
+async function insertUserInfo(connection, userInfo) {
+  const userId = userInfo[0];
+  const userPw = userInfo[1];
+  const grade = userInfo[2];
+  const major = userInfo[3];
+  const phoneNum = userInfo[4];
+  const school = userInfo[5];
+  const jobIdx = userInfo[6];
+
+  const insertUserInfoQuery = `
+      INSERT INTO User(userId, userPw, grade, major, phoneNum, school, jobIdx)
+      VALUES (?, ?, ?, ?, ?, ?, ?);
+  `;
+  const insertUserInfoRow = await connection.query(
+      insertUserInfoQuery,
+      [userId, userPw, grade, major, phoneNum, school, jobIdx]
+  );
+  return insertUserInfoRow;
 }
 
   

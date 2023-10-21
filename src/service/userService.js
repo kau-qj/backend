@@ -17,7 +17,6 @@ const {connect} = require("http2");
 
 exports.createUser = async function (userId, userPw, grade, major, phoneNum, school, jobIdx) {
     try {
-        console.log("22222");
         // 이메일 중복 확인
         // const emailRows = await userDao.selectUserEmail(userId);
         
