@@ -5,8 +5,15 @@ const user = require('../controller/userController');
 
 router.get('/app/test', user.getTest);
 
+//1. 회원가입 API
+router.post('/app/users', user.postUsers);
+
+//2. 로그인 API
+router.post('/app/login', user.login);
+
 module.exports = router;
 
+// //  주석시작
 // module.exports = function(app){
 //     const user = require('../controller/userController');
 //     // const jwtMiddleware = require('../middleware/jwtMiddleware');

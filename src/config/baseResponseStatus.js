@@ -8,7 +8,15 @@ module.exports = {
     TOKEN_VERIFICATION_FAILURE : { "isSuccess": false, "code": 3000, "message":"JWT 토큰 검증 실패" },
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 1001, "message":"JWT 토큰 검증 성공" }, // ?
 
-    //Request error
+    //Request error 
+    SIGNUP_USERID_EMPTY: { "isSuccess": false, "code": 2019, "message": "아이디를 입력해주세요." },
+    SIGNUP_PASSWORD_EMPTY: { "isSuccess": false, "code": 2020, "message": "비밀번호를 입력해주세요." },
+    SIGNUP_GRADE_EMPTY: { "isSuccess": false, "code": 2021, "message": "학년을 입력해주세요." },
+    SIGNUP_MAJOR_EMPTY: { "isSuccess": false, "code": 2022, "message": "전공을 입력해주세요." },
+    SIGNUP_PHONENUM_EMPTY: { "isSuccess": false, "code": 2023, "message": "휴대전화번호를 입력해주세요." },
+    SIGNUP_SCHOOL_EMPTY: { "isSuccess": false, "code": 2024, "message": "학교를 입력해주세요." },
+    SIGNUP_JOBIDX_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
+    // jeonghoon 10.21
 
     //signup
     SIGNUP_EMAIL_EMPTY : { "isSuccess": false, "code": 2001, "message":"이메일을 입력해주세요" },
