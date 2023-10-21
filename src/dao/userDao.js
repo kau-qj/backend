@@ -34,13 +34,6 @@ async function selectUser(connection) {
   
 // 유저 생성
 async function insertUserInfo(connection, userInfo) {
-  const userId = userInfo[0];
-  const userPw = userInfo[1];
-  const grade = userInfo[2];
-  const major = userInfo[3];
-  const phoneNum = userInfo[4];
-  const school = userInfo[5];
-  const jobIdx = userInfo[6];
 
   const insertUserInfoQuery = `
       INSERT INTO User(userId, userPw, grade, major, phoneNum, school, jobIdx)
