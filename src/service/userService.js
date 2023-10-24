@@ -46,13 +46,15 @@ exports.createUser = async function (userId, userPw, grade, major, phoneNum, sch
 exports.postSignIn = async function (userId, userPw) {
     try {
         // 아이디 확인
-        const userIdRows = await userDao.selectUserId(userId);
+        const connection = await pool.getConnection();
+
+        const userIdRows = await userDao.selectUserId(connection, userId);
 
         if (userIdRows.length < 1)
             return errResponse(baseResponse.SIGNIN_ID_WRONG);
 
         const selectUserPasswordParams = [userId, userPw];
-        const passwordRows = await userDao.selectUserPassword(selectUserPasswordParams);
+        const passwordRows = await userDao.selectUserPassword(connection, selectUserPasswordParams);
 
         if (passwordRows[0]["userPw"] !== await crypto.createHash("sha512").update(userPw).digest("hex"))
             return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);

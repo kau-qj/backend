@@ -23,7 +23,6 @@ exports.getTest = async function (req, res) {
  */
 exports.postUsers = async function (req, res) {
     const { userId, userPw, grade, major, phoneNum, school, jobIdx } = req.body;
-    console.log("11111");
     if (!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
     if (!userPw) return res.send(errResponse(baseResponse.SIGNUP_PASSWORD_EMPTY));
     if (!grade) return res.send(errResponse(baseResponse.SIGNUP_GRADE_EMPTY));

@@ -24,7 +24,7 @@ async function selectUser(connection) {
   // userId 회원 조회
   async function selectUserId(connection, userId) {
     const selectUserIdQuery = `
-        SELECT userId, userPw, grade, major, phoneNum, school, jobIdx
+        SELECT userId
         FROM User
         WHERE userId = ?;
     `;
