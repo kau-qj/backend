@@ -157,3 +157,4 @@ exports.check = async function (req, res) {
     console.log(userIdResult);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };
+
