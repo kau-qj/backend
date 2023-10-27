@@ -9,6 +9,5 @@ exports.insertRgData = async function (userId, job, subjectInfo, gpt) {
     const connection = await pool.getConnection(async (conn) => conn);
     const RgData = await qjDao.insertRgData(userId, job, subjectInfo, gpt);
     connection.release();
-    console.log("RgData:", RgData);
     return RgData;
 }
