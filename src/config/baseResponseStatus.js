@@ -56,5 +56,12 @@ module.exports = {
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
 
+    // Middleware error
+    GPT_CONFIGURATION_ERROR : { "isSuccess": false, "code": 5000, "message": "GPT 환경설정 에러"},
+    GPT_CALL_ERROR : { "isSuccess": false, "code": 5001, "message": "GPT CALL 에러"},
 
+    // qj
+    QJ_JOB_EMPTY : { "isSuccess": false, "code":6000, "message": "관심 직무가 등록되어 있지 않습니다."},
+    QJ_SUBJECTINFO_FALSE : { "isSuccess": false, "code": 6001, "message": "과목 조회가 되지 않습니다."},
+    QJ_GPT_FALSE : { "isSuccess": false, "code": 6002, "message": "gpt 호출에 에러가 발생했습니다."}
 }

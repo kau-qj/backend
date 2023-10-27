@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
 const qj = require('../controller/qjController');
 
-router.get('/qj', qj.getRecommend);
+const gptMiddleware = require('../middleware/gptMiddleware');
 
-router.post('/qj', qj.postRecommend);
+// 1. 입력 없이 내 정보 바탕으로 gpt call API
+router.get('/qj', gptMiddleware, qj.postRecommend);
+
+// 2. 관심 직무 입력해서 gpt call API
+router.post('/qj/:job', gptMiddleware, qj.postInputJobRecommend);
 
 module.exports = router;
