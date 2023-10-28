@@ -53,10 +53,14 @@ exports.postSignIn = async function (userId, userPw) {
         if (userIdRows.length < 1)
             return errResponse(baseResponse.SIGNIN_ID_WRONG);
 
-        const selectUserPasswordParams = [userId, userPw];
+        // 입력한 비밀번호를 해싱
+        const hashedUserPw = await crypto.createHash("sha512").update(userPw).digest("hex");
+
+        const selectUserPasswordParams = [userId, hashedUserPw];
         const passwordRows = await userDao.selectUserPassword(connection, selectUserPasswordParams);
 
-        if (passwordRows[0]["userPw"] !== await crypto.createHash("sha512").update(userPw).digest("hex"))
+        // 비밀번호 해시와 데이터베이스에서 가져온 비밀번호 해시를 비교
+        if (passwordRows.length < 1)
             return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
 
         if (userIdRows[0].status === "INACTIVE")
