@@ -22,7 +22,7 @@ return userRow;
 // 특정 userIdx로 프로필 정보 조회
 async function selectUserProfileByUserIdx(connection, userIdx) {
 const selectUserProfileQuery = `
-            SELECT nickname, jobName
+            SELECT nickName, jobName
             FROM User
             WHERE userIdx = ?;
             `;
@@ -71,7 +71,7 @@ async function updateUserInfo(connection, userIdx, updatedInfo) {
 
 // 프로필 설정 업데이트
 async function updateUserProfile(connection, userIdx, updatedInfo) {
-  const fields = ['nickname', 'jobName'];
+  const fields = ['nickName', 'jobName'];
   const queryValues = [];
   const updateFields = [];
   

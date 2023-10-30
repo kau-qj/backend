@@ -27,7 +27,7 @@ function updateMypageInfo(userIdx, updatedData) {
       // 트랜잭션 시작
       await connection.beginTransaction();
 
-      // userDao.js의 updateUserInfo 함수를 호출하여 유저 정보 업데이트
+      // mypageDao.js의 updateUserInfo 함수를 호출하여 유저 정보 업데이트
       //console.log(updatedData);
       const updatedProfile = await mypageDao.updateUserInfo(connection, userIdx, updatedData);
 
@@ -37,7 +37,8 @@ function updateMypageInfo(userIdx, updatedData) {
       // DB 연결 해제
       connection.release();
 
-      resolve(updatedProfile); // 업데이트 결과 반환
+      // 업데이트 결과 반환
+      resolve(updatedProfile); 
     } catch (error) {
       // 업데이트 도중 에러 발생 시 트랜잭션 롤백
       await connection.rollback();
@@ -45,29 +46,8 @@ function updateMypageInfo(userIdx, updatedData) {
       // DB 연결 해제
       connection.release();
 
-      reject(error); // 에러 처리
-    }
-  });
-}
-
-// userIdx를 이용하여 마이페이지 프로필 수정하기
-function updateProfileSettings(userIdx, updatedData) {
-  return new Promise(async (resolve, reject) => {
-    const connection = await pool.getConnection(async (conn) => conn);
-    try {
-      await connection.beginTransaction();
-
-      // userDao.js의 updateUserProfile 함수를 호출하여 유저 프로필 업데이트
-      const updatedProfile = await mypageDao.updateUserProfile(connection, userIdx, updatedData);
-
-      await connection.commit();
-      connection.release();
-      resolve(updatedProfile);
-    } catch (error) {
-      await connection.rollback();
-      connection.release();
-      console.error('Service Error:', error);
-      reject(error);
+      // 에러 처리
+      reject(error); 
     }
   });
 }
@@ -88,9 +68,47 @@ function getProfileInfo(userIdx) {
   });
 }
 
+// userIdx를 이용하여 마이페이지 프로필 수정하기
+function updateProfileInfo(userIdx, updatedData) {
+  console.log("mypageService updatedData: ", updatedData);
+
+  return new Promise(async (resolve, reject) => {
+    const connection = await pool.getConnection(async (conn) => conn);
+    
+    try {
+      // 트랜잭션 시작
+      await connection.beginTransaction();
+
+      // mypageDao.js의 updateUserProfile 함수를 호출하여 유저 프로필 업데이트
+      const updatedProfile = await mypageDao.updateUserProfile(connection, userIdx, updatedData);
+
+      // 트랜잭션 종료
+      await connection.commit();
+
+      // DB 연결 해제
+      connection.release();
+
+
+      // 업데이트 결과 반환
+      resolve(updatedProfile);
+    } catch (error) {
+      // 업데이트 도중 에러 발생 시 트랜잭션 롤백
+      await connection.rollback();
+
+      // DB 연결 해제
+      connection.release();
+
+      console.error('Service Error:', error);
+
+      // 에러 처리
+      reject(error);
+    }
+  });
+}
+
 module.exports = {
   getMypageInfo,
   getProfileInfo,
-  updateProfileSettings,
+  updateProfileInfo,
   updateMypageInfo,
 };

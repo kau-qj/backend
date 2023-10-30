@@ -89,6 +89,7 @@ exports.getQJStorage = async (req, res) => {
   }
 };
 
+// 프로필 정보 조회
 exports.getProfileInfo = async (req, res) => {
   try {
     const userIdx = req.params.userIdx;
@@ -119,20 +120,25 @@ exports.getProfileInfo = async (req, res) => {
 };
 
 
-// 프로필 설정 수정
-exports.updateProfileSettings = async (req, res) => {
+// 프로필 정보 수정
+exports.updateProfileInfo = async (req, res) => {
   const userIdx = req.params.userIdx;
   const updatedData = req.body; // 클라이언트가 변경하려는 정보가 담긴 객체 
+  // 프로필이므로 nickName 또는 jobName
 
   try {
-    const updatedProfile = await mypageService.updateProfileSettings(userIdx, updatedData);
+    
+    const updatedProfile = await mypageService.updateProfileInfo(userIdx, updatedData);
+    
     if (!updatedProfile) {
+      // 업데이트에 실패한 경우
       return res.status(404).json({
         success: false,
         message: 'Profile update failed',
       });
     }
 
+    // 업데이트에 성공한 경우
     return res.status(200).json({
       success: true,
       data: updatedProfile,
