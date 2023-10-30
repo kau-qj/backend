@@ -8,7 +8,7 @@ const {response, errResponse} = require("../config/response");
 /**
  * API No. 1
  * API Name : 내 직무 강의 추천
- * [GET] /qj
+ * [POST] /qj/myJob
  */
 exports.postRecommend = async function (req, res) {
     /**
@@ -45,7 +45,7 @@ exports.postRecommend = async function (req, res) {
 /**
  * API No. 2
  * API Name : 다른 직무 강의 추천
- * [POST] /qj
+ * [POST] /qj/newJob
  */
 exports.postInputJobRecommend = async function (req, res) {
     /**
