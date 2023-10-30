@@ -30,22 +30,25 @@ const [userRow] = await connection.query(selectUserProfileQuery, [userIdx]);
 return userRow;
 }
 
-// 특정 userIdx로 사용자 개인정보 수정
+// 개인정보 업데이트
 async function updateUserInfo(connection, userIdx, updatedInfo) {
   const fields = ['school', 'major', 'grade', 'userName', 'phoneNum'];
-  const queryValues = [userIdx];
+  const queryValues = [];
   const updateFields = [];
 
   for (const field of fields) {
-    if (updatedInfo[field] !== undefined) {
-      updateFields.push(`${field} = ?`);
-      queryValues.push(updatedInfo[field]);
+    if (field in updatedInfo && updatedInfo[field] !== undefined) {
+      updateFields.push(`?? = ?`);
+      queryValues.push(field, updatedInfo[field]);
     }
   }
 
   if (updateFields.length === 0) {
-    return null; // 아무 것도 업데이트되지 않았을 때 null 반환
+    console.log('No fields to update');
+    return null;
   }
+
+  queryValues.push(userIdx);
 
   const updateQuery = `
     UPDATE User 
@@ -54,21 +57,55 @@ async function updateUserInfo(connection, userIdx, updatedInfo) {
     WHERE userIdx = ?;
   `;
 
+  // console.log('Executing query:', updateQuery, 'with values:', queryValues);
+
   const updateUserRow = await connection.query(updateQuery, queryValues);
-  return updateUserRow[0];
+  
+  if (updateUserRow.affectedRows === 0) {
+    // console.log('No rows were updated');
+    return null;
+  }
+
+  return updateUserRow;
 }
 
 // 프로필 설정 업데이트
-async function updateUserProfile(connection, userIdx, updatedData) {
-  const { nickname, jobName } = updatedData;
-  const updateUserQuery = `
-    UPDATE User 
-    SET 
-      nickname = ?,
-      jobName = ?
-    WHERE userIdx = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, jobName, userIdx]);
-  return updateUserRow[0];
+async function updateUserProfile(connection, userIdx, updatedInfo) {
+  const fields = ['nickname', 'jobName'];
+  const queryValues = [];
+  const updateFields = [];
+  
+  for (const field of fields) {
+    if (field in updatedInfo && updatedInfo[field] !== undefined) {
+      updateFields.push(`?? = ?`);
+      queryValues.push(field, updatedInfo[field]);
+    }
+  }
+
+  if (updateFields.length === 0) {
+    console.log('No fields to update');
+    return null;
+  }
+
+  queryValues.push(userIdx);
+
+  const updateQuery = `
+  UPDATE User 
+  SET 
+    ${updateFields.join(', ')}
+  WHERE userIdx = ?;
+`;
+
+// console.log('Executing query:', updateQuery, 'with values:', queryValues);
+
+const updateUserRow = await connection.query(updateQuery, queryValues);
+
+if (updateUserRow.affectedRows === 0) {
+  // console.log('No rows were updated');
+  return null;
+}
+
+return updateUserRow;
 }
 
 module.exports = {
