@@ -18,7 +18,8 @@ function getMypageInfo(userIdx) {
 
 // userIdx를 이용하여 마이페이지 개인정보 수정하기
 function updateMypageInfo(userIdx, updatedData) {
-  //console.log(updatedData);
+  // console.log("mypageService updatedData: ", updatedData);
+
   return new Promise(async (resolve, reject) => {
     const connection = await pool.getConnection(async (conn) => conn);
 
@@ -49,6 +50,7 @@ function updateMypageInfo(userIdx, updatedData) {
   });
 }
 
+// userIdx를 이용하여 마이페이지 프로필 수정하기
 function updateProfileSettings(userIdx, updatedData) {
   return new Promise(async (resolve, reject) => {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -91,5 +93,4 @@ module.exports = {
   getProfileInfo,
   updateProfileSettings,
   updateMypageInfo,
-
 };

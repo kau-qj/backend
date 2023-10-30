@@ -28,14 +28,15 @@ exports.getMypageInfo = async (req, res) => {
 };
 
 
+// 마이페이지 개인정보 수정
 exports.updateMypageInfo = async (req, res) => {
+  const userIdx = req.params.userIdx;
+  // 잘 나옴.console.log(userIdx);
   try {
-    // const userIdx = req.params.userIdx;
 
-    const userIdx = 3;
-
-    const { updatedData } = req.body; // 클라이언트가 변경하려는 정보가 담긴 객체
-    console.log(updatedData);
+    const updatedData = req.body; // 클라이언트가 변경하려는 정보가 담긴 객체
+    // console.log("mypageController: ", updatedData); 잘 나옴
+    // Ex) mypageController:  { userName: '김태기', phoneNum: '010-9057-2970' }
 
     // 사용자 정보 업데이트를 위해 mypageService의 함수를 호출
     const updatedInfo = await mypageService.updateMypageInfo(userIdx, updatedData);

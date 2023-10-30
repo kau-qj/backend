@@ -6,7 +6,7 @@ const mypageController = require('../controller/mypageController.js');
 router.get('/getuserinfo/:userIdx', mypageController.getMypageInfo);
 
 // 마이페이지 -> 개인정보 수정
-router.put('/updateuserinfo', mypageController.updateMypageInfo);
+router.put('/updateuserinfo/:userIdx', mypageController.updateMypageInfo);
 
 // 마이페이지 -> QJ 보관함
 router.get('/:userIdx/QJstorage', mypageController.getQJStorage);
