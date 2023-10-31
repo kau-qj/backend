@@ -7,7 +7,7 @@ const qjDao = require("../dao/qjDao");
 
 exports.insertRgData = async function (userId, job, subjectInfo, gpt) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const RgData = await qjDao.insertRgData(userId, job, subjectInfo, gpt);
+    const RgData = await qjDao.insertRgData(connection, userId, job, subjectInfo, gpt);
     connection.release();
     return RgData;
 }
