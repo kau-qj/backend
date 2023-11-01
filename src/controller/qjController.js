@@ -52,4 +52,18 @@ exports.postInputJobRecommend = async function (req, res) {
      * Path Variable: userId
      * Body: job
      */
+
+    const job = req.query;
+    const userId = 'pjk';
+
+    // 과목 정보
+    const subjectInfo = await qjProvider.getSubjectInfo();
+    if (!subjectInfo) return res.send(response(baseResponse.QJ_SUBJECTINFO_FALSE));
+    const gpt = req.gpt;
+
+    console.log("GPT START : " + Date(0).toString());
+    const responsePostData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
+    console.log("GPT END : " + Date(0).toString());
+
+    return res.send(response(baseResponse.SUCCESS, responsePostData));
 }
