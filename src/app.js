@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/', userRouter);
 app.use('/qj', qjRouter);
-app.use('/mypage', mypageRouter.js);
+app.use('/mypage', mypageRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
