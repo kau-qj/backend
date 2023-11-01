@@ -55,13 +55,14 @@ exports.postInputJobRecommend = async function (req, res) {
     /**
      *  #swagger.tags = ['QJ']
      */
-    
+
     /**
      * Path Variable: userId
      * Body: job
      */
 
     const job = req.query.job;
+    if (!job) return res.send(response(baseResponse.QJ_JOB_EMPTY));
     const userId = 'pjk';
 
     // 과목 정보
