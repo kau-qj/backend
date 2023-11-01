@@ -4,12 +4,14 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { pool } = require('./config/database.js');
 const { logger } = require('./config/winston.js');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./config/swagger/swagger-output.json');
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile, { explorer: true }));
 const userRouter = require('./route/userRouter.js');
 const qjRouter = require('./route/qjRouter.js');
 const mypageRouter = require('./route/mypageRouter.js');

@@ -6,7 +6,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node ./src/app.js"
+    "start": "nodemon --exec babel-node ./src/app.js",
+    "swagger-autogen": "node ./src/config/swagger/swagger.js"
   },
   "author": "",
   "license": "MIT",
@@ -21,6 +22,9 @@
     "mysql2": "^3.6.1",
     "openai": "^4.13.0",
     "regex-email": "^1.0.2",
+    "swagger-autogen": "^2.23.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
   },

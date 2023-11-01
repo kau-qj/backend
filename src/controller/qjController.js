@@ -12,6 +12,10 @@ const {response, errResponse} = require("../config/response");
  */
 exports.postRecommend = async function (req, res) {
     /**
+     *  #swagger.tags = ['QJ']
+     */
+
+    /**
      * Path Variable: jwt(userId)
      * 유저 Id의 index를 받아와서 관심 직무 얻어오기
      * user 테이블과 subject 테이블 활용하기
@@ -48,6 +52,10 @@ exports.postRecommend = async function (req, res) {
  * [POST] /qj/newJob
  */
 exports.postInputJobRecommend = async function (req, res) {
+    /**
+     *  #swagger.tags = ['QJ']
+     */
+    
     /**
      * Path Variable: userId
      * Body: job
