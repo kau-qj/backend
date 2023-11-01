@@ -53,7 +53,7 @@ exports.postInputJobRecommend = async function (req, res) {
      * Body: job
      */
 
-    const job = req.query;
+    const job = req.query.job;
     const userId = 'pjk';
 
     // 과목 정보
@@ -62,6 +62,7 @@ exports.postInputJobRecommend = async function (req, res) {
     const gpt = req.gpt;
 
     console.log("GPT START : " + Date(0).toString());
+    console.log("job:", job);
     const responsePostData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
     console.log("GPT END : " + Date(0).toString());
 
