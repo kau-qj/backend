@@ -6,6 +6,6 @@ const home = require('../controller/homeController');
 // router.get('/', home.getAddvertisements);
 
 // 2. 채용 공고
-router.get('/', home.getRecruit);
+router.get('/recruit', home.getRecruit);
 
 module.exports = router;
