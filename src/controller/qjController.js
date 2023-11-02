@@ -12,6 +12,10 @@ const {response, errResponse} = require("../config/response");
  */
 exports.postRecommend = async function (req, res) {
     /**
+     *  #swagger.tags = ['QJ']
+     */
+
+    /**
      * Path Variable: jwt(userId)
      * 유저 Id의 index를 받아와서 관심 직무 얻어오기
      * user 테이블과 subject 테이블 활용하기
@@ -49,11 +53,16 @@ exports.postRecommend = async function (req, res) {
  */
 exports.postInputJobRecommend = async function (req, res) {
     /**
+     *  #swagger.tags = ['QJ']
+     */
+
+    /**
      * Path Variable: userId
      * Body: job
      */
 
-    const job = req.query;
+    const job = req.query.job;
+    if (!job) return res.send(response(baseResponse.QJ_JOB_EMPTY));
     const userId = 'pjk';
 
     // 과목 정보
@@ -62,6 +71,7 @@ exports.postInputJobRecommend = async function (req, res) {
     const gpt = req.gpt;
 
     console.log("GPT START : " + Date(0).toString());
+    console.log("job:", job);
     const responsePostData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
     console.log("GPT END : " + Date(0).toString());
 
