@@ -71,3 +71,36 @@ const jwtMiddleware = async function(req, res, next) {
 };
 
 module.exports = jwtMiddleware;
+
+// 231104 정훈 수정중
+// const jwt = require('jsonwebtoken');
+// const secret = require('./secret'); // 시크릿 키를 불러오기 위한 모듈
+// const baseResponse = require('../config/baseResponseStatus');
+// const { errResponse } = require('../config/response');
+
+// const jwtMiddleware = (req, res, next) => {
+//     const token = req.headers['authorization'];
+
+//     if (!token) {
+//         return res.send(errResponse(baseResponse.TOKEN_EMPTY));
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, secret.JWT_SECRET);
+
+//         if (decoded) {
+//             req.verifiedToken = decoded;
+//             next();
+//         } else {
+//             return res.send(errResponse(baseResponse.TOKEN_VERIFICATION_FAIL));
+//         }
+//     } catch (err) {
+//         console.error(err);
+//         if (err.name === 'TokenExpiredError') {
+//             return res.send(errResponse(baseResponse.TOKEN_EXPIRED));
+//         }
+//         return res.send(errResponse(baseResponse.TOKEN_VERIFICATION_FAIL));
+//     }
+// };
+
+// module.exports = jwtMiddleware;

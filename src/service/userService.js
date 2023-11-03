@@ -7,7 +7,7 @@ const {response} = require("../config/response");
 const {errResponse} = require("../config/response");
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const secretKey = 'HoonSecretKey'; // 사용할 secret key
+const secret = require('../config/secret');
 
 dotenv.config();
 
@@ -77,7 +77,7 @@ exports.postSignIn = async function (userId, userPw) {
                 userId: userIdRows[0].userId
                 // 기타 정보 추가 가능
             },
-            secretKey, // 사용할 secret 키
+            secret.JWT_SECRET, // 사용할 secret 키
             {
                 expiresIn: '1d' // 토큰 만료 시간 일단 하루로 설정
             }
