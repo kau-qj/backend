@@ -40,15 +40,15 @@ async function insertUserInfo(connection, userInfo) {
   const major = userInfo[3];
   const phoneNum = userInfo[4];
   const school = userInfo[5];
-  const jobIdx = userInfo[6];
+  const jobName = userInfo[6];
 
   const insertUserInfoQuery = `
-      INSERT INTO User(userId, userPw, grade, major, phoneNum, school, jobIdx)
+      INSERT INTO User(userId, userPw, grade, major, phoneNum, school, jobName)
       VALUES (?, ?, ?, ?, ?, ?, ?);
   `;
   const insertUserInfoRow = await connection.query(
       insertUserInfoQuery,
-      [userId, userPw, grade, major, phoneNum, school, jobIdx]
+      [userId, userPw, grade, major, phoneNum, school, jobName]
   );
   return insertUserInfoRow;
 }
