@@ -2,7 +2,8 @@ const { errResponse } = require("../config/response");
 const baseResponse = require("../config/baseResponseStatus");
 
 const OpenAI = require('openai');
-require('dotenv').config();
+// require('dotenv').config();
+const secret = require('../config/secret');
 
 const gptMiddleware = async function(req, res, next) {
 
@@ -10,7 +11,7 @@ const gptMiddleware = async function(req, res, next) {
         req.gpt = {};
 
         req.gpt.openai = new OpenAI({
-            apiKey: process.env.OPENAI_SECRET_KEY
+            apiKey: secret.OPENAI_SECRET_KEY
         });
 
         req.gpt.chatCompletion = {

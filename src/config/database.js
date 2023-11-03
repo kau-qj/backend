@@ -1,15 +1,17 @@
 const mysql = require('mysql2/promise');
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv');
 
-dotenv.config();
+// dotenv.config();
+
+const secret = require('./secret');
 
 // DB 계정
 const pool = mysql.createPool({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    port: process.env.DATABASE_PORT,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
+    host: secret.DATABASE_HOST,
+    user: secret.DATABASE_USER,
+    port: secret.DATABASE_PORT,
+    password: secret.DATABASE_PASSWORD,
+    database: secret.DATABASE_NAME,
     multipleStatements: true
 });
 
