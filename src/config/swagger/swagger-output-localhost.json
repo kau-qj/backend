@@ -101,7 +101,7 @@
       }
     },
     "/qj/myJob": {
-      "post": {
+      "get": {
         "tags": [
           "qj"
         ],
