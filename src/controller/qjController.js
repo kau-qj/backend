@@ -8,9 +8,9 @@ const {response, errResponse} = require("../config/response");
 /**
  * API No. 1
  * API Name : 내 직무 강의 추천
- * [POST] /qj/myJob
+ * [GET] /qj/myJob
  */
-exports.postRecommend = async function (req, res) {
+exports.getRecommend = async function (req, res) {
     /*
     #swagger.tags = ['qj']
     #swagger.summary = '내 관심 직무 강의 추천'
@@ -196,10 +196,10 @@ exports.postRecommend = async function (req, res) {
     const gpt = req.gpt;
 
     console.log("GPT START : " + Date(0).toString());
-    const responsePostData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
+    const responseGetData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
     console.log("GPT END : " + Date(0).toString());
 
-    return res.send(response(baseResponse.SUCCESS, responsePostData));
+    return res.send(response(baseResponse.SUCCESS, responseGetData));
 }
 
 /**
