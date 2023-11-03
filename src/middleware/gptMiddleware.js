@@ -2,7 +2,8 @@ const { errResponse } = require("../config/response");
 const baseResponse = require("../config/baseResponseStatus");
 
 const OpenAI = require('openai');
-require('dotenv').config();
+// require('dotenv').config();
+const secret = require('../config/secret');
 
 const gptMiddleware = async function(req, res, next) {
 
@@ -10,7 +11,7 @@ const gptMiddleware = async function(req, res, next) {
         req.gpt = {};
 
         req.gpt.openai = new OpenAI({
-            apiKey: process.env.OPENAI_SECRET_KEY
+            apiKey: secret.OPENAI_SECRET_KEY
         });
 
         req.gpt.chatCompletion = {
@@ -24,7 +25,6 @@ const gptMiddleware = async function(req, res, next) {
 
         req.gpt.chatContent = `
         Say only JSON Object format like
-        [
             {
                 "title": job variable of interest
                 "content": [
@@ -33,11 +33,9 @@ const gptMiddleware = async function(req, res, next) {
                         "score": ,
                     }
                 ]
-            }
-        ](You must follow the answer method I gave you in the beginning. ‘comment’, ‘score’. Here, 'comment' will contain the class name and reason. I will give you the class name, and you will decide the reason. The meaning of 'reason' here means why the score for that subject was given that way. Now let's take an example of my question. Please note that this is just an example.)
+            }(You must follow the answer method I gave you in the beginning. ‘comment’, ‘score’. Here, 'comment' will contain the class name and reason. I will give you the class name, and you will decide the reason. The meaning of 'reason' here means why the score for that subject was given that way. Now let's take an example of my question. Please note that this is just an example.)
         
         example 1.
-        [
             {
                 "title": "백엔드 개발자",
                 "contents": [
@@ -51,6 +49,10 @@ const gptMiddleware = async function(req, res, next) {
                     },
                     {
                         "comment": "컴퓨터구조론 - 컴퓨터 시스템을 이해하는 것은 서버 개발자에게 필수이며, 이 강좌는 관련 지식을 제공합니다.",
+                        "score": 4
+                    },
+                    {
+                        "comment": "알고리즘 해석 및 설계 - 알고리즘 이해는 서버 개발자에게 중요하며, 중요한 핵심 과목",
                         "score": 4
                     },
                     {
@@ -107,12 +109,10 @@ const gptMiddleware = async function(req, res, next) {
                     }
                 ]
             }
-        ]
 
         Example 2.
-        [
             {
-                "title": "보안 직무에 대한 관심",
+                "title": "보안",
                 "content": [
                     {
                         "comment": "정보보호 - 보안 직무에 필수적인 암호 및 시스템 보안 기술을 다루는 이 과목은 반드시 수강해야 합니다.",
@@ -175,15 +175,17 @@ const gptMiddleware = async function(req, res, next) {
                         "score": 1
                     },
                     {
+                        "comment": "데이터사이언스응용 - 보안 직무에서 데이터 분석과 관련성이 낮습니다.",
+                        "score": 1
+                    },
+                    {
                         "comment": "인공지능플래닝 - 보안 직무와 직접적인 관련성이 낮습니다.",
                         "score": 1
                     }
                 ]
             }
-        ]
         
         Example 3.
-        [
             {
                 "title": "클라우드 구축",
                 "content": [
@@ -214,10 +216,6 @@ const gptMiddleware = async function(req, res, next) {
                     {
                         "comment": "산학프로젝트 - 실무 프로젝트 경험은 중요하며, 클라우드 구축에 도움이 되므로 중요한 핵심 과목",
                         "score": 4
-                    },
-                    {
-                        "comment": "웹SW스튜디오 및 재능기부 - 클라우드 관련 웹 애플리케이션 개발 능력 습득에 도움이 되지만 중요성은 중간 정도",
-                        "score": 3
                     },
                     {
                         "comment": "IoT - 클라우드와 IoT 연계가 중요하나 중요성은 중간 정도",
@@ -261,8 +259,7 @@ const gptMiddleware = async function(req, res, next) {
                     }
                 ]
             }
-        ]
-        You always say things in the form of examples, like the examples I gave. And it is in JSON format, the Subject Name uses Korean and English exactly as I showed in the example, and the rest is written in Korean as an example. The examples are just examples. This is a guide on how to answer, so you can answer based on the description of the 'explanation about class' and 'job of interest' that I provide. The three examples I gave included 'class name' and 'reason for score' in 'comment'. Be sure to keep this in mind. Also, it would be nice to write the reason in 'comment' a little more specifically.
+        You always say things in the form of examples, like the examples I gave. And it is in JSON format, the Subject Name uses Korean and English exactly as I showed in the example, and the rest is written in Korean as an example. The examples are just examples. This is a guide on how to answer, so you can answer based on the description of the 'explanation about class' and 'job of interest' that I provide. The three examples I gave included 'class name' and 'reason for score' in 'comment'.
         `;
         next();
     } catch (error) {
