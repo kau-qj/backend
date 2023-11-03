@@ -5,10 +5,10 @@
     "description": "sanhak",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "https://kau-qj.shop/",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {
@@ -249,6 +249,19 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/home/recruit": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

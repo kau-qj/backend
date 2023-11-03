@@ -5,7 +5,7 @@ const doc = {
     title: 'kau-qj',
     description: 'sanhak',
   },
-  host: 'localhost:3000' || 'https://kau-qj.shop/'
+  host: 'https://kau-qj.shop/'
 };
 
 const outputFile = './swagger-output.json';

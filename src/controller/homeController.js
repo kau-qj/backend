@@ -28,7 +28,7 @@ exports.getAddvertisements = async (req, res) => {
  */
 exports.getRecruit = async (req, res) => {
     /**
-     * #swagger.tags = ['Home']
+     *  #swagger.tags = ['home']
      */
 
     /**
