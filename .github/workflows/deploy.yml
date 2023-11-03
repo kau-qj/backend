@@ -25,5 +25,6 @@ jobs:
             pm2 kill
             git pull
             npm i
+            npm run swagger-autogen
             cd ~/backend/src
             pm2 start app.js
