@@ -1,13 +1,8 @@
 const puppeteer = require('puppeteer');
 const { pool } = require("../config/database");
-const cron = require('node-cron');
-
-cron.schedule('30 10,16 * * *', function() {
-    run();
-});
 
 async function run() {
-    const browser = await puppeteer.launch( {headless: "new"});
+    const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
     for (let i = 1; ; i++) {
@@ -77,4 +72,4 @@ async function saveToDatabase(article) {
     }
 }
 
-run();
+module.exports = run;
