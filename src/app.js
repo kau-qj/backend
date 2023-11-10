@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 const userRouter = require('./route/userRouter.js');
 const qjRouter = require('./route/qjRouter.js');
 const mypageRouter = require('./route/mypageRouter.js');
-const jobguideRouter = requie('/.route/jobguideRouter.js');
+const jobguideRouter = require('./route/jobguideRouter.js');
 
 
 app.use(bodyParser.json());
