@@ -14,7 +14,7 @@ const userRouter = require('./route/userRouter.js');
 const qjRouter = require('./route/qjRouter.js');
 const mypageRouter = require('./route/mypageRouter.js');
 const jobguideRouter = require('./route/jobguideRouter.js');
-
+const homeRouter = require('./route/homeRouter.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,6 +23,7 @@ app.use('/', userRouter);
 app.use('/', qjRouter);
 app.use('/mypage', mypageRouter);
 app.use('/jobguide', jobguideRouter);
+app.use('/home', homeRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
