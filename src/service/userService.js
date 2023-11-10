@@ -6,6 +6,8 @@ const baseResponse = require("../config/baseResponseStatus");
 const {response} = require("../config/response");
 const {errResponse} = require("../config/response");
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
+const secret = require('../config/secret');
 
 dotenv.config();
 
@@ -55,26 +57,42 @@ exports.postSignIn = async function (userId, userPw) {
 
         // 입력한 비밀번호를 해싱
         const hashedUserPw = await crypto.createHash("sha512").update(userPw).digest("hex");
-
         const selectUserPasswordParams = [userId, hashedUserPw];
         const passwordRows = await userDao.selectUserPassword(connection, selectUserPasswordParams);
-
-        // 비밀번호 해시와 데이터베이스에서 가져온 비밀번호 해시를 비교
-        if (passwordRows.length < 1)
+        // 데이터베이스에서 가져온 해시된 비밀번호
+        const dbHashedUserPw = passwordRows[0][0]["userPw"];
+        
+            // 입력된 비밀번호 해시와 데이터베이스의 해시된 비밀번호 비교
+        if (dbHashedUserPw !== hashedUserPw)
             return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
-
+        
         if (userIdRows[0].status === "INACTIVE")
             return errResponse(baseResponse.SIGNIN_INACTIVE_ACCOUNT);
 
         if (userIdRows[0].status === "DELETED")
             return errResponse(baseResponse.SIGNIN_WITHDRAWAL_ACCOUNT);
 
-        return response(baseResponse.SUCCESS, userIdRows);
+        const token = jwt.sign(
+            {
+                userId: userIdRows[0].userId
+                // 기타 정보 추가 가능
+            },
+            secret.JWT_SECRET, // 사용할 secret 키
+            {
+                expiresIn: '1d' // 토큰 만료 시간 일단 하루로 설정
+            }
+        );
+
+        return response(baseResponse.SUCCESS, {
+            userId: userIdRows[0].userId,
+            token: token // 토큰 전달
+        });
     } catch (err) {
         logger.error(`App - createSignIn Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
 
 exports.editUser = async function (userId, nickname) {
     try {
