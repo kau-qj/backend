@@ -1,4 +1,4 @@
-// const jwtMiddleware = require("../middleware/jwtMiddleware");
+const jwtMiddleware = require("../middleware/jwtMiddleware");
 const userProvider = require("../provider/userProvider");
 const userService = require("../service/userService");
 const baseResponse = require("../config/baseResponseStatus");
@@ -22,36 +22,19 @@ exports.getTest = async function (req, res) {
  * [POST] /app/users
  */
 exports.postUsers = async function (req, res) {
+    const { userId, userPw, grade, major, phoneNum, school, jobIdx } = req.body;
+    if (!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
+    if (!userPw) return res.send(errResponse(baseResponse.SIGNUP_PASSWORD_EMPTY));
+    if (!grade) return res.send(errResponse(baseResponse.SIGNUP_GRADE_EMPTY));
+    if (!major) return res.send(errResponse(baseResponse.SIGNUP_MAJOR_EMPTY));
+    if (!phoneNum) return res.send(errResponse(baseResponse.SIGNUP_PHONENUM_EMPTY));
+    if (!school) return res.send(errResponse(baseResponse.SIGNUP_SCHOOL_EMPTY));
+    // if (!jobIdx) return res.send(errResponse(baseResponse.SIGNUP_JOBIDX_EMPTY));
 
-    /**
-     * Body: email, password, nickname
-     */
-    const {email, password, nickname} = req.body;
-
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
-
-    // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
-
-    // 기타 등등 - 추가하기
-
-
-    const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
-    );
+    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobIdx);
 
     return res.send(signUpResponse);
 };
-
 /**
  * API No. 2
  * API Name : 유저 조회 API (+ 이메일로 검색 조회)
@@ -103,11 +86,11 @@ exports.getUserById = async function (req, res) {
  */
 exports.login = async function (req, res) {
 
-    const {email, password} = req.body;
+    const { userId, userPw } = req.body;
 
     // TODO: email, password 형식적 Validation
 
-    const signInResponse = await userService.postSignIn(email, password);
+    const signInResponse = await userService.postSignIn(userId, userPw);
 
     return res.send(signInResponse);
 };
@@ -123,18 +106,16 @@ exports.login = async function (req, res) {
 exports.patchUsers = async function (req, res) {
 
     // jwt - userId, path variable :userId
-
-    const userIdFromJWT = req.verifiedToken.userId
-
+    const userIdFromJWT = req.verifiedToken.userId;
     const userId = req.params.userId;
     const nickname = req.body.nickname;
 
     if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
+        return res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
     } else {
         if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
 
-        const editUserInfo = await userService.editUser(userId, nickname)
+        const editUserInfo = await userService.editUser(userId, nickname);
         return res.send(editUserInfo);
     }
 };

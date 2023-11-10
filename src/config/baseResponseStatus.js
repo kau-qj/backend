@@ -8,7 +8,15 @@ module.exports = {
     TOKEN_VERIFICATION_FAILURE : { "isSuccess": false, "code": 3000, "message":"JWT 토큰 검증 실패" },
     TOKEN_VERIFICATION_SUCCESS : { "isSuccess": true, "code": 1001, "message":"JWT 토큰 검증 성공" }, // ?
 
-    //Request error
+    //Request error 
+    SIGNUP_USERID_EMPTY: { "isSuccess": false, "code": 2019, "message": "아이디를 입력해주세요." },
+    SIGNUP_PASSWORD_EMPTY: { "isSuccess": false, "code": 2020, "message": "비밀번호를 입력해주세요." },
+    SIGNUP_GRADE_EMPTY: { "isSuccess": false, "code": 2021, "message": "학년을 입력해주세요." },
+    SIGNUP_MAJOR_EMPTY: { "isSuccess": false, "code": 2022, "message": "전공을 입력해주세요." },
+    SIGNUP_PHONENUM_EMPTY: { "isSuccess": false, "code": 2023, "message": "휴대전화번호를 입력해주세요." },
+    SIGNUP_SCHOOL_EMPTY: { "isSuccess": false, "code": 2024, "message": "학교를 입력해주세요." },
+    SIGNUP_JOBIDX_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
+    // jeonghoon 10.21
 
     //signup
     SIGNUP_EMAIL_EMPTY : { "isSuccess": false, "code": 2001, "message":"이메일을 입력해주세요" },
@@ -48,5 +56,16 @@ module.exports = {
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
 
+    // Middleware error
+    GPT_CONFIGURATION_ERROR : { "isSuccess": false, "code": 5000, "message": "GPT 환경설정 에러"},
+    GPT_CALL_ERROR : { "isSuccess": false, "code": 5001, "message": "GPT CALL 에러"},
 
+    // qj
+    QJ_JOB_EMPTY : { "isSuccess": false, "code":6000, "message": "관심 직무가 등록되어 있지 않습니다."},
+    QJ_SUBJECTINFO_FALSE : { "isSuccess": false, "code": 6001, "message": "과목 조회가 되지 않습니다."},
+    QJ_GPT_FALSE : { "isSuccess": false, "code": 6002, "message": "gpt 호출에 에러가 발생했습니다."},
+    QJ_JOB_WRONG : { "isSuccess": false, "code": 6003, "message": "관심 직무 입력이 올바르지 않습니다."},
+
+    // home
+    HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},
 }

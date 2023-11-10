@@ -1,0 +1,29 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: deploy to EC2
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build & Deploy
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PASSWORD }}
+          script: |
+            cd ~/backend
+            pm2 kill
+            git pull
+            npm i
+            cd ~/backend/src
+            pm2 start app.js
