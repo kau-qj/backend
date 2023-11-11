@@ -4,10 +4,10 @@ const { logger } = require('../config/winston');
 const boardDao = require('../dao/boardDao');
 
 // 게시글 생성
-exports.createPost = async function (postName, userId, title, mainText, postType, userIdx) {
+exports.createPost = async function (postName, userId, title, mainText, postType) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.createPost(connection, [postName, userId, title, mainText, postType, userIdx]);
+        const result = await boardDao.createPost(connection, [postName, userId, title, mainText, postType]);
         connection.release();
         return result;
     } catch (err) {

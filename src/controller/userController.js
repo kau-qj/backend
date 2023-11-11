@@ -90,6 +90,12 @@ exports.login = async function (req, res) {
     // TODO: email, password 형식적 Validation
 
     const signInResponse = await userService.postSignIn(userId, userPw);
+    // JWT 토큰을 쿠키에 설정
+    res.cookie('access_token', signInResponse.result.token, {
+        httpOnly: true, // 클라이언트 스크립트에서 쿠키에 접근 불가능
+        secure: true, // HTTPS에서만 사용
+        sameSite: 'strict', // 쿠키가 다른 사이트로 전송되지 않도록 보호
+    });
 
     return res.send(signInResponse);
 };

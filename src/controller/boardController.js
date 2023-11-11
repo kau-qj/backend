@@ -6,13 +6,14 @@ const {response, errResponse} = require('../config/response');
 
 // 게시글 생성
 exports.createPost = async function (req, res) {
-    const {postName, userId, title, mainText, postType, userIdx} = req.body;
+    const {postName, title, mainText, postType} = req.body;
+    const userId = req.decoded.userId;
 
     if (!postName) return res.send(response(baseResponse.POST_NAME_EMPTY));
     if (!title) return res.send(response(baseResponse.POST_TITLE_EMPTY));
     if (!mainText) return res.send(response(baseResponse.POST_MAIN_TEXT_EMPTY));
 
-    const createPostResponse = await boardService.createPost(postName, userId, title, mainText, postType, userIdx);
+    const createPostResponse = await boardService.createPost(postName, userId, title, mainText, postType);
 
     return res.send(createPostResponse);
 };

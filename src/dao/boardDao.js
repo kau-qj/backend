@@ -1,12 +1,12 @@
 // 게시글 생성
-async function createPost(connection, [postName, userId, title, mainText, postType, userIdx]) {
+async function createPost(connection, [postName, userId, title, mainText, postType]) {
     const createPostQuery = `
-        INSERT INTO Board (postName, userId, title, mainText, postType, userIdx)
-        VALUES (?, ?, ?, ?, ?, ?);
+        INSERT INTO Board (postName, userId, title, mainText, postType)
+        VALUES (?, ?, ?, ?, ?);
     `;
     const createPostRow = await connection.query(
         createPostQuery,
-        [postName, userId, title, mainText, postType, userIdx]
+        [postName, userId, title, mainText, postType]
     );
 
     return createPostRow;
