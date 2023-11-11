@@ -1,13 +1,17 @@
-const boardService = require('../service/boardService');
+const { pool } = require('../config/database');
+const { logger } = require('../config/winston');
 
-// 게시물 생성
-exports.createBoardPost = async (post) => {
-    const newPost = await boardService.createBoardPost(post);
-    return newPost;
-};
+const boardDao = require('../dao/boardDao');
 
-// 게시물 조회
-exports.getBoardPostById = async (postId) => {
-    const post = await boardService.getBoardPostById(postId);
-    return post;
-};
+exports.retrievePosts = async function () {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await boardDao.selectPosts(connection);
+        connection.release();
+        return result;
+    } catch (err) {
+        logger.error(`App - retrievePosts Provider error
+: ${err.message}`);
+        return err.message;
+    }
+}

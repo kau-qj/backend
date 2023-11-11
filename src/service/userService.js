@@ -48,14 +48,12 @@ exports.createUser = async function (userId, userPw, grade, major, phoneNum, sch
 exports.postSignIn = async function (userId, userPw) {
     try {
         // 아이디 확인
-
         const connection = await pool.getConnection();
 
         const userIdRows = await userDao.selectUserId(connection, userId);
 
         if (userIdRows.length < 1)
             return errResponse(baseResponse.SIGNIN_ID_WRONG);
-
         
         // 입력한 비밀번호를 해싱
         const hashedUserPw = await crypto.createHash("sha512").update(userPw).digest("hex");

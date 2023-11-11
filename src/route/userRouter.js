@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwtMiddleware = require('../middleware/jwtMiddleware');
 
 const user = require('../controller/userController');
 
@@ -10,6 +11,9 @@ router.post('/app/users', user.postUsers);
 
 //2. 로그인 API
 router.post('/app/login', user.login);
+
+// endpoint 접근할 때마다 jwtMiddleware 실행하여 토큰 검증
+router.patch('/app/users/:userId', jwtMiddleware, user.patchUsers);
 
 module.exports = router;
 
