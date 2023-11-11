@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const runCrawler = require('./crawler');
+const runCrawler = require('./recruit.crawler');
 
 // 크롤링 스케줄러를 매일 오전 10시 30분과 오후 4시 30분에 실행
 const job = cron.schedule('30 10,16 * * *', async function() {
