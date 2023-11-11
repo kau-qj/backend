@@ -1,4 +1,4 @@
-// const jwtMiddleware = require("../middleware/jwtMiddleware");
+const jwtMiddleware = require("../middleware/jwtMiddleware");
 const qjProvider = require("../provider/qjProvider");
 const qjService = require("../service/qjService");
 const baseResponse = require("../config/baseResponseStatus");
@@ -184,7 +184,10 @@ exports.getRecommend = async function (req, res) {
     * 
     */
 
-    const userId = 'pjk';
+    const userId = req.decoded.userId;
+    console.log("userId : " + userId);
+
+    aasdf
 
     // 관심 직무
     const job = await qjProvider.getJob(userId);

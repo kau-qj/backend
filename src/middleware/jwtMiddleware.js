@@ -2,18 +2,17 @@ const jwt = require('jsonwebtoken');
 const { errResponse } = require("../config/response")
 const baseResponse = require("../config/baseResponseStatus");
 
-require('dotenv').config();
+const secret = require('../config/secret');
 
 const jwtMiddleware = async function(req, res, next) {
     if (req.headers.cookie) {
-        const token = req.headers.cookie.slice(12);
-        
+        const token = req.headers.cookie.slice(13);
         /** jwt 검증
          * 쿠키에 저장된 token과 secret키를 비교
          * 비동기 작업
          */
         const p = new Promise((resolve, reject) => {
-            jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            jwt.verify(token, secret.JWT_SECRET, (err, decoded) => {
                 // 토큰 검증 실패
                 if (err) {
                     console.error(err)
