@@ -59,7 +59,7 @@
                 "school": {
                   "example": "any"
                 },
-                "jobIdx": {
+                "jobName": {
                   "example": "any"
                 }
               }

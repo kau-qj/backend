@@ -17,7 +17,7 @@ const {connect} = require("http2");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
-exports.createUser = async function (userId, userPw, grade, major, phoneNum, school, jobIdx) {
+exports.createUser = async function (userId, userPw, grade, major, phoneNum, school) {
     try {
         // 이메일 중복 확인
         // const emailRows = await userDao.selectUserEmail(userId);
@@ -28,7 +28,7 @@ exports.createUser = async function (userId, userPw, grade, major, phoneNum, sch
         // 패스워드 암호화
         const hashedPassword = await crypto.createHash("sha512").update(userPw).digest("hex");
         
-        const insertUserInfoParams = [userId, hashedPassword, grade, major, phoneNum, school, jobIdx];
+        const insertUserInfoParams = [userId, hashedPassword, grade, major, phoneNum, school];
         
         const connection = await pool.getConnection();
 
@@ -48,6 +48,7 @@ exports.createUser = async function (userId, userPw, grade, major, phoneNum, sch
 exports.postSignIn = async function (userId, userPw) {
     try {
         // 아이디 확인
+
         const connection = await pool.getConnection();
 
         const userIdRows = await userDao.selectUserId(connection, userId);
@@ -55,6 +56,7 @@ exports.postSignIn = async function (userId, userPw) {
         if (userIdRows.length < 1)
             return errResponse(baseResponse.SIGNIN_ID_WRONG);
 
+        
         // 입력한 비밀번호를 해싱
         const hashedUserPw = await crypto.createHash("sha512").update(userPw).digest("hex");
         const selectUserPasswordParams = [userId, hashedUserPw];
@@ -71,7 +73,7 @@ exports.postSignIn = async function (userId, userPw) {
 
         if (userIdRows[0].status === "DELETED")
             return errResponse(baseResponse.SIGNIN_WITHDRAWAL_ACCOUNT);
-
+        
         const token = jwt.sign(
             {
                 userId: userIdRows[0].userId

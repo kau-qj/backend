@@ -15,7 +15,7 @@ module.exports = {
     SIGNUP_MAJOR_EMPTY: { "isSuccess": false, "code": 2022, "message": "전공을 입력해주세요." },
     SIGNUP_PHONENUM_EMPTY: { "isSuccess": false, "code": 2023, "message": "휴대전화번호를 입력해주세요." },
     SIGNUP_SCHOOL_EMPTY: { "isSuccess": false, "code": 2024, "message": "학교를 입력해주세요." },
-    SIGNUP_JOBIDX_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
+    SIGNUP_JOBNAME_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
     // jeonghoon 10.21
 
     //signup
