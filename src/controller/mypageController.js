@@ -145,3 +145,34 @@ exports.updateProfileSettings = async (req, res) => {
     });
   }
 };
+
+// 프로필 이미지 업로드
+exports.uploadProfileImage = async (req, res) => {
+  try {
+    // const userIdx = jwt.decode
+    userIdx = 1;
+    const image = req.file;
+
+    // 사용자 프로필 이미지 업로드를 위해 mypageService의 함수를 호출
+    const imageUrl = await mypageService.uploadProfileImage(userIdx, image);
+
+    if (!imageUrl) {
+      return res.status(404).json({
+        success: false,
+        message: 'Profile image upload failed',
+      });
+    }
+
+    // 클라이언트에게 이미지 URL을 반환합니다.
+    return res.status(200).json({
+      success: true,
+      data: imageUrl,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+};
