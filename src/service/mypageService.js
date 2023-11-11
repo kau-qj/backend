@@ -88,9 +88,26 @@ function getProfileInfo(userIdx) {
   });
 }
 
+async function uploadProfileImage(userIdx, image) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  
+  try {
+    const imageUrl = image.location; // S3에서 이미지 URL을 가져옵니다
+    const profileInfo = await mypageDao.insertUserProfileImage(connection, userIdx, imageUrl);
+    connection.release();
+    return imageUrl;
+  } catch (error) {
+    console.error(error);
+    connection.release();
+    throw error;
+  }
+}
+
+
 module.exports = {
   getMypageInfo,
   getProfileInfo,
   updateProfileSettings,
   updateMypageInfo,
+  uploadProfileImage,
 };

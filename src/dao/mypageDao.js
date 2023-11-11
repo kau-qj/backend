@@ -108,10 +108,21 @@ if (updateUserRow.affectedRows === 0) {
 return updateUserRow;
 }
 
+async function insertUserProfileImage(connection, userIdx, imageUrl) {
+  const insertProfileImageQuery = `
+    INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?);
+  `;
+  const insertProfileImageParams = [userIdx, imageUrl];
+  
+  const [insertProfileImageRows] = await connection.query(insertProfileImageQuery, insertProfileImageParams);
+  return insertProfileImageRows;
+}
+
 module.exports = {
   selectUser,
   selectUserByUserIdx,
   selectUserProfileByUserIdx,
   updateUserInfo,
   updateUserProfile,
+  insertUserProfileImage
 };

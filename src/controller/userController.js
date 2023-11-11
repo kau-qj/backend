@@ -22,16 +22,16 @@ exports.getTest = async function (req, res) {
  * [POST] /app/users
  */
 exports.postUsers = async function (req, res) {
-    const { userId, userPw, grade, major, phoneNum, school, jobIdx } = req.body;
+    const { userId, userPw, grade, major, phoneNum, school} = req.body;
     if (!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
     if (!userPw) return res.send(errResponse(baseResponse.SIGNUP_PASSWORD_EMPTY));
     if (!grade) return res.send(errResponse(baseResponse.SIGNUP_GRADE_EMPTY));
     if (!major) return res.send(errResponse(baseResponse.SIGNUP_MAJOR_EMPTY));
     if (!phoneNum) return res.send(errResponse(baseResponse.SIGNUP_PHONENUM_EMPTY));
     if (!school) return res.send(errResponse(baseResponse.SIGNUP_SCHOOL_EMPTY));
-    // if (!jobIdx) return res.send(errResponse(baseResponse.SIGNUP_JOBIDX_EMPTY));
+    // if (!) return res.send(errResponse(baseResponse.SIGNUP_JOBIDX_EMPTY));
 
-    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobIdx);
+    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school);
 
     return res.send(signUpResponse);
 };
@@ -87,7 +87,6 @@ exports.getUserById = async function (req, res) {
 exports.login = async function (req, res) {
 
     const { userId, userPw } = req.body;
-
     // TODO: email, password 형식적 Validation
 
     const signInResponse = await userService.postSignIn(userId, userPw);
