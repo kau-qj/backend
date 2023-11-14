@@ -185,9 +185,7 @@ exports.getRecommend = async function (req, res) {
     */
 
     const userId = req.decoded.userId;
-    console.log("userId : " + userId);
-
-    aasdf
+    if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
     // 관심 직무
     const job = await qjProvider.getJob(userId);

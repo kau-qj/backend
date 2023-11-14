@@ -9,6 +9,6 @@ const gptMiddleware = require('../middleware/gptMiddleware');
 router.get('/myJob', jwt, gptMiddleware, qj.getRecommend);
 
 // 2. 관심 직무 입력해서 gpt call API
-router.post('/newJob', gptMiddleware, qj.postInputJobRecommend);
+router.post('/newJob', jwt, gptMiddleware, qj.postInputJobRecommend);
 
 module.exports = router;
