@@ -85,7 +85,19 @@ exports.getUserById = async function (req, res) {
  * body : email, passsword
  */
 exports.login = async function (req, res) {
-
+    /*
+    #swagger.tags = ['login']
+    #swagger.summary = '로그인'
+    #swagger.description = 'ID/PW를 입력하여 로그인을 시도합니다.'
+    #swagger.responses[1000] = {
+        description: "성공 - 로그인 성공",
+        content: {
+            "application/json": {
+                
+            }
+        }
+    }
+    */
     const { userId, userPw } = req.body;
     // TODO: email, password 형식적 Validation
 

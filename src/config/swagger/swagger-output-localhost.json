@@ -58,9 +58,6 @@
                 },
                 "school": {
                   "example": "any"
-                },
-                "jobName": {
-                  "example": "any"
                 }
               }
             }
@@ -75,7 +72,11 @@
     },
     "/app/login": {
       "post": {
-        "description": "",
+        "tags": [
+          "login"
+        ],
+        "summary": "로그인",
+        "description": "ID/PW를 입력하여 로그인을 시도합니다.",
         "parameters": [
           {
             "name": "body",
@@ -83,10 +84,51 @@
             "schema": {
               "type": "object",
               "properties": {
-                "userId": {
+                "description": {
                   "example": "any"
                 },
-                "userPw": {
+                "content": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "1000": {
+            "description": "성공 - 로그인 성공",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/app/users/{userId}": {
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nickname": {
                   "example": "any"
                 }
               }
@@ -340,6 +382,118 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/board/posts": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "postName": {
+                  "example": "any"
+                },
+                "title": {
+                  "example": "any"
+                },
+                "mainText": {
+                  "example": "any"
+                },
+                "postType": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/board/posts/{postIdx}": {
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "postIdx",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "mainText": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "postIdx",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
