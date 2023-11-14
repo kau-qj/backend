@@ -1,4 +1,3 @@
-const jwtMiddleware = require("../middleware/jwtMiddleware");
 const qjProvider = require("../provider/qjProvider");
 const qjService = require("../service/qjService");
 const baseResponse = require("../config/baseResponseStatus");
@@ -176,13 +175,6 @@ exports.getRecommend = async function (req, res) {
      * 유저 Id의 index를 받아와서 관심 직무 얻어오기
      * user 테이블과 subject 테이블 활용하기
      */
-
-
-    /**
-    * const userId = jwt...
-    * if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE))
-    * 
-    */
 
     const userId = req.decoded.userId;
     if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));

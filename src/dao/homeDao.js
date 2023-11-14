@@ -2,6 +2,7 @@ async function getRecruit(connection) {
     const getRecruitQuery = `
         SELECT title, url
         FROM Recruit
+        ORDER BY timestamp_column DESC
         LIMIT 4;
     `;
 
@@ -13,4 +14,4 @@ async function getRecruit(connection) {
 
 module.exports = {
     getRecruit
-}
+}   
