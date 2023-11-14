@@ -2,7 +2,7 @@ async function getRecruit(connection) {
     const getRecruitQuery = `
         SELECT title, url
         FROM Recruit
-        ORDER BY timestamp_column DESC
+        ORDER BY timestamp DESC
         LIMIT 4;
     `;
 
