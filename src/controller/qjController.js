@@ -344,7 +344,9 @@ exports.postInputJobRecommend = async function (req, res) {
 
     const job = req.body.job;
     if (!job) return res.send(response(baseResponse.QJ_JOB_WRONG));
-    const userId = 'pjk';
+
+    const userId = req.decoded.userId;
+    if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE)); 
 
     // 과목 정보
     const subjectInfo = await qjProvider.getSubjectInfo();
