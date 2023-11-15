@@ -113,7 +113,7 @@ exports.getRecruit = async (req, res) => {
     }
     */
    const userId = req.decoded.userId;
-   if(userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+   if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
     
     const recruit = await homeProvider.getRecruit();
     if (!recruit) return res.send(response(baseResponse.HOME_RECRUIT_FALSE));
