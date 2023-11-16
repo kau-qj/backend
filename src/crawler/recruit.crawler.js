@@ -1,8 +1,11 @@
 const puppeteer = require('puppeteer');
 const { pool } = require('../config/database');
 
-async function run() {
-    const browser = await puppeteer.launch({ headless: true });
+async function runCrawler(connection) {
+    const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // 추가된 부분
+    });
     const page = await browser.newPage();
 
     try {
@@ -23,13 +26,12 @@ async function run() {
 
             for (let article of articles) {
                 if (article.title.startsWith('[')) {
-                    const isDuplicate = await isExistInDatabase(article);
+                    const isDuplicate = await isExistInDatabase(article, connection);
                     if (isDuplicate) {
                         console.log('Duplicate data found. Stopping the crawler.');
-                        await browser.close();
                         return 'Duplicate data found';
                     }
-                    await saveToDatabase(article);
+                    await saveToDatabase(article, connection);
                     countSavedItems++;
 
                     // 7의 배수 개수마다 13초 대기
@@ -45,12 +47,12 @@ async function run() {
     } catch (error) {
         console.error('Crawler encountered an error:', error);
     } finally {
+        // 크롤링이 성공하든 실패하든 항상 브라우저 종료
         await browser.close();
     }
 }
 
-async function isExistInDatabase(article) {
-    const connection = await pool.getConnection(async conn => conn);
+async function isExistInDatabase(article, connection) {
     let isDuplicate = false;
 
     try {
@@ -59,16 +61,12 @@ async function isExistInDatabase(article) {
         isDuplicate = rows[0].count > 0;
     } catch (err) {
         console.log('Database Error:', err);
-    } finally {
-        connection.release();
     }
 
     return isDuplicate;
 }
 
-async function saveToDatabase(article) {
-    const connection = await pool.getConnection(async conn => conn);
-
+async function saveToDatabase(article, connection) {
     try {
         await connection.beginTransaction();
 
@@ -80,9 +78,7 @@ async function saveToDatabase(article) {
     } catch (err) {
         await connection.rollback();
         console.log('Database Error:', err);
-    } finally {
-        connection.release();
     }
 }
 
-module.exports = run;
+module.exports = runCrawler;
