@@ -59,7 +59,7 @@
                 "school": {
                   "example": "any"
                 },
-                "jobIdx": {
+                "jobName": {
                   "example": "any"
                 }
               }
@@ -107,6 +107,13 @@
         ],
         "summary": "내 관심 직무 강의 추천",
         "description": "내 관심 직무를 바탕으로 강의를 추천해줍니다.",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -276,6 +283,11 @@
         "description": "내 관심 직무를 바탕으로 강의를 추천해줍니다.",
         "parameters": [
           {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "job",
             "in": "body",
             "schema": {
@@ -421,14 +433,17 @@
         }
       }
     },
-    "/mypage/getuserinfo/{userIdx}": {
+    "/mypage/": {
       "get": {
-        "description": "",
+        "tags": [
+          "mypage"
+        ],
+        "summary": "마이페이지 조회",
+        "description": "마이페이지 첫 화면 요약 정보를 조회합니다.",
         "parameters": [
           {
-            "name": "userIdx",
-            "in": "path",
-            "required": true,
+            "name": "cookie",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -436,95 +451,677 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Not Found"
+          "1000": {
+            "description": "성공 - 마이페이지 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "userName": {
+                          "type": "string",
+                          "description": "사용자 이름"
+                        },
+                        "major": {
+                          "type": "string",
+                          "description": "전공"
+                        },
+                        "userimageUrl": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "사용자 프로필 이미지 url"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
-          "500": {
-            "description": "Internal Server Error"
+          "3000": {
+            "description": "토큰 검증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                },
+                "example": {
+                  "isSuccess": false,
+                  "code": 3000,
+                  "message": "JWT 토큰 검증 실패"
+                }
+              }
+            }
+          },
+          "8000": {
+            "description": "마이페이지 데이터 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                },
+                "example": {
+                  "isSuccess": false,
+                  "code": 8000,
+                  "message": "마이페이지에 데이터가 존재하지 않습니다."
+                }
+              }
+            }
           }
         }
       }
     },
-    "/mypage/updateuserinfo/{userIdx}": {
+    "/mypage/info": {
+      "get": {
+        "tags": [
+          "mypage"
+        ],
+        "summary": "마이페이지 조회",
+        "description": "마이페이지 상세 개인 정보를 조회합니다.",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "1000": {
+            "description": "성공 - 마이페이지 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "userName": {
+                          "type": "string",
+                          "description": "사용자 이름"
+                        },
+                        "major": {
+                          "type": "string",
+                          "description": "전공"
+                        },
+                        "grade": {
+                          "type": "integer",
+                          "description": "학년"
+                        },
+                        "school": {
+                          "type": "string",
+                          "description": "학교"
+                        },
+                        "phoneNum": {
+                          "type": "string",
+                          "description": "휴대전화"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "3000": {
+            "description": "토큰 검증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                },
+                "example": {
+                  "isSuccess": false,
+                  "code": 3000,
+                  "message": "JWT 토큰 검증 실패"
+                }
+              }
+            }
+          },
+          "8000": {
+            "description": "마이페이지 데이터 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                },
+                "example": {
+                  "isSuccess": false,
+                  "code": 8000,
+                  "message": "마이페이지에 데이터가 존재하지 않습니다."
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "mypage"
+        ],
+        "summary": "마이페이지 개인정보 수정",
+        "description": "마이페이지에서 개인정보를 수정합니다.",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "수정할 개인정보",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userName": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "사용자 이름"
+                    }
+                  }
+                },
+                "major": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "전공"
+                    }
+                  }
+                },
+                "grade": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "integer"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "학년"
+                    }
+                  }
+                },
+                "school": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "학교"
+                    }
+                  }
+                },
+                "phoneNum": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "휴대전화 번호"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "8000": {
+            "description": "마이페이지 데이터 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8002": {
+            "description": "수정된 데이터 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8003": {
+            "description": "유저 아이디가 입력되지 않았음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                },
+                "example": {
+                  "isSuccess": false,
+                  "code": 8003,
+                  "message": "유저 아이디가 입력되지 않았습니다."
+                }
+              }
+            }
+          },
+          "8004": {
+            "description": "전공이 입력되지 않았음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8005": {
+            "description": "학년이 입력되지 않았음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8006": {
+            "description": "학교가 입력되지 않았음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8007": {
+            "description": "휴대번호가 입력되지 않았음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8009": {
+            "description": "변경된 값이 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mypage/profile": {
+      "get": {
+        "tags": [
+          "mypage"
+        ],
+        "summary": "마이페이지 프로필 정보 조회",
+        "description": "마이페이지에서 닉네임, 관심직무, 프로필 이미지를 조회합니다.",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "1000": {
+            "description": "성공 - 마이페이지 프로필 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "nickname": {
+                          "type": "string",
+                          "description": "닉네임"
+                        },
+                        "jobName": {
+                          "type": "string",
+                          "description": "관심직무"
+                        },
+                        "image": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "프로필 이미지 URL"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "3000": {
+            "description": "토큰 검증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "8000": {
+            "description": "마이페이지 데이터 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isSuccess": {
+                      "type": "boolean",
+                      "description": "성공 여부"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "응답 코드"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "응답 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "description": "",
         "parameters": [
           {
-            "name": "userIdx",
-            "in": "path",
-            "required": true,
+            "name": "cookie",
+            "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nickName": {
+                  "example": "any"
+                },
+                "jobName": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/mypage/{userIdx}/QJstorage": {
-      "get": {
+    "/mypage/upload": {
+      "post": {
         "description": "",
         "parameters": [
           {
-            "name": "userIdx",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/mypage/getuserprofile/{userIdx}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "userIdx",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/mypageupdateuserprofile/{userIdx}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "userIdx",
-            "in": "path",
-            "required": true,
+            "name": "cookie",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -548,6 +1145,13 @@
         ],
         "summary": "채용 공고 조회",
         "description": "최근 채용 공고 목록을 가져옵니다.",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
