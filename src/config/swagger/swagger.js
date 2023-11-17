@@ -12,9 +12,11 @@ const options = {
     },
     servers: [
       {
-        url: "https://kauqj.shop/", // 요청 URL
-        url: "localhost:3000"
+        url: "https://kauqj.shop/",
       },
+      {
+        url: "http://localhost:3000"
+      }
     ],
   },
   apis: ["./src/config/swagger/*.yaml"], //Swagger 파일 연동

@@ -1,0 +1,158 @@
+tags:
+  - name: qj
+    description: 학교 전공 혹은 교양 과목과 관심 직무를 토대로 gpt가 강의를 추천해줍니다.
+
+/qj/myJob:
+  get:
+    tags:
+      - qj
+    summary: 내 직무 강의 추천
+    description: 내 관심 직무를 바탕으로 강의를 추천해줍니다.
+    responses:
+      '1000':
+        description: 성공 - 강좌 정보 조회
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessMyJob'
+      '6000':
+        description: 실패 - 관심 직무가 등록되어 있지 않습니다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoJobRegistered'
+      '6001':
+        description: 실패 - 과목 조회가 되지 않습니다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectInfoNotFound'
+      '6002':
+        description: 실패 - GPT 호출에 에러가 발생했습니다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GptError'
+
+/qj/newJob:
+  post:
+    tags:
+      - qj
+    summary: 다른 직무 강의 추천
+    description: 다른 관심 직무를 바탕으로 강의를 추천해줍니다.
+    requestBody:
+      description: 사용자의 관심 직무
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewJobRequestBody'
+    responses:
+      '1000':
+        description: 성공 - 강좌 정보 조회
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuccessMyJob'
+      '6001':
+        description: 실패 - 과목 조회가 되지 않습니다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectInfoNotFound'
+      '6002':
+        description: 실패 - GPT 호출에 에러가 발생했습니다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GptError'
+      '6003':
+        description: 실패 - 관심 직무가 등록되어 있지 않습니다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoJobRegistered'
+
+components:
+  schemas:
+    SuccessMyJob:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+          description: 요청 성공 여부 (true)
+        code:
+          type: integer
+          description: 응답 코드 (1000)
+        message:
+          type: string
+          description: 응답 메시지 (성공)
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobRecommendation'
+
+    JobRecommendation:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: 사용자 ID
+        title:
+          type: string
+          description: 내 관심직무
+        comment:
+          type: string
+          description: 강의 이름 - 점수 이유
+        score:
+          type: integer
+          description: 점수
+        setIdx:
+          type: integer
+          description: 질문 번호
+
+    NewJobRequestBody:
+      type: object
+      properties:
+        job:
+          type: string
+          description: 사용자의 관심 직무
+
+    NoJobRegistered:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+          description: 요청 실패 여부 (false)
+        code:
+          type: integer
+          description: 응답 코드 (6000)
+        message:
+          type: string
+          description: 응답 메시지 (관심 직무가 등록되어 있지 않습니다.)
+
+    SubjectInfoNotFound:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+          description: 요청 실패 여부 (false)
+        code:
+          type: integer
+          description: 응답 코드 (6001)
+        message:
+          type: string
+          description: 응답 메시지 (과목 조회가 되지 않습니다.)
+
+    GptError:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+          description: 요청 실패 여부 (false)
+        code:
+          type: integer
+          description: 응답 코드 (6002)
+        message:
+          type: string
+          description: 응답 메시지 (GPT 호출에 에러가 발생했습니다.)
