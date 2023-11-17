@@ -1,0 +1,174 @@
+tags:
+  name: mypage
+  description: 마이페이지 API
+
+/mypage:
+  get:
+    tags:
+      - mypage
+    summary: 마이페이지 간단 정보 조회 API
+    description: 마이페이지 첫 화면에 나오는 데이터를 조회합니다.
+    responses:
+      '1000':
+        $ref: "#/components/responses/SuccessMyPage"
+      '3000':
+        $ref: "#/components/responses/TokenVerificationFailure"
+      '8000':
+        $ref: "#/components/responses/NoDataInMyPage"
+
+/mypage/info:
+  get:
+    tags:
+      - mypage
+    summary: 마이페이지 상세 정보 조회 API
+    description: 마이페이지 상세 정보를 조회합니다.
+    responses:
+      '1000':
+        $ref: "#/components/responses/SuccessInfo"
+      '3000':
+        $ref: "#/components/responses/TokenVerificationFailure"
+      '8000':
+        $ref: "#/components/responses/NoDataInMyPage"
+
+  put:
+    tags:
+      - mypage
+    summary: 마이페이지 상세 정보 수정 API
+    description: 마이페이지 상세 정보를 수정합니다.
+    parameters:
+      - in: body
+        name: obj
+        description: 수정할 개인정보
+        required: true
+        schema:
+          $ref: "#/components/schemas/UpdateMypageInfo"
+    responses:
+      '1000':
+        $ref: "#/components/responses/SuccessInfo"
+      '3000':
+        $ref: "#/components/responses/TokenVerificationFailure"
+      '8000':
+        $ref: "#/components/responses/NoDataInMyPage"
+
+/mypage/profile:
+  get:
+    tags:
+      - mypage
+    summary: 마이페이지 프로필 정보 조회
+    description: 마이페이지에서 닉네임, 관심직무, 프로필 이미지를 조회합니다.
+    responses:
+      '1000':
+        $ref: "#/components/responses/SuccessProfile"
+      '3000':
+        $ref: "#/components/responses/TokenVerificationFailure"
+      '8000':
+        $ref: "#/components/responses/NoDataInMyPage"
+
+components:
+  responses:
+    SuccessMyPage:
+      description: "성공 - 이름, 전공, 이미지를 조회합니다."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MyPageResult"
+
+    SuccessInfo:
+      description: "성공 - 이름, 전공, 전화번호, 학교, 학년을 조회합니다."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MyPageInfo"
+
+    SuccessProfile:
+      description: "성공 - 닉네임, 관심직무, 프로필 이미지를 조회합니다."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MyPageProfile"
+
+    NoDataInMyPage:
+      $ref: "#/components/schemas/NoDataInMyPage"
+
+    TokenVerificationFailure:
+      $ref: "#/components/schemas/TokenVerificationFailure"
+
+    UpdateMypageInfo:
+      description: "수정할 개인정보"
+      schema:
+        $ref: "#/components/schemas/UpdateMypageInfo"
+
+    NoModifiedData:
+      $ref: "#/components/schemas/NoModifiedData"
+
+    NoUserId:
+      $ref: "#/components/schemas/NoUserId"
+
+    NoMajor:
+      $ref: "#/components/schemas/NoMajor"
+
+    NoGrade:
+      $ref: "#/components/schemas/NoGrade"
+
+    NoSchool:
+      $ref: "#/components/schemas/NoSchool"
+
+    NoPhoneNum:
+      $ref: "#/components/schemas/NoPhoneNum"
+
+    NoChangedValues:
+      $ref: "#/components/schemas/NoChangedValues"
+
+  schemas:
+    MyPageResult:
+      $ref: "#/components/schemas/MyPageResult"
+
+    MyPageInfo:
+      $ref: "#/components/schemas/MyPageInfo"
+
+    MyPageProfile:
+      type: object
+      properties:
+        nickname:
+          type: string
+          description: '닉네임'
+        jobName:
+          type: string
+          description: '관심직무'
+        image:
+          type: string
+          nullable: true
+          description: '프로필 이미지 URL'
+
+    ErrorResult:
+      $ref: "#/components/schemas/ErrorResult"
+
+    TokenVerificationFailure:
+      $ref: "#/components/schemas/TokenVerificationFailure"
+
+    NoDataInMyPage:
+      $ref: "#/components/schemas/NoDataInMyPage"
+
+    UpdateMypageInfo:
+      $ref: "#/components/schemas/UpdateMypageInfo"
+
+    NoModifiedData:
+      $ref: "#/components/schemas/NoModifiedData"
+
+    NoUserId:
+      $ref: "#/components/schemas/NoUserId"
+
+    NoMajor:
+      $ref: "#/components/schemas/NoMajor"
+
+    NoGrade:
+      $ref: "#/components/schemas/NoGrade"
+
+    NoSchool:
+      $ref: "#/components/schemas/NoSchool"
+
+    NoPhoneNum:
+      $ref: "#/components/schemas/NoPhoneNum"
+
+    NoChangedValues:
+      $ref: "#/components/schemas/NoChangedValues"

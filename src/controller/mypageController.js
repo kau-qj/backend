@@ -274,7 +274,7 @@ exports.getMypageInfo = async function(req, res) {
 /**
  * API No. 3
  * API Name : 마이페이지 개인정보 수정
- * [PATCH] /mypage/info
+ * [PUT] /mypage/info
  */
 exports.updateMypageInfo = async function (req, res) {
     /*

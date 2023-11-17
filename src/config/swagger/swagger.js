@@ -1,26 +1,24 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerUi = require("swagger-ui-express")
+const swaggerJsdoc = require("swagger-jsdoc")
 
-const outputFile1 = './swagger-output-localhost.json';
-const outputFile2 = './swagger-output-server.json';
-
-const endpointsFiles = ['../../app.js'];
-
-const doc1 = {
-  info: {
-    title: 'kau-qj (localhost)',
-    description: 'sanhak on localhost',
+const options = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      version: "1.0.0",
+      title: "qj",
+      description:
+        "kau sanhak qj",
+    },
+    servers: [
+      {
+        url: "https://kauqj.shop/", // 요청 URL
+        url: "localhost:3000"
+      },
+    ],
   },
-  host: 'localhost:3000', // 로컬 개발 환경의 호스트와 포트
-};
+  apis: ["./src/config/swagger/*.yaml"], //Swagger 파일 연동
+}
+const specs = swaggerJsdoc(options)
 
-const doc2 = {
-  info: {
-    title: 'kau-qj (kauqj.shop)',
-    description: 'sanhak on kauqj.shop',
-  },
-  host: 'kauqj.shop', // 실제 서버 도메인
-  schemes: ['https'],
-};
-
-swaggerAutogen(outputFile1, endpointsFiles, doc1);
-swaggerAutogen(outputFile2, endpointsFiles, doc2);
+module.exports = { swaggerUi, specs }
