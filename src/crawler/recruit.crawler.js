@@ -1,55 +1,56 @@
+// recruit.crawler.js
 const puppeteer = require('puppeteer');
 const { pool } = require('../config/database');
 
 async function runCrawler(connection) {
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'], // 추가된 부분
-    });
-    const page = await browser.newPage();
+  const browser = await puppeteer.launch({
+    headless: 'new', // 새로운 헤드리스 모드로 설정
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
 
-    try {
-        let countSavedItems = 0;
+  const page = await browser.newPage();
 
-        for (let i = 1; ; i++) {
-            await page.goto(`https://career.kau.ac.kr/ko/recruit/intro/school/list/1/${i}`);
+  try {
+    let countSavedItems = 0;
 
-            const isPageEmpty = await page.evaluate(() => document.querySelector('#ModuleBoardunivListForm > ul > li') === null);
-            if (isPageEmpty) break;
+    for (let i = 1; ; i++) {
+      await page.goto(`https://career.kau.ac.kr/ko/recruit/intro/school/list/1/${i}`);
 
-            const articles = await page.evaluate(() => {
-                let titleNodes = document.querySelectorAll('#ModuleBoardunivListForm > ul > li > span.title > a');
-                let titles = Array.from(titleNodes).map(node => node.innerText);
-                let urls = Array.from(titleNodes).map(node => 'https://career.kau.ac.kr' + node.getAttribute('href'));
-                return titles.map((title, i) => ({ title, url: urls[i] }));
-            });
+      const isPageEmpty = await page.evaluate(() => document.querySelector('#ModuleBoardunivListForm > ul > li') === null);
+      if (isPageEmpty) break;
 
-            for (let article of articles) {
-                if (article.title.startsWith('[')) {
-                    const isDuplicate = await isExistInDatabase(article, connection);
-                    if (isDuplicate) {
-                        console.log('Duplicate data found. Stopping the crawler.');
-                        return 'Duplicate data found';
-                    }
-                    await saveToDatabase(article, connection);
-                    countSavedItems++;
+      const articles = await page.evaluate(() => {
+        let titleNodes = document.querySelectorAll('#ModuleBoardunivListForm > ul > li > span.title > a');
+        let titles = Array.from(titleNodes).map(node => node.innerText);
+        let urls = Array.from(titleNodes).map(node => 'https://career.kau.ac.kr' + node.getAttribute('href'));
+        return titles.map((title, i) => ({ title, url: urls[i] }));
+      });
 
-                    // 7의 배수 개수마다 13초 대기
-                    if (countSavedItems % 7 === 0) {
-                        console.log(`Waiting for 13 seconds after saving ${countSavedItems} items...`);
-                        await new Promise(resolve => setTimeout(resolve, 13000));
-                    }
-                }
-            }
+      for (let article of articles) {
+        if (article.title.startsWith('[')) {
+          const isDuplicate = await isExistInDatabase(article, connection);
+          if (isDuplicate) {
+            console.log('중복된 데이터가 발견되어 크롤러가 중지되었습니다.');
+            return '중복된 데이터가 발견되었습니다';
+          }
+          await saveToDatabase(article, connection);
+          countSavedItems++;
+
+          // 7의 배수 개수마다 13초 대기
+          if (countSavedItems % 7 === 0) {
+            console.log(`${countSavedItems}개 아이템 저장 후 13초 대기 중...`);
+            await new Promise(resolve => setTimeout(resolve, 13000));
+          }
         }
-
-        console.log('Crawler completed successfully.');
-    } catch (error) {
-        console.error('Crawler encountered an error:', error);
-    } finally {
-        // 크롤링이 성공하든 실패하든 항상 브라우저 종료
-        await browser.close();
+      }
     }
+
+    console.log('크롤러가 성공적으로 완료되었습니다.');
+  } catch (error) {
+    console.error('크롤러에서 오류가 발생했습니다:', error);
+  } finally {
+    await browser.close();
+  }
 }
 
 async function isExistInDatabase(article, connection) {
@@ -60,7 +61,7 @@ async function isExistInDatabase(article, connection) {
         const [rows] = await connection.execute(query, [article.title, article.url]);
         isDuplicate = rows[0].count > 0;
     } catch (err) {
-        console.log('Database Error:', err);
+        console.log('데이터베이스 오류:', err);
     }
 
     return isDuplicate;
@@ -72,12 +73,12 @@ async function saveToDatabase(article, connection) {
 
         const query = 'INSERT INTO Recruit (title, url) VALUES (?, ?)';
         await connection.execute(query, [article.title, article.url]);
-        console.log(`Inserted: ${article.title}`);
+        console.log(`삽입됨: ${article.title}`);
 
         await connection.commit();
     } catch (err) {
         await connection.rollback();
-        console.log('Database Error:', err);
+        console.log('데이터베이스 오류:', err);
     }
 }
 

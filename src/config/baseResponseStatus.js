@@ -69,4 +69,17 @@ module.exports = {
 
     // home
     HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},
+
+    // mypage
+    MYPAGE_USERINFO_FALSE : { "isSuccess": false, "code": 8000, "message": "마이페이지에 데이터가 존재하지 않습니다."},
+    MISSING_REQUIRED_FIELD : { "isSuccess": false, "code": 8001, "message": "수정할 데이터를 모두 입력해주세요."},
+    MYPAGE_UPDATE_FAILURE : { "isSuccess": true, "code": 8002, "message": "수정된 데이터가 없습니다."},
+    MYPAGE_USERNAME_EMPTY : { "isSuccess": false, "code": 8003, "message": "유저 아이디가 입력되지 않았습니다."},
+    MYPAGE_MAJOR_EMPTY : { "isSuccess": false, "code": 8004, "message":"전공이 입력되지 않았습니다."},
+    MYPAGE_GRADE_EMPTY : { "isSuccess": false, "code": 8005, "message":"학년이 입력되지 않았습니다."},
+    MYPAGE_SCHOOL_EMPTY : { "isSuccess": false, "code": 8006, "message":"학교가 입력되지 않았습니다."},
+    MYPAGE_PHONENUM_EMPTY : { "isSuccess": false, "code": 8007, "message":"휴대번호가 입력되지 않았습니다."},
+    MYPAGE_NICKNAME_EMPTY : { "isSuccess": false, "code":8008, "message":"닉네임이 입력되지 않았습니다."},
+    NO_UPDATED_VALUES : { "isSuccess": true, "code":8009, "message":"변경된 값이 없습니다."},
+    MYPAGE_QJ_EMPTY: {"isSuccess": false, "code":8010, "message":"저장된 qj가 없습니다."},
 }
