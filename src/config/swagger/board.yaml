@@ -1,0 +1,163 @@
+tags:
+  name: board
+  description: 게시판 API
+
+paths:
+  /posts:
+    post:
+      tags:
+        - board
+      summary: 게시글 생성 API
+      description: 게시글을 생성합니다.
+      parameters:
+        - in: body
+          name: obj
+          description: 게시글 정보
+          required: true
+          schema:
+            $ref: "#/components/schemas/Post"
+      responses:
+        "1000":
+          $ref: "#/components/responses/SuccessPost"
+        "3000":
+          $ref: "#/components/responses/TokenVerificationFailure"
+        "8000":
+          $ref: "#/components/responses/PostNameEmpty"
+        "8001":
+          $ref: "#/components/responses/PostTitleEmpty"
+        "8002":
+          $ref: "#/components/responses/PostMainTextEmpty"
+        "8102":
+          $ref: "#/components/responses/PostMainTextTooLong"
+
+    get:
+      tags:
+        - board
+      summary: 게시글 조회 API
+      description: 게시글을 조회합니다.
+      responses:
+        "1000":
+          description: 게시글 조회 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "3000":
+          $ref: "#/components/responses/TokenVerificationFailure"
+
+  /posts/{postIdx}:
+    patch:
+      tags:
+        - board
+      summary: 게시글 수정 API
+      description: 게시글을 수정합니다.
+      parameters:
+        - name: postIdx
+          in: path
+          required: true
+          schema:
+            type: integer
+        - in: body
+          name: obj
+          description: 수정할 게시글 정보
+          required: true
+          schema:
+            $ref: "#/components/schemas/Post"
+      responses:
+        "1000":
+          $ref: "#/components/responses/SuccessPost"
+        "3000":
+          $ref: "#/components/responses/TokenVerificationFailure"
+        "8100":
+          $ref: "#/components/responses/PostNotFound"
+        "8101":
+          $ref: "#/components/responses/PostNotWriter"
+        "8102":
+          $ref: "#/components/responses/PostMainTextTooLong"
+
+    delete:
+      tags:
+        - board
+      summary: 게시글 삭제 API
+      description: 게시글을 삭제합니다.
+      parameters:
+        - name: postIdx
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "1000":
+          $ref: "#/components/responses/SuccessPost"
+        "3000":
+          $ref: "#/components/responses/TokenVerificationFailure"
+        "8100":
+          $ref: "#/components/responses/PostNotFound"
+        "8101":
+          $ref: "#/components/responses/PostNotWriter"
+
+components:
+  responses:
+    SuccessPost:
+      description: "성공 - 게시글 생성, 수정, 삭제 성공"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Post"
+
+    TokenVerificationFailure:
+      $ref: "#/components/schemas/TokenVerificationFailure"
+
+    PostNameEmpty:
+      $ref: "#/components/schemas/PostNameEmpty"
+
+    PostTitleEmpty:
+      $ref: "#/components/schemas/PostTitleEmpty"
+
+    PostMainTextEmpty:
+      $ref: "#/components/schemas/PostMainTextEmpty"
+
+    PostMainTextTooLong:
+      $ref: "#/components/schemas/PostMainTextTooLong"
+
+    PostNotFound:
+      $ref: "#/components/schemas/PostNotFound"
+
+    PostNotWriter:
+      $ref: "#/components/schemas/PostNotWriter"
+
+  schemas:
+    Post:
+      type: object
+      properties:
+        postName:
+          type: string
+        title:
+          type: string
+        mainText:
+          type: string
+        postType:
+          type: string
+
+    TokenVerificationFailure:
+      $ref: "#/components/schemas/TokenVerificationFailure"
+
+    PostNameEmpty:
+      $ref: "#/components/schemas/PostNameEmpty"
+
+    PostTitleEmpty:
+      $ref: "#/components/schemas/PostTitleEmpty"
+
+    PostMainTextEmpty:
+      $ref: "#/components/schemas/PostMainTextEmpty"
+
+    PostMainTextTooLong:
+      $ref: "#/components/schemas/PostMainTextTooLong"
+
+    PostNotFound:
+      $ref: "#/components/schemas/PostNotFound"
+
+    PostNotWriter:
+      $ref: "#/components/schemas/PostNotWriter"
