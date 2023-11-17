@@ -67,4 +67,9 @@ module.exports = {
 
     // home
     HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},
+
+    //board
+    POST_NAME_EMPTY : {"isSuccess": false, "code": 8000, "message": "게시판을 선택해 주세요."},
+    POST_TITLE_EMPTY : {"isSuccess": false, "code": 8001, "message": "제목을 입력해 주세요."},
+    POST_MAIN_TEXT_EMPTY : {"isSuccess": false, "code": 8002, "message": "내용을 입력해 주세요."},
 }

@@ -1,6 +1,6 @@
 const { pool } = require('../config/database');
 const { logger } = require('../config/winston');
-
+const baseResponse = require("../config/baseResponseStatus");
 const boardDao = require('../dao/boardDao');
 
 // 게시글 생성
@@ -9,7 +9,8 @@ exports.createPost = async function (postName, userId, title, mainText, postType
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await boardDao.createPost(connection, [postName, userId, title, mainText, postType]);
         connection.release();
-        return result;
+        console.log(baseResponse.SUCCESS);
+        return result
     } catch (err) {
         logger.error(`App - createPost Service error
 : ${err.message}`);
