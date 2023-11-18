@@ -22,16 +22,15 @@ exports.getTest = async function (req, res) {
  * [POST] /app/users
  */
 exports.postUsers = async function (req, res) {
-    const { userId, userPw, grade, major, phoneNum, school} = req.body;
+    const { userId, userPw, grade, major, phoneNum, school, jobName} = req.body;
     if (!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
     if (!userPw) return res.send(errResponse(baseResponse.SIGNUP_PASSWORD_EMPTY));
     if (!grade) return res.send(errResponse(baseResponse.SIGNUP_GRADE_EMPTY));
     if (!major) return res.send(errResponse(baseResponse.SIGNUP_MAJOR_EMPTY));
     if (!phoneNum) return res.send(errResponse(baseResponse.SIGNUP_PHONENUM_EMPTY));
     if (!school) return res.send(errResponse(baseResponse.SIGNUP_SCHOOL_EMPTY));
-    // if (!) return res.send(errResponse(baseResponse.SIGNUP_JOBIDX_EMPTY));
 
-    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school);
+    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobName);
 
     return res.send(signUpResponse);
 };
@@ -85,19 +84,7 @@ exports.getUserById = async function (req, res) {
  * body : email, passsword
  */
 exports.login = async function (req, res) {
-    /*
-    #swagger.tags = ['login']
-    #swagger.summary = '로그인'
-    #swagger.description = 'ID/PW를 입력하여 로그인을 시도합니다.'
-    #swagger.responses[1000] = {
-        description: "성공 - 로그인 성공",
-        content: {
-            "application/json": {
-                
-            }
-        }
-    }
-    */
+   
     const { userId, userPw } = req.body;
     // TODO: email, password 형식적 Validation
 

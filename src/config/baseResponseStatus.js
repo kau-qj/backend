@@ -42,6 +42,7 @@ module.exports = {
     USER_NICKNAME_EMPTY : { "isSuccess": false, "code": 2017, "message": "변경할 닉네임 값을 입력해주세요" },
 
     USER_STATUS_EMPTY : { "isSuccess": false, "code": 2018, "message": "회원 상태값을 입력해주세요" },
+    SIGNUP_REDUNDANT_ID : { "isSuccess": false, "code": 2019, "message":"중복된 ID입니다."},
 
     // Response error
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
@@ -64,15 +65,30 @@ module.exports = {
     QJ_JOB_EMPTY : { "isSuccess": false, "code":6000, "message": "관심 직무가 등록되어 있지 않습니다."},
     QJ_SUBJECTINFO_FALSE : { "isSuccess": false, "code": 6001, "message": "과목 조회가 되지 않습니다."},
     QJ_GPT_FALSE : { "isSuccess": false, "code": 6002, "message": "gpt 호출에 에러가 발생했습니다."},
+    QJ_JOB_WRONG : { "isSuccess": false, "code": 6003, "message": "관심 직무 입력이 올바르지 않습니다."},
 
     // home
     HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},
+     // mypage
+    MYPAGE_USERINFO_FALSE : { "isSuccess": false, "code": 8000, "message": "마이페이지에 데이터가 존재하지 않습니다."},
+    MISSING_REQUIRED_FIELD : { "isSuccess": false, "code": 8001, "message": "수정할 데이터를 모두 입력해주세요."},
+    MYPAGE_UPDATE_FAILURE : { "isSuccess": true, "code": 8002, "message": "수정된 데이터가 없습니다."},
+    MYPAGE_USERNAME_EMPTY : { "isSuccess": false, "code": 8003, "message": "유저 아이디가 입력되지 않았습니다."},
+    MYPAGE_MAJOR_EMPTY : { "isSuccess": false, "code": 8004, "message":"전공이 입력되지 않았습니다."},
+    MYPAGE_GRADE_EMPTY : { "isSuccess": false, "code": 8005, "message":"학년이 입력되지 않았습니다."},
+    MYPAGE_SCHOOL_EMPTY : { "isSuccess": false, "code": 8006, "message":"학교가 입력되지 않았습니다."},
+    MYPAGE_PHONENUM_EMPTY : { "isSuccess": false, "code": 8007, "message":"휴대번호가 입력되지 않았습니다."},
+    MYPAGE_NICKNAME_EMPTY : { "isSuccess": false, "code":8008, "message":"닉네임이 입력되지 않았습니다."},
+    NO_UPDATED_VALUES : { "isSuccess": true, "code":8009, "message":"변경된 값이 없습니다."},
+    MYPAGE_QJ_EMPTY: {"isSuccess": false, "code":8010, "message":"저장된 qj가 없습니다."},
 
-    //board
-    POST_NAME_EMPTY : {"isSuccess": false, "code": 8000, "message": "게시판을 선택해 주세요."},
-    POST_TITLE_EMPTY : {"isSuccess": false, "code": 8001, "message": "제목을 입력해 주세요."},
-    POST_MAIN_TEXT_EMPTY : {"isSuccess": false, "code": 8002, "message": "내용을 입력해 주세요."},
-    POST_NOT_FOUND: {"isSuccess": false, "code": 8100, "message": "해당 게시글을 찾을 수 없습니다."},
-    POST_NOT_WRITER: {"isSuccess": false, "code": 8101, "message": "게시글의 작성자만 수정 또는 삭제가 가능합니다."},
-    POST_MAIN_TEXT_TOO_LONG: {"isSuccess": false, "code": 8102, "message": "게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요."},
+     //board
+     POST_NAME_EMPTY : {"isSuccess": false, "code": 9000, "message": "게시판을 선택해 주세요."},
+     POST_TITLE_EMPTY : {"isSuccess": false, "code": 9001, "message": "제목을 입력해 주세요."},
+     POST_MAIN_TEXT_EMPTY : {"isSuccess": false, "code": 9002, "message": "내용을 입력해 주세요."},
+     POST_NOT_FOUND: {"isSuccess": false, "code": 9100, "message": "해당 게시글을 찾을 수 없습니다."},
+     POST_NOT_WRITER: {"isSuccess": false, "code": 9101, "message": "게시글의 작성자만 수정 또는 삭제가 가능합니다."},
+     POST_MAIN_TEXT_TOO_LONG: {"isSuccess": false, "code": 9102, "message": "게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요."},
+ }
+ 
 }

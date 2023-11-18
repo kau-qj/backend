@@ -21,7 +21,7 @@ async function selectUser(connection) {
 }
 
   
-  // userId 회원 조회
+  // userId 회원 조회(중복 검증)
   async function selectUserId(connection, userId) {
     
     const selectUserIdQuery = `

@@ -47,8 +47,6 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
 
     const responseCompletion = await openai.chat.completions.create(completion);
     console.log("-------- gpt completion ---------");
-    console.log(responseCompletion.choices[0].message.content); // 이 줄을 추가
-    console.log("responseCompletion.choices[0].message.content.content:", responseCompletion.choices[0].message.content.content);
     
     const responseContent = JSON.parse(responseCompletion.choices[0].message.content.replaceAll('\'', '"').replaceAll('`', '"').replace(/""/g, '"'));
 
