@@ -54,12 +54,9 @@ exports.updatePost = async function (req, res) {
 // 게시글 삭제
 exports.deletePost = async function (req, res) {
     const {postIdx} = req.params;
-    const userIdFromJWT = req.verifiedToken.userId; // JWT에서 userId 가져오기
+    const userId = req.decoded.userId; // JWT에서 userId 가져오기
 
-    const post = await boardProvider.retrievePost(postIdx); // 게시글 조회
-
-    // 게시글이 존재하지 않는 경우
-    if (!post) return res.send(response(baseResponse.POST_NOT_FOUND));
+    const post = await boardProvider.retrievePosts(userId, postIdx); // 게시글 조회
 
     // JWT의 userId와 게시글의 작성자가 일치하지 않는 경우
     if (post.userId !== userIdFromJWT) return res.send(response(baseResponse.POST_NOT_WRITER));

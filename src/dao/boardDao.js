@@ -13,12 +13,14 @@ async function createPost(connection, [postName, userId, title, mainText, postTy
 }
 
 // 게시글 조회
-async function getPosts(connection) {
+async function selectPosts(connection, userId, postIdx) {
     const getPostsQuery = `
-        SELECT postName, userId, title, mainText, postType, userIdx
-        FROM Board;
+        SELECT 1
+        FROM Board
+        WHERE userId = ? AND postIdx = ?;
     `;
-    const [getPostsRow] = await connection.query(getPostsQuery);
+    const [getPostsRow] = await connection.query(getPostsQuery, userId, postIdx);
+    console.log("!!!!!",getPostsRow);
 
     return getPostsRow;
 }
@@ -51,7 +53,7 @@ async function deletePost(connection, postIdx) {
 
 module.exports = {
     createPost,
-    getPosts,
+    selectPosts,
     updatePost,
     deletePost
 };

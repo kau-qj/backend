@@ -3,10 +3,10 @@ const { logger } = require('../config/winston');
 
 const boardDao = require('../dao/boardDao');
 
-exports.retrievePosts = async function () {
+exports.retrievePosts = async function (userId, postIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.selectPosts(connection);
+        const result = await boardDao.selectPosts(connection, userId, postIdx);
         connection.release();
         return result;
     } catch (err) {

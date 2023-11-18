@@ -83,12 +83,10 @@ module.exports = {
     MYPAGE_QJ_EMPTY: {"isSuccess": false, "code":8010, "message":"저장된 qj가 없습니다."},
 
      //board
-     POST_NAME_EMPTY : {"isSuccess": false, "code": 9000, "message": "게시판을 선택해 주세요."},
-     POST_TITLE_EMPTY : {"isSuccess": false, "code": 9001, "message": "제목을 입력해 주세요."},
-     POST_MAIN_TEXT_EMPTY : {"isSuccess": false, "code": 9002, "message": "내용을 입력해 주세요."},
-     POST_NOT_FOUND: {"isSuccess": false, "code": 9100, "message": "해당 게시글을 찾을 수 없습니다."},
-     POST_NOT_WRITER: {"isSuccess": false, "code": 9101, "message": "게시글의 작성자만 수정 또는 삭제가 가능합니다."},
-     POST_MAIN_TEXT_TOO_LONG: {"isSuccess": false, "code": 9102, "message": "게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요."},
- }
- 
+    POST_NAME_EMPTY : {"isSuccess": false, "code": 9000, "message": "게시판을 선택해 주세요."},
+    POST_TITLE_EMPTY : {"isSuccess": false, "code": 9001, "message": "제목을 입력해 주세요."},
+    POST_MAIN_TEXT_EMPTY : {"isSuccess": false, "code": 9002, "message": "내용을 입력해 주세요."},
+    POST_NOT_FOUND: {"isSuccess": false, "code": 9100, "message": "해당 게시글을 찾을 수 없습니다."},
+    POST_NOT_WRITER: {"isSuccess": false, "code": 9101, "message": "게시글의 작성자만 수정 또는 삭제가 가능합니다."},
+    POST_MAIN_TEXT_TOO_LONG: {"isSuccess": false, "code": 9102, "message": "게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요."},
 }
