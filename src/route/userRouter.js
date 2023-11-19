@@ -3,8 +3,6 @@ const router = express.Router();
 
 const user = require('../controller/userController');
 
-router.get('/app/test', user.getTest);
-
 //1. 회원가입 API
 router.post('/app/users', user.postUsers);
 

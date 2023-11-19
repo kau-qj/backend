@@ -1,11 +1,11 @@
-// recruit.crawler.js
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const { pool } = require('../config/database');
 
 async function runCrawler(connection) {
   const browser = await puppeteer.launch({
-    headless: 'new', // 새로운 헤드리스 모드로 설정
+    headless: true, // 헤드리스 모드로 실행
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: '/usr/bin/chromium-browser', // EC2에 설치된 Chromium의 경로
   });
 
   const page = await browser.newPage();
