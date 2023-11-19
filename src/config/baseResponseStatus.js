@@ -82,4 +82,6 @@ module.exports = {
     MYPAGE_NICKNAME_EMPTY : { "isSuccess": false, "code":8008, "message":"닉네임이 입력되지 않았습니다."},
     NO_UPDATED_VALUES : { "isSuccess": true, "code":8009, "message":"변경된 값이 없습니다."},
     MYPAGE_QJ_EMPTY: {"isSuccess": false, "code":8010, "message":"저장된 qj가 없습니다."},
+    MYPAGE_SETIDX_EMPTY : {"isSuccess": false, "code":8011, "message":"setIdx(gpt 추천 번호)가 입력되지 않았습니다."},
+    MYPAGE_QJ_EMPTY : {"isSuccess": false, "code":8012, "message":"해당 번호는 qj(gpt)가 추천해주지 않았습니다."},
 }

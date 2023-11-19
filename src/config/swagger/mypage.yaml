@@ -6,169 +6,311 @@ tags:
   get:
     tags:
       - mypage
-    summary: 마이페이지 간단 정보 조회 API
-    description: 마이페이지 첫 화면에 나오는 데이터를 조회합니다.
+    summary: 마이페이지 요약 정보 조회
+    operationId: getMypage
     responses:
-      '1000':
-        $ref: "#/components/responses/SuccessMyPage"
-      '3000':
-        $ref: "#/components/responses/TokenVerificationFailure"
-      '8000':
-        $ref: "#/components/responses/NoDataInMyPage"
+      '200':
+        description: 성공 - 마이페이지 요약 정보 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                userName: "박준규"
+                major: "소프트웨어"
+                userimageUrl: null
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example: 
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: 마이페이지 데이터 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 8000
+              message: 마이페이지에 데이터가 존재하지 않습니다.
 
 /mypage/info:
   get:
     tags:
       - mypage
-    summary: 마이페이지 상세 정보 조회 API
-    description: 마이페이지 상세 정보를 조회합니다.
+    summary: 내 개인 정보 모두 조회
+    operationId: getMypageInfo
     responses:
-      '1000':
-        $ref: "#/components/responses/SuccessInfo"
-      '3000':
-        $ref: "#/components/responses/TokenVerificationFailure"
-      '8000':
-        $ref: "#/components/responses/NoDataInMyPage"
+      '200':
+        description: 성공 - 내 개인 정보 모두 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                userName: "박준규"
+                major: "소프트웨어"
+                grade: 4
+                school: "서울대학교"
+                phoneNum: "010-1234-5678"
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example: 
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: 상세 정보 데이터 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 8000
+              message: 마이페이지에 데이터가 존재하지 않습니다.
 
   put:
     tags:
       - mypage
-    summary: 마이페이지 상세 정보 수정 API
-    description: 마이페이지 상세 정보를 수정합니다.
-    parameters:
-      - in: body
-        name: obj
-        description: 수정할 개인정보
-        required: true
-        schema:
-          $ref: "#/components/schemas/UpdateMypageInfo"
+    summary: 마이페이지 개인정보 수정
+    operationId: updateMypageInfo
+    requestBody:
+      description: 수정할 프로필 정보
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userName:
+                type: string
+                description: 사용자 이름
+              major:
+                type: string
+                description: 전공
+              grade:
+                type: integer
+                description: 학년
+              school:
+                type: string
+                description: 학교
+              phoneNum:
+                type: string
+                description: 전화번호
+            required:
+              - userName
+              - major
+              - grade
+              - school
+              - phoneNum
     responses:
-      '1000':
-        $ref: "#/components/responses/SuccessInfo"
-      '3000':
-        $ref: "#/components/responses/TokenVerificationFailure"
-      '8000':
-        $ref: "#/components/responses/NoDataInMyPage"
+      '200':
+        description: 성공 - 마이페이지 개인정보 수정 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                userName: "박준규"
+                major: "소프트웨어"
+                grade: 4
+                school: "서울대학교"
+                phoneNum: "010-1234-5678"
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example: 
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: 수정된 데이터 없음
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 8002
+              message: 수정된 데이터가 없습니다.
 
 /mypage/profile:
   get:
     tags:
       - mypage
     summary: 마이페이지 프로필 정보 조회
-    description: 마이페이지에서 닉네임, 관심직무, 프로필 이미지를 조회합니다.
+    operationId: getProfile
     responses:
-      '1000':
-        $ref: "#/components/responses/SuccessProfile"
-      '3000':
-        $ref: "#/components/responses/TokenVerificationFailure"
-      '8000':
-        $ref: "#/components/responses/NoDataInMyPage"
+      '200':
+        description: 성공 - 마이페이지 프로필 정보 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                nickname: "박준규"
+                jobName: "개발자"
+                image: null
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example: 
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: 프로필 정보 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 8000
+              message: 마이페이지에 데이터가 존재하지 않습니다.
 
-components:
-  responses:
-    SuccessMyPage:
-      description: "성공 - 이름, 전공, 이미지를 조회합니다."
+  put:
+    tags:
+      - mypage
+    summary: 마이페이지 프로필 정보 수정
+    operationId: updateProfile
+    requestBody:
+      description: 수정할 프로필 정보
+      required: true
       content:
-        application/json:
+        multipart/form-data:
           schema:
-            $ref: "#/components/schemas/MyPageResult"
+            type: object
+            properties:
+              nickName:
+                type: string
+                description: 닉네임
+              jobName:
+                type: string
+                description: 관심직무
+              profileImage:
+                type: string
+                format: binary
+                description: 프로필 이미지
+            required:
+              - nickName
+    responses:
+      '200':
+        description: 성공 - 마이페이지 프로필 정보 수정 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                nickname: "박준규"
+                jobName: "개발자"
+                image: "https://example.com/profile-image.jpg"
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example: 
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: 수정된 데이터 없음
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 8002
+              message: 수정된 데이터가 없습니다.
 
-    SuccessInfo:
-      description: "성공 - 이름, 전공, 전화번호, 학교, 학년을 조회합니다."
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/MyPageInfo"
+/mypage/qj:
+  get:
+    tags:
+      - mypage
+    summary: QJ 보관함(요약조회)
+    operationId: getQJStorage
+    responses:
+      '200':
+        description: 성공 - QJ 보관함 요약 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                qjSummary:
+                  - setIdx: 1
+                    title: "QJ 제목 1"
+                  - setIdx: 2
+                    title: "QJ 제목 2"
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: QJ 보관함 데이터 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 8010
+              message: 저장된 QJ가 없습니다.
 
-    SuccessProfile:
-      description: "성공 - 닉네임, 관심직무, 프로필 이미지를 조회합니다."
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/MyPageProfile"
-
-    NoDataInMyPage:
-      $ref: "#/components/schemas/NoDataInMyPage"
-
-    TokenVerificationFailure:
-      $ref: "#/components/schemas/TokenVerificationFailure"
-
-    UpdateMypageInfo:
-      description: "수정할 개인정보"
-      schema:
-        $ref: "#/components/schemas/UpdateMypageInfo"
-
-    NoModifiedData:
-      $ref: "#/components/schemas/NoModifiedData"
-
-    NoUserId:
-      $ref: "#/components/schemas/NoUserId"
-
-    NoMajor:
-      $ref: "#/components/schemas/NoMajor"
-
-    NoGrade:
-      $ref: "#/components/schemas/NoGrade"
-
-    NoSchool:
-      $ref: "#/components/schemas/NoSchool"
-
-    NoPhoneNum:
-      $ref: "#/components/schemas/NoPhoneNum"
-
-    NoChangedValues:
-      $ref: "#/components/schemas/NoChangedValues"
-
-  schemas:
-    MyPageResult:
-      $ref: "#/components/schemas/MyPageResult"
-
-    MyPageInfo:
-      $ref: "#/components/schemas/MyPageInfo"
-
-    MyPageProfile:
-      type: object
-      properties:
-        nickname:
-          type: string
-          description: '닉네임'
-        jobName:
-          type: string
-          description: '관심직무'
-        image:
-          type: string
-          nullable: true
-          description: '프로필 이미지 URL'
-
-    ErrorResult:
-      $ref: "#/components/schemas/ErrorResult"
-
-    TokenVerificationFailure:
-      $ref: "#/components/schemas/TokenVerificationFailure"
-
-    NoDataInMyPage:
-      $ref: "#/components/schemas/NoDataInMyPage"
-
-    UpdateMypageInfo:
-      $ref: "#/components/schemas/UpdateMypageInfo"
-
-    NoModifiedData:
-      $ref: "#/components/schemas/NoModifiedData"
-
-    NoUserId:
-      $ref: "#/components/schemas/NoUserId"
-
-    NoMajor:
-      $ref: "#/components/schemas/NoMajor"
-
-    NoGrade:
-      $ref: "#/components/schemas/NoGrade"
-
-    NoSchool:
-      $ref: "#/components/schemas/NoSchool"
-
-    NoPhoneNum:
-      $ref: "#/components/schemas/NoPhoneNum"
-
-    NoChangedValues:
-      $ref: "#/components/schemas/NoChangedValues"
+/mypage/qj/{setIdx}:
+  get:
+    tags:
+      - mypage
+    summary: QJ 보관함(상세조회)
+    operationId: getqjData
+    parameters:
+      - in: path
+        name: setIdx
+        required: true
+        description: QJ setIdx (추천 번호)
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: 성공 - QJ 보관함 상세 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                setIdx: 1
+                title: "QJ 제목 1"
+                content: "QJ 내용 1"
+                createdAt: "2023-11-20T12:34:56Z"
+      '300':
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      '404':
+        description: QJ 보관함 데이터 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 8012
+              message: 해당 번호는 QJ가 추천해주지 않았습니다.

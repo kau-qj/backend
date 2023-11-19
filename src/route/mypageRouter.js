@@ -17,12 +17,12 @@ router.put('/info', jwt, mypageController.updateMypageInfo);
 router.get('/profile', jwt, mypageController.getProfile);
 
 // 마이페이지 -> 프로필 설정 수정
-router.put('/profile', jwt, mypageController.updateProfile);
+router.put('/profile', jwt, upload.single('profileImage'), mypageController.updateProfile);
 
-// // 마이페이지 -> QJ 보관함
-// router.get('/:userIdx/QJstorage', jwt, mypageController.getQJStorage);
+// 마이페이지 -> QJ 보관함(요약조회)
+router.get('/qj', jwt, mypageController.getQJStorage);
 
-// 프로필 이미지 업로드
-router.post('/upload', upload.single('image'), jwt, mypageController.uploadProfileImage);
+// 마이페이지 -> QJ 보관함(상세조회)
+router.get('/qj/:setIdx', jwt, mypageController.getqjData);
 
 module.exports = router;

@@ -35,3 +35,11 @@ exports.getQJ = async function(userId) {
     connection.release();
     return result;
 }
+
+// qj data 조회
+exports.getQJData = async function (setIdx, userId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await mypageDao.selectQJData(connection, setIdx, userId);
+    connection.release();
+    return result;
+}

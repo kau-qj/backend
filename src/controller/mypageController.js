@@ -113,87 +113,59 @@ exports.updateProfile = async function (req, res) {
   const { nickName, jobName } = req.body;
 
   // 유효성 검증
-  if(!nickName) return res.send(response(baseResponse.MYPAGE_NICKNAME_EMPTY));
+  if (!nickName) return res.send(response(baseResponse.MYPAGE_NICKNAME_EMPTY));
 
-  const updateInfo = await mypageService.updateProfile(userId, nickName, jobName);
-  if(updateInfo === null) return res.send(response(baseResponse));
+  const userInfo = await mypageProvider.getProfile(userId);
+  if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
 
-  return updateInfo;
+  const userIdx = userInfo[0].userIdx;
+  
+  // 프로필 이미지 업로드
+  let imageUrl = null;
+    if (req.file) {
+        // 이미지 업로드 로직 수행 (s3에 업로드)
+        imageUrl = req.file.location;
+    }
+
+  const updateInfo = await mypageService.updateProfile(userId, userIdx, nickName, jobName, imageUrl);
+  if (updateInfo === null) return res.send(response(baseResponse.NO_UPDATED_VALUES));
+
+  return res.send(response(baseResponse.SUCCESS, updateInfo));
 }
 
 /**
  * API No. 6
- * API Name : QJ 보관함
+ * API Name : QJ 보관함(요약조회)
  * [GET] /mypage/qj
  */
-exports.QJstorage = async function (req, res) {
+exports.getQJStorage = async function (req, res) {
   const userId = req.decoded.userId;
   if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
   
   const qjStorage = await mypageProvider.getQJ(userId);
   if(!qjStorage) return res.send(response(baseResponse.MYPAGE_QJ_EMPTY));
 
-  return qjStorage;
+  return res.send(response(baseResponse.SUCCESS, qjStorage));
 }
 
-// QJ 보관함 정보 조회
-// exports.getQJStorage = async (req, res) => {
-//   const userIdx = req.params.userIdx;
 
-//   try {
-//     const qjStorage = await mypageService.getQJStorage(userIdx);
-//     if (!qjStorage) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'QJ storage not found',
-//       });
-//     }
+/**
+ * API No. 7
+ * API Name: qj 보관함(상세조회)
+ * [GET] /mypage/qj/:setIdx
+ */
+exports.getqjData = async function (req, res) {
+  /**
+   * Path Variable = setIdx
+   */
+  const userId = req.decoded.userId;
+  const setIdx = req.params.setIdx;
 
-//     return res.status(200).json({
-//       success: true,
-//       data: qjStorage,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       success: false,
-//       message: 'Internal server error',
-//     });
-//   }
-// };
+  if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  if(!setIdx) return res.send(response(baseResponse.MYPAGE_SETIDX_EMPTY));
 
-// 프로필 이미지 업로드
-exports.uploadProfileImage = async (req, res) => {
-  try {
-    const userId = req.decoded.userId;
-    if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  const qjData = await mypageProvider.getQJData(setIdx, userId);
+  if(!qjData) return res.send(response(baseResponse.MYPAGE_QJ_EMPTY));
 
-    const userInfo = await mypageProvider.getMypageInfo(userId);
-    if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
-
-    const userIdx = userInfo[0].userIdx;
-    const image = req.file;
-
-    // 사용자 프로필 이미지 업로드를 위해 mypageService의 함수를 호출
-    const imageUrl = await mypageService.uploadProfileImage(userIdx, image);
-
-    if (!imageUrl) {
-      return res.status(404).json({
-        success: false,
-        message: 'Profile image upload failed',
-      });
-    }
-
-    // 클라이언트에게 이미지 URL을 반환합니다.
-    return res.status(200).json({
-      success: true,
-      data: imageUrl,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-};
+  return res.send(response(baseResponse.SUCCESS, qjData));
+}
