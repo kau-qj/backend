@@ -19,7 +19,7 @@ const options = {
       }
     ],
   },
-  apis: ["src/**/*.yaml"], //Swagger 파일 연동
+  apis: ["./src/**/*.yaml"],
 }
 const specs = swaggerJsdoc(options)
 
