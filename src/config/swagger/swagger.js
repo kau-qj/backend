@@ -1,5 +1,6 @@
 const swaggerUi = require("swagger-ui-express")
 const swaggerJsdoc = require("swagger-jsdoc")
+const path = require("path");
 
 const options = {
   swaggerDefinition: {
@@ -19,7 +20,7 @@ const options = {
       }
     ],
   },
-  apis: ["./src/**/*.yaml"],
+  apis: [path.join(__dirname, "../../config/swagger/*.yaml")],
 }
 const specs = swaggerJsdoc(options)
 
