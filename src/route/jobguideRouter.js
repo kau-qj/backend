@@ -5,12 +5,12 @@ const jobguideController = require('../controller/jobguideController.js');
 /* 진로사전 정보 가져오기
 
 */
-router.get('/getjobdictinfo', jobguideController.getJobDictInfo);
+router.get('/jobdictinfo', jobguideController.getJobDictInfo);
 
 /* 관심 직무 추가하기
 1. 관심 직무를 어디에 추가할건지 -> User 테이블 jobName1, jobName2, jobName3
 */
-router.post('/addinterestjob/:userIdx/:jobname', jobguideController.addInterestJob);
+router.post('/interestjob/:userIdx/:jobname', jobguideController.addInterestJob);
 
 /* 관심 직무 수정하기
 고려할 사항
@@ -22,10 +22,10 @@ router.post('/addinterestjob/:userIdx/:jobname', jobguideController.addInterestJ
 
 /* 직업 세부 정보 가져오기
 */
-router.get('/getjobdetails/:jobname', jobguideController.getJobDetails);
+router.get('/jobdetails/:jobname', jobguideController.getJobDetails);
 
 // User의 관심 직무(jobName) 조회하기
-router.get('/getinterestjobinfo/:userIdx', jobguideController.getMyInterestJobInfo);
+router.get('/interestjobinfo/:userIdx', jobguideController.getMyInterestJobInfo);
 
 
 module.exports = router;
