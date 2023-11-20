@@ -339,7 +339,7 @@ exports.addInterestJob = async (req, res) => {
 /**
 * API No.4
 * API Name: 유저 관심 직무 조회
-* [GET] /jobguide/interestjobinfo/:userIdx
+* [GET] /jobguide/interestjobinfo/
 */
 exports.getMyInterestJobInfo = async (req, res) => {
   /*
