@@ -167,18 +167,34 @@ exports.getQJStorage = async function (req, res) {
  * [GET] /mypage/qj/:setIdx
  */
 exports.getqjData = async function (req, res) {
-  /**
-   * Path Variable = setIdx
-   */
-  // const userId = req.decoded.userId;
-  const userId = 'csb';
-  const setIdx = req.params.setIdx;
+  try {
+      const userId = 'csb'; // 이 부분은 토큰에서 추출하도록 수정해야 함
+      const setIdx = req.params.setIdx;
 
-  if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-  if(!setIdx) return res.send(response(baseResponse.MYPAGE_SETIDX_EMPTY));
+      if (!userId) return res.status(400).json(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+      if (!setIdx) return res.status(400).json(response(baseResponse.MYPAGE_SETIDX_EMPTY));
 
-  const qjData = await mypageProvider.getQJData(setIdx, userId);
-  if(!qjData) return res.send(response(baseResponse.MYPAGE_QJ_EMPTY));
+      const qjData = await mypageProvider.getQJData(setIdx, userId);
 
-  return res.send(response(baseResponse.SUCCESS, qjData));
-}
+      if (!qjData || qjData.length === 0) {
+          return res.status(404).json(response(baseResponse.MYPAGE_QJ_EMPTY));
+      }
+
+      // OpenAPI 문서에 명시된 형식으로 응답 구성
+      const responseObj = {
+          isSuccess: true,
+          code: 1000,
+          message: '성공',
+          result: qjData.map(item => ({
+              title: item.title,
+              score: item.score,
+              comment: item.comment,
+          })),
+      };
+
+      return res.status(200).json(responseObj);
+  } catch (error) {
+      console.error('Unexpected error during getqjData:', error);
+      return res.status(500).json(response(baseResponse.DB_ERROR));
+  }
+};
