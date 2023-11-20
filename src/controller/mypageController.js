@@ -11,8 +11,10 @@ const mypageProvider = require('../provider/mypageProvider.js');
  */
 exports.getMypage = async (req, res) => {
 
-  const userId = req.decoded.userId;
-  if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  // const userId = req.decoded.userId;
+  // if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const userId = 'csb';
 
   const userInfo = await mypageProvider.getMypageInfo(userId);
   if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
@@ -36,8 +38,10 @@ exports.getMypage = async (req, res) => {
  */
 exports.getMypageInfo = async function(req, res) {
 
-  const userId = req.decoded.userId;
-  if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  // const userId = req.decoded.userId;
+  // if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const userId = 'csb';
 
   const userInfo = await mypageProvider.getMypageInfo(userId);
   if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
@@ -58,8 +62,10 @@ exports.getMypageInfo = async function(req, res) {
  * [PUT] /mypage/info
  */
 exports.updateMypageInfo = async function (req, res) {
-  const userId = req.decoded.userId;
-  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  // const userId = req.decoded.userId;
+  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const userId = 'csb';
 
   const { userName, major, grade, school, phoneNum } = req.body;
 
@@ -84,8 +90,10 @@ exports.updateMypageInfo = async function (req, res) {
  */
 exports.getProfile = async function (req, res) {
     
-  const userId = req.decoded.userId;
-  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  // const userId = req.decoded.userId;
+  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const userId = 'csb';
 
   const userInfo = await mypageProvider.getProfile(userId);
   if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
@@ -107,8 +115,10 @@ exports.getProfile = async function (req, res) {
  * [PUT] /mypage/profile
  */
 exports.updateProfile = async function (req, res) {
-  const userId = req.decoded.userId;
-  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  // const userId = req.decoded.userId;
+  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const userId = 'csb';
 
   const { nickName, jobName } = req.body;
 
@@ -139,9 +149,11 @@ exports.updateProfile = async function (req, res) {
  * [GET] /mypage/qj
  */
 exports.getQJStorage = async function (req, res) {
-  const userId = req.decoded.userId;
-  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+  // const userId = req.decoded.userId;
+  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
   
+  const userId = 'csb';
+
   const qjStorage = await mypageProvider.getQJ(userId);
   if(!qjStorage) return res.send(response(baseResponse.MYPAGE_QJ_EMPTY));
 
@@ -158,7 +170,8 @@ exports.getqjData = async function (req, res) {
   /**
    * Path Variable = setIdx
    */
-  const userId = req.decoded.userId;
+  // const userId = req.decoded.userId;
+  const userId = 'csb';
   const setIdx = req.params.setIdx;
 
   if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
