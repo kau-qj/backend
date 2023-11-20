@@ -6,7 +6,7 @@ const {response, errResponse} = require("../config/response")
 /**
  * API No. 1
  * API Name : 직업 정보 조회
- * [GET] /jobguide/getjobdictinfo
+ * [GET] /jobguide/jobdictinfo
  */
 exports.getJobDictInfo = async (req, res) => {
 /*
@@ -108,7 +108,7 @@ exports.getJobDictInfo = async (req, res) => {
 /**
  * API No.2
  * API Name: 직업 세부 정보 조회
- * [GET] /getjobdetails/:jobname
+ * [GET] /jobdetails/:jobname
  */
  exports.getJobDetails = async (req, res) => {
   /*
@@ -193,7 +193,7 @@ exports.getJobDictInfo = async (req, res) => {
 
   if (!imageUrl) {
     // imageUrl이 없을 경우, 실패 응답을 반환합니다.
-    return res.send(response(baseResponse.JOBGUIDE_JOBDETAILS_FALSE));
+    return res.send(response(baseResponse.JOBGUIDE_IMAGE_FALSE));
   }
 
   // 이미지 URL 정보를 response에 추가하여 클라이언트로 전송합니다.
@@ -256,7 +256,7 @@ exports.getJobDictInfo = async (req, res) => {
 /**
  * API No.3
  * API Name: 관심 직무 추가
- * [POST] /jobguide/addinterestjob/:userIdx/:jobname
+ * [POST] /jobguide/addinterestjob/:jobname
  */
 exports.addInterestJob = async (req, res) => {
   /*
@@ -345,7 +345,7 @@ exports.addInterestJob = async (req, res) => {
 /**
  * API No.4
  * API Name: 유저 관심 직무 조회
- * [GET] /jobguide/getinterestjobinfo/:userIdx
+ * [GET] /jobguide/interestjobinfo/:userIdx
  */
 exports.getMyInterestJobInfo = async (req, res) => {
   /*
