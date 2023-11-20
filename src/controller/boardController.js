@@ -7,7 +7,8 @@ const {response, errResponse} = require('../config/response');
 // 게시글 생성
 exports.createPost = async function (req, res) {
     const {postName, title, mainText, postType} = req.body;
-    const userId = req.decoded.userId;
+    // const userId = req.decoded.userId;
+    const userId = "csb";
 
     if (!postName) return res.send(response(baseResponse.POST_NAME_EMPTY));
     if (!title) return res.send(response(baseResponse.POST_TITLE_EMPTY));
