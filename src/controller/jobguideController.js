@@ -92,7 +92,17 @@ exports.getJobDictInfo = async (req, res) => {
     }
   }
   */
-  // ... (이하 코드 생략)
+  const jobDictInfo = await jobguideProvider.getJobDictInfo();
+  if(!jobDictInfo) res.send(response(baseResponse.JOBGUIDE_JOBDICTINFO_EMPTY));
+  
+  return res.send(response(baseResponse.SUCCESS, jobDictInfo));
+
+  // console.error(error);
+  // return res.status(500).json({
+  //   success: false,
+  //   message: 'Internal server error',
+  // });
+
 }
 
 /**
@@ -175,6 +185,7 @@ exports.getJobDetails = async (req, res) => {
     }
   }
   */
+
   const jobname = req.params.jobname;
 
   // jobname을 이용하여 job_directory_images 테이블에서 imageUrl을 가져옵니다.
@@ -245,7 +256,7 @@ exports.getJobDetails = async (req, res) => {
 /**
  * API No.3
  * API Name: 관심 직무 추가
- * [POST] /jobguide/addinterestjob/:jobname
+ * [POST] /jobguide/interestjob/:jobname
  */
 exports.addInterestJob = async (req, res) => {
   /*
@@ -300,7 +311,29 @@ exports.addInterestJob = async (req, res) => {
     }
   }
   */
-  // ... (이하 코드 생략)
+
+  const userId = req.decoded.userId;
+  // console.log(userId);
+  if(!userId) res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const jobname = req.params;
+  // console.log("jobname: ", jobname);
+  if (!jobname) res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
+
+  // 관심 직무 목록 길이 확인
+  const result = await jobguideService.addInterestJob(userId, jobname);
+  if (!result) res.send(response(baseResponse.JOBGUIDE_RESULT_FALSE));
+
+  // 성공적으로 관심 직무 추가
+  if (result === '관심 직무가 추가되었습니다.') res.send(response(baseResponse.SUCCESS));
+  
+  // 해당 관심 직무가 이미 관심 직무가 등록되어 있는 경우
+  else if (result === '이미 관심 직무가 등록되어 있습니다.') res.send(response(baseResponse.JOBGUIDE_REDUNDANT_INTERESTJOB));
+
+  else if (result === '최대 한 개의 관심 직무 등록이 가능합니다.') res.send(response(baseResponse.JOBGUIDE_ALREADY_REGISTERED));
+  
+  else if (result === '해당 직업은 존재하지 않습니다.') res.send(response(baseResponse.JOBGUIDE_JOBNAME_NOT_EXIST));
+
 }
 
 /**
@@ -365,4 +398,16 @@ exports.getMyInterestJobInfo = async (req, res) => {
     }
   }
   */
+
+
+const userId = req.decoded.userId;
+// console.log(userId);
+if(!userId) res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+const interestJobInfo = await jobguideProvider.getMyInterestJobInfo(userId);
+if(!interestJobInfo) res.send(response(baseResponse.JOBGUIDE_ALREADY_REGISTERED));
+
+return res.send(response(baseResponse.SUCCESS, interestJobInfo));
+
+
 }

@@ -14,8 +14,7 @@ router.get('/jobdetails/:jobname', jobguideController.getJobDetails);
 router.get('/interestjobinfo', jwt, jobguideController.getMyInterestJobInfo);
 
 // 관심 직무 추가하기
-router.post('/interestjob', jwt, jobguideController.addInterestJob);
-
+router.post('/interestjob/:Jobname', jwt, jobguideController.addInterestJob);
 
 module.exports = router;
 
