@@ -11,8 +11,10 @@ const {response, errResponse} = require("../config/response");
  */
 exports.getRecommend = async function (req, res) {
 
-    const userId = req.decoded.userId;
-    if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+    // const userId = req.decoded.userId;
+    // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+    const userId = 'csb';
 
     // 관심 직무
     const job = await qjProvider.getJob(userId);
@@ -44,8 +46,10 @@ exports.postInputJobRecommend = async function (req, res) {
     const job = req.body.job;
     if (!job) return res.send(response(baseResponse.QJ_JOB_WRONG));
 
-    const userId = req.decoded.userId;
-    if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE)); 
+    // const userId = req.decoded.userId;
+    // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE)); 
+
+    const userId = 'csb';
 
     // 과목 정보
     const subjectInfo = await qjProvider.getSubjectInfo();
