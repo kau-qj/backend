@@ -15,10 +15,18 @@ exports.getJobDictInfo = async function (userId) {
 
 // 직업 세부 정보 가져오기
 exports.getJobDetails = async function (jobname) {
-      const connection = await pool.getConnection(async (conn) => conn);
-      const jobDetails = await jobguideDao.selectJobDetailsByName(connection, jobname);
-      connection.release();
-      return jobDetails;
+  const connection = await pool.getConnection(async (conn) => conn);
+  const jobDetails = await jobguideDao.selectJobDetailsByName(connection, jobname);
+  connection.release();
+  return jobDetails;
+}
+
+// 이미지 URL 가져오기
+exports.getImageUrlByJobname = async function (jobname) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const imageUrl = await jobguideDao.selectImageUrlByJobname(connection, jobname);
+  connection.release();
+  return imageUrl;
 }
 
 

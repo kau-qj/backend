@@ -110,7 +110,7 @@ exports.getJobDictInfo = async (req, res) => {
  * API Name: 직업 세부 정보 조회
  * [GET] /getjobdetails/:jobname
  */
-exports.getJobDetails = async (req, res) => {
+ exports.getJobDetails = async (req, res) => {
   /*
     #swagger.tags = ['jobguide']
     #swagger.summary = '직업 세부 정보 조회'
@@ -188,12 +188,25 @@ exports.getJobDetails = async (req, res) => {
 
   const jobname = req.params.jobname;
 
-  const jobDetails = await jobguideProvider.getJobDetails(jobname);
-  if (!jobDetails) res.send(response(baseResponse.JOBGUIDE_JOBDETAILS_FALSE));
-  
-  return res.send(response(baseResponse.SUCCESS, jobDetails));
+  // jobname을 이용하여 job_directory_images 테이블에서 imageUrl을 가져옵니다.
+  const imageUrl = await jobguideProvider.getImageUrlByJobname(jobname);
 
+  if (!imageUrl) {
+    // imageUrl이 없을 경우, 실패 응답을 반환합니다.
+    return res.send(response(baseResponse.JOBGUIDE_JOBDETAILS_FALSE));
+  }
+
+  // 이미지 URL 정보를 response에 추가하여 클라이언트로 전송합니다.
+  const jobDetails = await jobguideProvider.getJobDetails(jobname);
+
+  if (!jobDetails) {
+    // 직업 세부 정보가 없을 경우, 실패 응답을 반환합니다.
+    return res.send(response(baseResponse.JOBGUIDE_JOBDETAILS_FALSE));
+  }
+
+  return res.send(response(baseResponse.SUCCESS, { ...jobDetails, imageUrl }));
 };
+
 
 
 // 관심 직무 추가하기 -> 최대 3개 jobName1, jobName2, jobName3
