@@ -25,6 +25,21 @@ async function selectJobDetailsByName(connection, jobname) {
   return result[0];
 }
 
+// 이미지 URL 가져오기
+async function selectImageUrlByJobname(connection, jobname) {
+  const query = `
+    SELECT imageUrl
+    FROM job_directory_images
+    WHERE Idx = (
+      SELECT jobIdx
+      FROM JobDictionary
+      WHERE jobname = ?
+    )
+  `;
+  const [result] = await connection.query(query, [jobname]);
+  return result[0]?.imageUrl || null;
+}
+
 // // 키워드를 이용하여 진로사전 정보 가져오기
 // async function selectJobInfoByKeyword(connection, keyword) {
 //   const query = `
@@ -169,5 +184,6 @@ module.exports = {
   selectJobInfoByKeyword,
   selectJobDetailsByName,
   selectInterestJobInfo,
+  selectImageUrlByJobname,
   insertInterestJob,
 };
