@@ -83,19 +83,13 @@ tags:
               isSuccess: false
               code: 500
               message: 내부 서버 오류
-/jobguide/interestjob/{userIdx}/{jobname}:
+/jobguide/interestjob/{jobname}:
   post:
     tags:
       - jobdictionary
     summary: 관심 직무 추가
     operationId: addInterestJob
     parameters:
-      - in: path
-        name: userIdx
-        required: true
-        description: 사용자 인덱스
-        schema:
-          type: integer
       - in: path
         name: jobname
         required: true
@@ -143,20 +137,12 @@ tags:
               isSuccess: false
               code: 500
               message: '내부 서버 오류'
-
-/jobguide/interestjobinfo/{userIdx}:
+/jobguide/interestjobinfo:
   get:
     tags:
       - jobdictionary
     summary: 유저 관심 직무 조회
     operationId: getMyInterestJobInfo
-    parameters:
-      - in: path
-        name: userIdx
-        required: true
-        description: 유저 인덱스
-        schema:
-          type: integer
     responses:
       '1000':
         description: 성공 - 유저의 관심 직무 정보 조회 성공
