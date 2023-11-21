@@ -17,7 +17,7 @@ exports.getJobDictInfo = async (req, res) => {
     description: "성공 - 직업 정보 조회 성공",
     content: {
       "application/json": {
-        schema: {
+       1 schema: {
           type: "object",
           properties: {
             isSuccess: {
@@ -204,6 +204,8 @@ exports.getJobDetails = async (req, res) => {
     return res.send(response(baseResponse.JOBGUIDE_JOBDETAILS_FALSE));
   }
 
+
+  // ...jobDetails: 객체에서 해당 객체의 모든 속성을 다른 객체에 복사하고, 추가적인 속성을 포함
   return res.send(response(baseResponse.SUCCESS, { ...jobDetails, imageUrl }));
 }
 
@@ -341,7 +343,7 @@ exports.addInterestJob = async (req, res) => {
 * API Name: 유저 관심 직무 조회
 * [GET] /jobguide/interestjobinfo/
 */
-exports.getMyInterestJobInfo = async (req, res) => {
+// exports.getMyInterestJobInfo = async (req, res) => {
   /*
   #swagger.tags = ['jobguide']
   #swagger.summary = '유저 관심 직무 조회'
@@ -400,14 +402,14 @@ exports.getMyInterestJobInfo = async (req, res) => {
   */
 
 
-const userId = req.decoded.userId;
-// console.log(userId);
-if(!userId) res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+// const userId = req.decoded.userId;
+// // console.log(userId);
+// if(!userId) res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
-const interestJobInfo = await jobguideProvider.getMyInterestJobInfo(userId);
-if(!interestJobInfo) res.send(response(baseResponse.JOBGUIDE_ALREADY_REGISTERED));
+// const interestJobInfo = await jobguideProvider.getMyInterestJobInfo(userId);
+// if(!interestJobInfo) res.send(response(baseResponse.JOBGUIDE_ALREADY_REGISTERED));
 
-return res.send(response(baseResponse.SUCCESS, interestJobInfo));
+// return res.send(response(baseResponse.SUCCESS, interestJobInfo));
 
 
-}
+// }
