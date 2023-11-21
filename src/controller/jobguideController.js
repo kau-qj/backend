@@ -17,7 +17,7 @@ exports.getJobDictInfo = async (req, res) => {
     description: "성공 - 직업 정보 조회 성공",
     content: {
       "application/json": {
-       1 schema: {
+        schema: {
           type: "object",
           properties: {
             isSuccess: {
@@ -119,7 +119,8 @@ exports.getJobDetails = async (req, res) => {
     in: 'path',
     required: true,
     type: 'string',
-    description: '세부 정보를 조회할 직업 이름'
+    description: '세부 정보를 조회할 직업 이름',
+    example: '개발자'
   }
   #swagger.responses[1000] = { 
     description: "성공 - 세부 직업 정보 조회 성공",
@@ -132,11 +133,11 @@ exports.getJobDetails = async (req, res) => {
         },
         code: {
           type: "integer",
-          example: baseResponse.SUCCESS.code
+          example: 1000
         },
         message: {
           type: "string",
-          example: baseResponse.SUCCESS.message
+          example: "조회 성공"
         },
         result: {
           $ref: "#/components/schemas/JobDetails"
@@ -144,28 +145,20 @@ exports.getJobDetails = async (req, res) => {
       }
     }
   }
-  #swagger.responses[9007] = { 
-    description: baseResponse.JOBGUIDE_JOBDETAILS_FALSE.message,
-    schema: {
-      type: "object",
-      properties: {
-        isSuccess: {
-          type: "boolean",
-          example: false
-        },
-        code: {
-          type: "integer",
-          example: baseResponse.JOBGUIDE_JOBDETAILS_FALSE.code
-        },
-        message: {
-          type: "string",
-          example: baseResponse.JOBGUIDE_JOBDETAILS_FALSE.message
-        }
-      }
-    }
+  #swagger.responses[9000] = {
+    description: "직업 이름 누락",
+    schema: { $ref: "#/definitions/JOBGUIDE_JOBNAME_EMPTY" }
+  }
+  #swagger.responses[9007] = {
+    description: "이미지 정보 조회 실패",
+    schema: { $ref: "#/definitions/JOBGUIDE_IMAGE_FALSE" }
+  }
+  #swagger.responses[9008] = {
+    description: "직업 세부 정보 조회 실패",
+    schema: { $ref: "#/definitions/JOBGUIDE_JOBDETAILS_FALSE" }
   }
   #swagger.responses[500] = {
-    description: baseResponse.SERVER_ERROR.message,
+    description: "서버 에러",
     schema: {
       type: "object",
       properties: {
@@ -175,11 +168,11 @@ exports.getJobDetails = async (req, res) => {
         },
         code: {
           type: "integer",
-          example: baseResponse.SERVER_ERROR.code
+          example: 500
         },
         message: {
           type: "string",
-          example: baseResponse.SERVER_ERROR.message
+          example: "서버 에러 발생"
         }
       }
     }
@@ -187,6 +180,8 @@ exports.getJobDetails = async (req, res) => {
   */
 
   const jobname = req.params.jobname;
+  if (!jobname) res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
+
 
   // jobname을 이용하여 job_directory_images 테이블에서 imageUrl을 가져옵니다.
   const imageUrl = await jobguideProvider.getImageUrlByJobname(jobname);
