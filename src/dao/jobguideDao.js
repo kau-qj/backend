@@ -31,7 +31,7 @@ async function selectImageUrlByJobname(connection, jobname) {
     SELECT imageUrl
     FROM job_directory_images
     WHERE Idx = (
-      SELECT jobIdx - 1
+      SELECT jobIdx
       FROM JobDictionary
       WHERE jobname = ?
     )
