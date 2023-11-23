@@ -169,21 +169,21 @@ async function insertInterestJob(connection, userId, jobname) {
 
 
 // 관심직무 검색
-async function selectInterestJobInfo(connection, userId) {
-  const selectInterestJobQuery = `
-      SELECT jobName
-      FROM User
-      WHERE userId =?;
-      `;
-  const [userRow] = await connection.query(selectInterestJobQuery, [userId]);
-  return userRow;
-}
+// async function selectInterestJobInfo(connection, userId) {
+//   const selectInterestJobQuery = `
+//       SELECT jobName
+//       FROM User
+//       WHERE userId =?;
+//       `;
+//   const [userRow] = await connection.query(selectInterestJobQuery, [userId]);
+//   return userRow;
+// }
 
 
 module.exports = {
   selectJobInfoByKeyword,
   selectJobDetailsByName,
-  selectInterestJobInfo,
+  //selectInterestJobInfo,
   selectImageUrlByJobname,
   insertInterestJob,
 };

@@ -30,11 +30,11 @@ exports.getImageUrlByJobname = async function (jobname) {
 }
 
 
-// userId를 이용하여 관심 직무 조회
-exports.getMyInterestJobInfo = async function (userId) {
-      const connection = await pool.getConnection(async (conn) => conn);
-      const interestJobInfo = await jobguideDao.selectInterestJobInfo(connection, userId);
-      console.log(interestJobInfo);
-      connection.release();
-      return interestJobInfo;
-}
+// // userId를 이용하여 관심 직무 조회
+// exports.getMyInterestJobInfo = async function (userId) {
+//       const connection = await pool.getConnection(async (conn) => conn);
+//       const interestJobInfo = await jobguideDao.selectInterestJobInfo(connection, userId);
+//       console.log(interestJobInfo);
+//       connection.release();
+//       return interestJobInfo;
+// }
