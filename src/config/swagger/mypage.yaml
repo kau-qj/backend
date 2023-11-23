@@ -19,8 +19,8 @@ tags:
               message: 성공
               result:
                 userName: "박준규"
-                major: "소프트웨어"
-                userimageUrl: null
+                job: "백엔드 개발자"
+                userimageUrl: "https://kau-sanhak-qj.s3.ap-northeast-2.amazonaws.com/profile/1700730095307-KakaoTalk_20231118_152522010.jpg"
       '300':
         description: 토큰 검증 실패
         content:

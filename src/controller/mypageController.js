@@ -25,9 +25,9 @@ exports.getMypage = async (req, res) => {
   const userimageUrl = await mypageProvider.getUserImage(userIdx);
 
   const userName = userInfo[0].userName;
-  const major = userInfo[0].major;
+  const job = userInfo[0].jobName;
 
-  return res.send(response(baseResponse.SUCCESS, { userName, major, userimageUrl } ));
+  return res.send(response(baseResponse.SUCCESS, { userName, job, userimageUrl } ));
 };
 
 // 마이페이지 개인 정보 모두 조회
