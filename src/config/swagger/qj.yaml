@@ -2,7 +2,7 @@ tags:
   - name: qj
     description: 학교 전공 혹은 교양 과목과 관심 직무를 토대로 gpt가 강의를 추천해줍니다.
 
-qj/myJob:
+/qj/myJob:
   get:
     tags:
       - qj
@@ -82,7 +82,7 @@ qj/myJob:
               message: GPT 호출에 에러가 발생했습니다.
 
 
-qj/newJob:
+/qj/newJob:
   post:
     tags:
       - qj
