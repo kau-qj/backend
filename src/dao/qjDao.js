@@ -58,6 +58,13 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
     const insertedData = [];
     let rgIdx = null;
 
+    const result = {
+        userId: userId,
+        title: responseContent.title,
+        setIdx: null,
+        details: []
+    };
+
     for (const contentObj of responseContent.content) {
 
         const comment = contentObj.comment;
@@ -76,8 +83,9 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
                 LIMIT 1
             ;`;
 
-            const [result] = await connection.query(getRgIdxQuery);
-            rgIdx = result[0].rgIdx;
+            const [resultRow] = await connection.query(getRgIdxQuery);
+            rgIdx = resultRow[0].rgIdx;
+            result.setIdx = rgIdx;
             console.log("rgIdx:", rgIdx);
         }
 
@@ -102,11 +110,13 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
             score: score,
             setIdx: rgIdx
         });
+
+        result.details.push({ comment: comment, score: score });
     }
 
     console.log("--------insert recommendGPT Table completion----------");
 
-    return insertedData;
+    return [result] ;
 }
 
 module.exports = {

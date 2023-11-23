@@ -9,7 +9,7 @@ tags:
     summary: 마이페이지 요약 정보 조회
     operationId: getMypage
     responses:
-      '200':
+      '1000':
         description: 성공 - 마이페이지 요약 정보 조회 성공
         content:
           application/json:
@@ -21,7 +21,7 @@ tags:
                 userName: "박준규"
                 job: "백엔드 개발자"
                 userimageUrl: "https://kau-sanhak-qj.s3.ap-northeast-2.amazonaws.com/profile/1700730095307-KakaoTalk_20231118_152522010.jpg"
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -29,7 +29,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8000':
         description: 마이페이지 데이터 없음
         content:
           application/json:
@@ -45,7 +45,7 @@ tags:
     summary: 내 개인 정보 모두 조회
     operationId: getMypageInfo
     responses:
-      '200':
+      '1000':
         description: 성공 - 내 개인 정보 모두 조회 성공
         content:
           application/json:
@@ -59,7 +59,7 @@ tags:
                 grade: 4
                 school: "서울대학교"
                 phoneNum: "010-1234-5678"
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -67,7 +67,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8000':
         description: 상세 정보 데이터 없음
         content:
           application/json:
@@ -111,7 +111,7 @@ tags:
               - school
               - phoneNum
     responses:
-      '200':
+      '1000':
         description: 성공 - 마이페이지 개인정보 수정 성공
         content:
           application/json:
@@ -125,7 +125,7 @@ tags:
                 grade: 4
                 school: "서울대학교"
                 phoneNum: "010-1234-5678"
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -133,7 +133,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8002':
         description: 수정된 데이터 없음
         content:
           application/json:
@@ -149,7 +149,7 @@ tags:
     summary: 마이페이지 프로필 정보 조회
     operationId: getProfile
     responses:
-      '200':
+      '1000':
         description: 성공 - 마이페이지 프로필 정보 조회 성공
         content:
           application/json:
@@ -161,7 +161,7 @@ tags:
                 nickname: "박준규"
                 jobName: "개발자"
                 image: null
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -169,7 +169,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8000':
         description: 프로필 정보 없음
         content:
           application/json:
@@ -204,7 +204,7 @@ tags:
             required:
               - nickName
     responses:
-      '200':
+      '1000':
         description: 성공 - 마이페이지 프로필 정보 수정 성공
         content:
           application/json:
@@ -216,7 +216,7 @@ tags:
                 nickname: "박준규"
                 jobName: "개발자"
                 image: "https://example.com/profile-image.jpg"
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -224,7 +224,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8002':
         description: 수정된 데이터 없음
         content:
           application/json:
@@ -240,7 +240,7 @@ tags:
     summary: QJ 보관함(요약조회)
     operationId: getQJStorage
     responses:
-      '200':
+      '1000':
         description: 성공 - QJ 보관함 요약 조회 성공
         content:
           application/json:
@@ -254,7 +254,7 @@ tags:
                     title: "QJ 제목 1"
                   - setIdx: 2
                     title: "QJ 제목 2"
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -262,7 +262,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8010':
         description: QJ 보관함 데이터 없음
         content:
           application/json:
@@ -285,7 +285,7 @@ tags:
         schema:
           type: integer
     responses:
-      '200':
+      '1000':
         description: 성공 - QJ 보관함 상세 조회 성공
         content:
           application/json:
@@ -298,7 +298,7 @@ tags:
                 title: "QJ 제목 1"
                 content: "QJ 내용 1"
                 createdAt: "2023-11-20T12:34:56Z"
-      '300':
+      '3000':
         description: 토큰 검증 실패
         content:
           application/json:
@@ -306,7 +306,7 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '404':
+      '8012':
         description: QJ 보관함 데이터 없음
         content:
           application/json:
