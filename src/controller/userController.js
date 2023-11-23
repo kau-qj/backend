@@ -22,16 +22,15 @@ exports.getTest = async function (req, res) {
  * [POST] /app/users
  */
 exports.postUsers = async function (req, res) {
-    const { userId, userPw, grade, major, phoneNum, school, jobIdx } = req.body;
+    const { userId, userPw, grade, major, phoneNum, school, jobName} = req.body;
     if (!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
     if (!userPw) return res.send(errResponse(baseResponse.SIGNUP_PASSWORD_EMPTY));
     if (!grade) return res.send(errResponse(baseResponse.SIGNUP_GRADE_EMPTY));
     if (!major) return res.send(errResponse(baseResponse.SIGNUP_MAJOR_EMPTY));
     if (!phoneNum) return res.send(errResponse(baseResponse.SIGNUP_PHONENUM_EMPTY));
     if (!school) return res.send(errResponse(baseResponse.SIGNUP_SCHOOL_EMPTY));
-    // if (!jobIdx) return res.send(errResponse(baseResponse.SIGNUP_JOBIDX_EMPTY));
 
-    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobIdx);
+    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobName);
 
     return res.send(signUpResponse);
 };
@@ -85,15 +84,48 @@ exports.getUserById = async function (req, res) {
  * body : email, passsword
  */
 exports.login = async function (req, res) {
+    try {
+        const { userId, userPw } = req.body;
 
-    const { userId, userPw } = req.body;
+        // TODO: email, password 형식적 Validation
 
-    // TODO: email, password 형식적 Validation
+        const signInResponse = await userService.postSignIn(userId, userPw);
 
-    const signInResponse = await userService.postSignIn(userId, userPw);
+        if (!signInResponse) {
+            // userService.postSignIn에서 에러가 발생한 경우
+            console.error('Login failed:', signInResponse.message);
+            return res.status(400).json(signInResponse);
+        }
 
-    return res.send(signInResponse);
+        if (!signInResponse.result || !signInResponse.result.token) {
+            // 토큰이 존재하지 않는 경우
+            console.error('Token not found in response:', signInResponse);
+            return res.status(500).json({
+                isSuccess: false,
+                code: 5000,
+                message: 'Internal Server Error',
+            });
+        }
+
+        // JWT 토큰을 쿠키에 설정
+        res.cookie('access_token', signInResponse.result.token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+        });
+
+        return res.status(200).json(signInResponse);
+    } catch (error) {
+        // 예상치 못한 에러 처리
+        console.error('Unexpected error during login:', error);
+        return res.status(500).json({
+            isSuccess: false,
+            code: 5000,
+            message: 'Internal Server Error',
+        });
+    }
 };
+
 
 
 /**

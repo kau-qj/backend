@@ -1,13 +1,18 @@
-const cron = require('node-cron');
-const runCrawler = require('./crawler');
+const schedule = require('node-schedule');
+const runCrawler = require('./recruit.crawler');
+const { pool } = require('../config/database'); // 데이터베이스 풀 임포트
 
-// 크롤링 스케줄러를 매일 오전 10시 30분과 오후 4시 30분에 실행
-const job = cron.schedule('30 10,16 * * *', async function() {
-    console.log('Cron job for crawler started at:', new Date());
-    await runCrawler();
+// 매일 오전 10시 30분과 오후 4시 30분에 크롤러 실행
+const crawlerJob = schedule.scheduleJob('30 10,16 * * *', function() {
+    console.log('crawler start:', new Date());
+    runCrawler(pool) // 데이터베이스 연결 풀을 runCrawler에 전달
+        .then((result) => {
+            if (result === 'Duplicate data found') {
+                console.log('duplicate data:', new Date());
+                crawlerJob.cancel();
+            }
+        })
+        .catch((error) => {
+            console.error('error in crawler:', error);
+        });
 });
-
-// 서버가 시작될 때 크롤링 스케줄러를 직접 실행
-if (job) {
-    job.start();
-}

@@ -1,0 +1,169 @@
+tags:
+  - name: qj
+    description: 학교 전공 혹은 교양 과목과 관심 직무를 토대로 gpt가 강의를 추천해줍니다.
+
+/qj/myJob:
+  get:
+    tags:
+      - qj
+    summary: 내 직무 강의 추천
+    description: 내 관심 직무를 바탕으로 강의를 추천해줍니다.
+    responses:
+      '1000':
+        description: 성공 - 강좌 정보 조회
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                - userId: "csb"
+                  title: "프론트엔드"
+                  setIdx: 3866
+                  details:
+                    - comment: "프로그래밍입문 - 프론트엔드 개발에 필요한 기본적인 프로그래밍 기술을 배울 수 있습니다."
+                      score: 5
+                    - comment: "웹SW스튜디오 및 재능기부 - 프론트엔드 개발에서 웹 프로그래밍 기술과 프로젝트 경험은 중요합니다."
+                      score: 5
+                    - comment: "객체지향프로그래밍 - 프론트엔드 개발에 객체 지향 프로그래밍 기술을 적용하는 것이 유용합니다."
+                      score: 4
+                    - comment: "Adventure Design - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 3
+                    - comment: "AI입문 - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 2
+                    - comment: "컴퓨터구조론 - 프론트엔드 개발에는 하드웨어 구조에 대한 상세한 이해보다는 중요하지 않습니다."
+                      score: 1
+                    - comment: "알고리즘 해석 및 설계 - 프론트엔드 개발에 알고리즘 이해는 중요하지만, 다른 과목보다는 중요도가 낮습니다."
+                      score: 1
+                    - comment: "AI프로그래밍 - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 1
+                    - comment: "시스템프로그래밍 - 프론트엔드 개발에는 시스템 수준 지식보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "임베디드SW입문 - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 1
+                    - comment: "산학프로젝트 - 실무 프로젝트 경험은 프론트엔드 개발에 도움이 되지만, 다른 과목보다는 중요도가 낮습니다."
+                      score: 1
+                    - comment: "데이터베이스기초 - 프론트엔드 개발에는 데이터베이스 지식보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "IoT - 프론트엔드 개발에는 IoT와의 연계보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "데이터사이언스응용 - 프론트엔드 개발에는 데이터사이언스 지식보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "정보보호 - 프론트엔드 개발에는 정보보호보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "딥러닝응용 - 프론트엔드 개발에는 딥러닝 응용보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "인공지능플래닝 - 프론트엔드 개발에는 인공지능 플래닝보다는 다른 과목이 더 중요합니다."
+                      score: 1
+      '6000':
+        description: 실패 - 관심 직무가 등록되어 있지 않습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6000
+              message: 관심 직무가 등록되어 있지 않습니다.
+      '6001':
+        description: 실패 - 과목 조회가 되지 않습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6001
+              message: 과목 조회가 되지 않습니다.
+      '6002':
+        description: 실패 - GPT 호출에 에러가 발생했습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6002
+              message: GPT 호출에 에러가 발생했습니다.
+
+
+/qj/newJob:
+  post:
+    tags:
+      - qj
+    summary: 다른 직무 강의 추천
+    description: 다른 관심 직무를 바탕으로 강의를 추천해줍니다.
+    requestBody:
+      description: 사용자의 관심 직무
+      required: true
+      content:
+        application/json:
+          example:
+            job: "데이터 엔지니어"
+    responses:
+      '1000':
+        description: 성공 - 강좌 정보 조회
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                - userId: "csb"
+                  title: "프론트엔드"
+                  setIdx: 3866
+                  details:
+                    - comment: "프로그래밍입문 - 프론트엔드 개발에 필요한 기본적인 프로그래밍 기술을 배울 수 있습니다."
+                      score: 5
+                    - comment: "웹SW스튜디오 및 재능기부 - 프론트엔드 개발에서 웹 프로그래밍 기술과 프로젝트 경험은 중요합니다."
+                      score: 5
+                    - comment: "객체지향프로그래밍 - 프론트엔드 개발에 객체 지향 프로그래밍 기술을 적용하는 것이 유용합니다."
+                      score: 4
+                    - comment: "Adventure Design - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 3
+                    - comment: "AI입문 - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 2
+                    - comment: "컴퓨터구조론 - 프론트엔드 개발에는 하드웨어 구조에 대한 상세한 이해보다는 중요하지 않습니다."
+                      score: 1
+                    - comment: "알고리즘 해석 및 설계 - 프론트엔드 개발에 알고리즘 이해는 중요하지만, 다른 과목보다는 중요도가 낮습니다."
+                      score: 1
+                    - comment: "AI프로그래밍 - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 1
+                    - comment: "시스템프로그래밍 - 프론트엔드 개발에는 시스템 수준 지식보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "임베디드SW입문 - 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                      score: 1
+                    - comment: "산학프로젝트 - 실무 프로젝트 경험은 프론트엔드 개발에 도움이 되지만, 다른 과목보다는 중요도가 낮습니다."
+                      score: 1
+                    - comment: "데이터베이스기초 - 프론트엔드 개발에는 데이터베이스 지식보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "IoT - 프론트엔드 개발에는 IoT와의 연계보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "데이터사이언스응용 - 프론트엔드 개발에는 데이터사이언스 지식보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "정보보호 - 프론트엔드 개발에는 정보보호보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "딥러닝응용 - 프론트엔드 개발에는 딥러닝 응용보다는 다른 과목이 더 중요합니다."
+                      score: 1
+                    - comment: "인공지능플래닝 - 프론트엔드 개발에는 인공지능 플래닝보다는 다른 과목이 더 중요합니다."
+                      score: 1
+      '6001':
+        description: 실패 - 과목 조회가 되지 않습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6001
+              message: 과목 조회가 되지 않습니다.
+      '6002':
+        description: 실패 - GPT 호출에 에러가 발생했습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6002
+              message: GPT 호출에 에러가 발생했습니다.
+      '6003':
+        description: 실패 - 관심 직무 입력이 올바르지 않습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6003
+              message: 관심 직무 입력이 올바르지 않습니다.

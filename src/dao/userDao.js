@@ -1,7 +1,7 @@
 // 모든 유저 조회
 async function selectUser(connection) {
   const selectUserListQuery = `
-      SELECT userId, userPw, grade, major, phoneNum, school, jobIdx
+      SELECT userId, userPw, grade, major, phoneNum, school, jobName
       FROM User;
   `;
   const [userRows] = await connection.query(selectUserListQuery);
@@ -12,7 +12,7 @@ async function selectUser(connection) {
   async function selectUserEmail(connection, email) {
     
     const selectUserEmailQuery = `
-        SELECT userId, userPw, grade, major, phoneNum, school, jobIdx
+        SELECT userId, userPw, grade, major, phoneNum, school
         FROM User
         WHERE email = ?;
     `;
@@ -21,13 +21,15 @@ async function selectUser(connection) {
 }
 
   
-  // userId 회원 조회
+  // userId 회원 조회(중복 검증)
   async function selectUserId(connection, userId) {
+    
     const selectUserIdQuery = `
         SELECT userId
         FROM User
         WHERE userId = ?;
     `;
+
     const [userRow] = await connection.query(selectUserIdQuery, userId);
     return userRow;
 }

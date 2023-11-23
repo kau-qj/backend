@@ -47,8 +47,6 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
 
     const responseCompletion = await openai.chat.completions.create(completion);
     console.log("-------- gpt completion ---------");
-    console.log(responseCompletion.choices[0].message.content); // 이 줄을 추가
-    console.log("responseCompletion.choices[0].message.content.content:", responseCompletion.choices[0].message.content.content);
     
     const responseContent = JSON.parse(responseCompletion.choices[0].message.content.replaceAll('\'', '"').replaceAll('`', '"').replace(/""/g, '"'));
 
@@ -59,6 +57,13 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
 
     const insertedData = [];
     let rgIdx = null;
+
+    const result = {
+        userId: userId,
+        title: responseContent.title,
+        setIdx: null,
+        details: []
+    };
 
     for (const contentObj of responseContent.content) {
 
@@ -78,8 +83,9 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
                 LIMIT 1
             ;`;
 
-            const [result] = await connection.query(getRgIdxQuery);
-            rgIdx = result[0].rgIdx;
+            const [resultRow] = await connection.query(getRgIdxQuery);
+            rgIdx = resultRow[0].rgIdx;
+            result.setIdx = rgIdx;
             console.log("rgIdx:", rgIdx);
         }
 
@@ -104,11 +110,14 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
             score: score,
             setIdx: rgIdx
         });
+
+        result.details.push({ comment: comment, score: score });
     }
+    result.details.sort((a, b) => b.score - a.score);
 
     console.log("--------insert recommendGPT Table completion----------");
 
-    return insertedData;
+    return [result] ;
 }
 
 module.exports = {

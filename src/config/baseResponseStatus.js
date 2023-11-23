@@ -42,6 +42,7 @@ module.exports = {
     USER_NICKNAME_EMPTY : { "isSuccess": false, "code": 2017, "message": "변경할 닉네임 값을 입력해주세요" },
 
     USER_STATUS_EMPTY : { "isSuccess": false, "code": 2018, "message": "회원 상태값을 입력해주세요" },
+    SIGNUP_REDUNDANT_ID : { "isSuccess": false, "code": 2019, "message":"중복된 ID입니다."},
 
     // Response error
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
@@ -68,4 +69,30 @@ module.exports = {
 
     // home
     HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},
+
+    // mypage
+    MYPAGE_USERINFO_FALSE : { "isSuccess": false, "code": 8000, "message": "마이페이지에 데이터가 존재하지 않습니다."},
+    MISSING_REQUIRED_FIELD : { "isSuccess": false, "code": 8001, "message": "수정할 데이터를 모두 입력해주세요."},
+    MYPAGE_UPDATE_FAILURE : { "isSuccess": true, "code": 8002, "message": "수정된 데이터가 없습니다."},
+    MYPAGE_USERNAME_EMPTY : { "isSuccess": false, "code": 8003, "message": "유저 아이디가 입력되지 않았습니다."},
+    MYPAGE_MAJOR_EMPTY : { "isSuccess": false, "code": 8004, "message":"전공이 입력되지 않았습니다."},
+    MYPAGE_GRADE_EMPTY : { "isSuccess": false, "code": 8005, "message":"학년이 입력되지 않았습니다."},
+    MYPAGE_SCHOOL_EMPTY : { "isSuccess": false, "code": 8006, "message":"학교가 입력되지 않았습니다."},
+    MYPAGE_PHONENUM_EMPTY : { "isSuccess": false, "code": 8007, "message":"휴대번호가 입력되지 않았습니다."},
+    MYPAGE_NICKNAME_EMPTY : { "isSuccess": false, "code":8008, "message":"닉네임이 입력되지 않았습니다."},
+    NO_UPDATED_VALUES : { "isSuccess": true, "code":8009, "message":"변경된 값이 없습니다."},
+    MYPAGE_QJ_EMPTY: {"isSuccess": false, "code":8010, "message":"저장된 qj가 없습니다."},
+    MYPAGE_SETIDX_EMPTY : {"isSuccess": false, "code":8011, "message":"setIdx(gpt 추천 번호)가 입력되지 않았습니다."},
+    MYPAGE_QJ_EMPTY : {"isSuccess": false, "code":8012, "message":"해당 번호는 qj(gpt)가 추천해주지 않았습니다."},
+
+    // jobguide
+    JOBGUIDE_JOBNAME_EMPTY : { "isSuccess": false, "code": 9000, "message": "직업 이름을 입력해주세요."},
+    JOBGUIDE_REDUNDANT_INTERESTJOB : { "isSuccess": false, "code": 9001, "message": "이미 관심 직무가 등록되어 있습니다."},
+    JOBGUIDE_ALREADY_REGISTERED : { "isSuccess": false, "code": 9002, "message": "해당 직업은 존재하지 않습니다."},
+    JOBGUIDE_JOBNAME_NOT_EXIST: { "isSuccess": false, "code": 9003, "message": "최대 한 개의 관심 직무 등록이 가능합니다."},
+    JOBGUIDE_JOBDICTINFO_EMPTY: { "isSuccess": false, "code": 9004, "message": "직업 정보를 가져오는데 실패했습니다."},  
+    JOBGUIDE_INTERESTJOBINFO_FALSE: { "isSuccess": false, "code": 9005, "message": "관심 직무 조회가 되지 않습니다."},
+    JOBGUIDE_RESULT_FALSE: {"isSuccess": false, "code": 9006, "message": "관심 직무를 추가하는데 오류가 발생했습니다."},
+    JOBGUIDE_IMAGE_FALSE: {"isSuccess": false, "code": 9007, "message": "이미지 정보를 가져오는데 실패했습니다."},
+    JOBGUIDE_JOBDETAILS_FALSE: {"isSuccess": false, "code": 9008, "message": "직업 세부 정보를 가져오는데 실패했습니다."},
 }

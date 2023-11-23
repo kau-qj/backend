@@ -17,20 +17,18 @@ const {connect} = require("http2");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
-exports.createUser = async function (userId, userPw, grade, major, phoneNum, school, jobIdx) {
+exports.createUser = async function (userId, userPw, grade, major, phoneNum, school, jobName) {
     try {
-        // 이메일 중복 확인
-        // const emailRows = await userDao.selectUserEmail(userId);
-        
-        // if (emailRows.length > 0)
-        //     return errResponse(baseResponse.SIGNUP_REDUNDANT_ID);
+        const connection = await pool.getConnection();
+        // 아이디 중복 확인
+        const userIdRows = await userDao.selectUserId(connection, userId);
+        if (userIdRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_ID);
         
         // 패스워드 암호화
         const hashedPassword = await crypto.createHash("sha512").update(userPw).digest("hex");
         
-        const insertUserInfoParams = [userId, hashedPassword, grade, major, phoneNum, school, jobIdx];
-        
-        const connection = await pool.getConnection();
+        const insertUserInfoParams = [userId, hashedPassword, grade, major, phoneNum, school, jobName];
 
         const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
         console.log(`추가된 회원 : ${userIdResult[0].insertId}`);
@@ -48,13 +46,15 @@ exports.createUser = async function (userId, userPw, grade, major, phoneNum, sch
 exports.postSignIn = async function (userId, userPw) {
     try {
         // 아이디 확인
+
         const connection = await pool.getConnection();
 
         const userIdRows = await userDao.selectUserId(connection, userId);
 
         if (userIdRows.length < 1)
-            return errResponse(baseResponse.SIGNIN_ID_WRONG);
+            return errResponse(baseResponse.USER_USERID_NOT_EXIST);
 
+        
         // 입력한 비밀번호를 해싱
         const hashedUserPw = await crypto.createHash("sha512").update(userPw).digest("hex");
         const selectUserPasswordParams = [userId, hashedUserPw];
@@ -71,7 +71,7 @@ exports.postSignIn = async function (userId, userPw) {
 
         if (userIdRows[0].status === "DELETED")
             return errResponse(baseResponse.SIGNIN_WITHDRAWAL_ACCOUNT);
-
+        
         const token = jwt.sign(
             {
                 userId: userIdRows[0].userId

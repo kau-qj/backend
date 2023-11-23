@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const home = require('../controller/homeController');
+const jwt = require('../middleware/jwtMiddleware');
 
 // // 1. 광고 이미지
 // router.get('/', home.getAddvertisements);

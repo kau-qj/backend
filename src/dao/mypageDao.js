@@ -1,117 +1,123 @@
-// 모든 유저 조회
-async function selectUser(connection) {
-  const selectUserListQuery = `
-                SELECT * 
-                FROM User;
-                `;
-  const [userRows] = await connection.query(selectUserListQuery);
-  return userRows;
-}
-
-// 특정 userIdx로 사용자 조회
-async function selectUserByUserIdx(connection, userIdx) {
+// 특정 userId로 사용자 조회
+async function selectUserByUserId(connection, userId) {
 const selectUserQuery = `
-            SELECT school, major, grade, userName, phoneNum 
+            SELECT userName, jobName, school, major, grade, userIdx, phoneNum, nickName, jobName
             FROM User
-            WHERE userIdx = ?;
+            WHERE userId = ?;
             `;
-const [userRow] = await connection.query(selectUserQuery, [userIdx]);
+const [userRow] = await connection.query(selectUserQuery, [userId]);
 return userRow;
 }
 
-// 특정 userIdx로 프로필 정보 조회
-async function selectUserProfileByUserIdx(connection, userIdx) {
-const selectUserProfileQuery = `
-            SELECT nickname, jobName
-            FROM User
-            WHERE userIdx = ?;
-            `;
-const [userRow] = await connection.query(selectUserProfileQuery, [userIdx]);
-return userRow;
-}
-
-// 개인정보 업데이트
-async function updateUserInfo(connection, userIdx, updatedInfo) {
-  const fields = ['school', 'major', 'grade', 'userName', 'phoneNum'];
-  const queryValues = [];
-  const updateFields = [];
-
-  for (const field of fields) {
-    if (field in updatedInfo && updatedInfo[field] !== undefined) {
-      updateFields.push(`?? = ?`);
-      queryValues.push(field, updatedInfo[field]);
-    }
-  }
-
-  if (updateFields.length === 0) {
-    console.log('No fields to update');
-    return null;
-  }
-
-  queryValues.push(userIdx);
-
-  const updateQuery = `
-    UPDATE User 
-    SET 
-      ${updateFields.join(', ')}
+// 이미지 파일 조회
+async function selectUserImage(connection, userIdx) {
+  const selectUserImageQuery = `
+    SELECT imageUrl
+    FROM profile_images
     WHERE userIdx = ?;
+  ;`;
+  const [userImageUrl] = await connection.query(selectUserImageQuery, [userIdx]);
+
+  // 프로필 이미지 유무 체크
+  if (userImageUrl.length === 0) return null;
+
+  return userImageUrl;
+}
+
+// 개인 정보 수정
+async function updateUserInfo(connection, userId, updatedFields) {
+  const { userName, major, grade, school, phoneNum } = updatedFields;
+  const updateUserInfoQuery = `
+    UPDATE User
+    SET userName = ?, major = ?, grade = ?, school = ?, phoneNum = ?
+    WHERE userId = ?
   `;
+  const [result] = await connection.query(updateUserInfoQuery, [userName, major, grade, school, phoneNum, userId]);
 
-  // console.log('Executing query:', updateQuery, 'with values:', queryValues);
-
-  const updateUserRow = await connection.query(updateQuery, queryValues);
-  
-  if (updateUserRow.affectedRows === 0) {
-    // console.log('No rows were updated');
+  // 변경된 행이 없으면 null 반환
+  if (result.changedRows === 0) {
     return null;
   }
 
-  return updateUserRow;
+  // 변경된 행이 있다면 업데이트된 사용자 정보 반환
+  return { userId, ...updatedFields };
 }
 
-// 프로필 설정 업데이트
-async function updateUserProfile(connection, userIdx, updatedInfo) {
-  const fields = ['nickname', 'jobName'];
-  const queryValues = [];
-  const updateFields = [];
-  
-  for (const field of fields) {
-    if (field in updatedInfo && updatedInfo[field] !== undefined) {
-      updateFields.push(`?? = ?`);
-      queryValues.push(field, updatedInfo[field]);
-    }
-  }
-
-  if (updateFields.length === 0) {
-    console.log('No fields to update');
-    return null;
-  }
-
-  queryValues.push(userIdx);
-
+// 프로필 정보 수정
+async function updateProfile(connection, userId, userIdx, nickName, jobName, imageUrl) {
+  // User 테이블 업데이트 쿼리
   const updateQuery = `
-  UPDATE User 
-  SET 
-    ${updateFields.join(', ')}
-  WHERE userIdx = ?;
-`;
+      UPDATE User
+      SET nickName = ?, jobName = ?
+      WHERE userId = ?;
+  `;
+  const updateParams = [nickName, jobName, userId];
 
-// console.log('Executing query:', updateQuery, 'with values:', queryValues);
+  // User 테이블 업데이트 
+  const result = await connection.query(updateQuery, updateParams);
 
-const updateUserRow = await connection.query(updateQuery, queryValues);
+  // 이미지 URL이 변경되었을 경우에만 profile_images 테이블에 데이터 추가
+  if (imageUrl) {
+    await connection.query(`
+        INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE imageUrl = VALUES(imageUrl);
+    `, [userIdx, imageUrl]);
+  }
 
-if (updateUserRow.affectedRows === 0) {
-  // console.log('No rows were updated');
-  return null;
+  console.log("imageUrl: " + imageUrl);
+  
+  // 변경된 행이 없으면 null 반환
+  if (result.changedRows === 0) {
+    return null;
+  }
+
+  // 변경된 행이 있다면 업데이트된 사용자 정보 반환
+  return { userId, nickName, jobName, profileImageUrl: imageUrl };
 }
 
-return updateUserRow;
+
+// qj 고유 번호 조회(제목 등 해당 아이디의 qj 데이터 목록 조회)
+async function selectQJ(connection, userId) {
+  const selectSetIdxQuery = `
+    SELECT DISTINCT setIdx
+    FROM recommendGPT
+    WHERE userId = ?
+  ;`;
+  const [setIdxResults] = await connection.query(selectSetIdxQuery, userId);
+
+  const setIdx = setIdxResults.map(result => result.setIdx);
+
+  const selectQJStorageQuery = `
+    SELECT DISTINCT title, 
+                    DATE_FORMAT(createAt, '%Y-%m-%d') as createAt, 
+                    setIdx
+    FROM recommendGPT
+    WHERE setIdx IN (?)
+    ORDER BY createAt DESC; -- createAt을 기준으로 내림차순 정렬
+  ;`;
+  const [qjStorage] = await connection.query(selectQJStorageQuery, [setIdx]);
+
+  return qjStorage;
+}
+
+async function selectQJData(connection, setIdx, userId) {
+  const selectQJDataQuery = `
+    SELECT title, score, comment
+    FROM recommendGPT
+    WHERE userId = ? AND setIdx = ?
+    ORDER BY score DESC;
+  ;`;
+
+  const [QJData] = await connection.query(selectQJDataQuery, [userId, setIdx]);
+
+  return QJData;
 }
 
 module.exports = {
-  selectUser,
-  selectUserByUserIdx,
-  selectUserProfileByUserIdx,
+  selectQJData,
+  selectQJ,
+  updateProfile,
+  selectUserImage,
+  selectUserByUserId,
   updateUserInfo,
-  updateUserProfile,
 };
