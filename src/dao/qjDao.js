@@ -113,6 +113,7 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
 
         result.details.push({ comment: comment, score: score });
     }
+    result.details.sort((a, b) => b.score - a.score);
 
     console.log("--------insert recommendGPT Table completion----------");
 
