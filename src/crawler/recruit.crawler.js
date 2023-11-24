@@ -79,6 +79,9 @@ async function saveToDatabase(article, connection) {
     } catch (err) {
         await connection.rollback();
         console.log('데이터베이스 오류:', err);
+    } finally {
+        // 이 부분을 추가하여 연결을 해제합니다.
+        connection.release();
     }
 }
 
