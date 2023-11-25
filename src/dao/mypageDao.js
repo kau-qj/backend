@@ -93,11 +93,6 @@ async function updateProfile(connection, userId, userIdx, nickName, jobName, ima
     return null;
   }
 
-  // 변경된 행이 없으면 null 반환
-  if (result.changedRows === 0) {
-    return null;
-  }
-
   // 변경된 행이 있다면 업데이트된 사용자 정보 반환
   return { userId, nickName, jobName, profileImageUrl: imageUrl };
 }
