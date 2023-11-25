@@ -8,12 +8,15 @@ const secret = require('./config/secret.js')
 
 const app = express();
 const port = secret.PORT;
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger/swagger-output-localhost.json'), { explorer: true }));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger/swagger-output-server.json'), { explorer: true }));
+
+// Swagger UI 등록
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+
 const userRouter = require('./route/userRouter.js');
 const qjRouter = require('./route/qjRouter.js');
 const mypageRouter = require('./route/mypageRouter.js');
 const homeRouter = require('./route/homeRouter.js');
+const jobguideRoter = require('./route/jobguideRouter.js');
 const boardRouter = require('./route/boardRouter.js');
 
 app.use(bodyParser.json());
