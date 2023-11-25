@@ -102,4 +102,13 @@ module.exports = {
     POST_NOT_FOUND: {"isSuccess": false, "code": 9100, "message": "해당 게시글을 찾을 수 없습니다."},
     POST_NOT_WRITER: {"isSuccess": false, "code": 9101, "message": "게시글의 작성자만 수정 또는 삭제가 가능합니다."},
     POST_MAIN_TEXT_TOO_LONG: {"isSuccess": false, "code": 9102, "message": "게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요."},
+
+    //comment
+    COMMENT_TEXT_EMPTY : { "isSuccess": false, "code": 10000, "message":"댓글 내용을 입력해주세요" },
+    COMMENT_TEXT_TOO_LONG : { "isSuccess": false, "code": 10001, "message":"댓글 내용이 너무 깁니다. 1000자 이내로 작성해주세요."},
+    COMMENT_NOT_FOUND : { "isSuccess": false, "code": 10002, "message":"해당 댓글을 찾을 수 없습니다."},
+    COMMENT_NOT_WRITER : { "isSuccess": false, "code": 10003, "message":"댓글의 작성자만 수정 또는 삭제가 가능합니다."},
+    COMMENT_POST_NOT_FOUND : { "isSuccess": false, "code": 10004, "message":"댓글을 작성하려는 게시글을 찾을 수 없습니다."},
+    COMMENT_CONTENTS_EMPTY : { "isSuccess": false, "code": 10105, "message":"게시판 댓글 내용이 비어있습니다."},
+
 }

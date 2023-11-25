@@ -50,9 +50,48 @@ async function deletePost(connection, postIdx) {
     return deletePostRow;
 }
 
+// 댓글 생성
+async function createComment(connection, postIdx, userId, contents) {
+    const createCommentQuery = `
+      INSERT INTO Comment (PostIdx, UserId, contents)
+      VALUES (?, ?, ?);
+    `;
+    const [createCommentRow] = await connection.query(createCommentQuery, [postIdx, userId, contents]);
+    console.log("createCommentRow: ", createCommentRow.insertId);
+    return createCommentRow.insertId;
+}
+
+// 댓글 조회
+async function selectComment(connection, commentIdx) {
+
+    const selectCommentQuery = `
+        SELECT *
+        FROM Comment
+        WHERE CommentIdx = ?;
+    `;
+    const [commentRow] = await connection.query(selectCommentQuery, commentIdx);
+    console.log("commentRow: ", commentRow);
+    return commentRow;
+}
+
+// 댓글 삭제
+async function deleteComment(connection, commentIdx) {
+    const deleteCommentQuery = `
+        DELETE FROM Comment
+        WHERE CommentIdx = ?;
+    `;
+    console.log("댓글삭제1");
+    const [deleteCommentRow] = await connection.query(deleteCommentQuery, commentIdx);
+
+    return deleteCommentRow;
+}  
+
 module.exports = {
     createPost,
     selectPost,
     updatePost,
-    deletePost
+    deletePost,
+    createComment,
+    selectComment,
+    deleteComment
 };
