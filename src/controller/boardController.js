@@ -60,7 +60,7 @@ exports.deletePost = async function (req, res) {
     const userIdFromJWT = "csb";
  
     const post = await boardProvider.retrievePost(postIdx); // 게시글 조회
-    console.log("post: ", post[0].userId);
+
     // 게시글이 존재하지 않는 경우
     if (!post) return res.send(response(baseResponse.POST_NOT_FOUND));
 

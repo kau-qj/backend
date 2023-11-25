@@ -46,7 +46,6 @@ async function deletePost(connection, postIdx) {
         WHERE postIdx = ?;
     `;
     const [deletePostRow] = await connection.query(deletePostQuery, postIdx);
-    console.log("delete: ", deletePostRow);
 
     return deletePostRow;
 }
