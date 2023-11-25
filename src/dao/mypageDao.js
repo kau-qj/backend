@@ -56,16 +56,30 @@ async function updateProfile(connection, userId, userIdx, nickName, jobName, ima
   // User 테이블 업데이트 
   const result = await connection.query(updateQuery, updateParams);
 
-  // 이미지 URL이 변경되었을 경우에만 profile_images 테이블에 데이터 추가
+  // 이미지 URL이 변경되었을 경우에만 profile_images 테이블에 데이터 추가 또는 업데이트
   if (imageUrl) {
-    await connection.query(`
-        INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?)
-        ON DUPLICATE KEY UPDATE imageUrl = VALUES(imageUrl);
-    `, [userIdx, imageUrl]);
+    const existingImage = await connection.query(`
+        SELECT * FROM profile_images
+        WHERE userIdx = ?;
+    `, [userIdx]);
+
+    if (existingImage[0].length > 0) {
+      // 이미지 URL이 이미 존재하면 업데이트
+      await connection.query(`
+          UPDATE profile_images
+          SET imageUrl = ?
+          WHERE userIdx = ?;
+      `, [imageUrl, userIdx]);
+      console.log("Image update success");
+    } else {
+      // 이미지 URL이 존재하지 않으면 추가
+      await connection.query(`
+          INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?);
+      `, [userIdx, imageUrl]);
+      console.log("Image insert success");
+    }
   }
 
-  console.log("imageUrl: " + imageUrl);
-  
   // 변경된 행이 없으면 null 반환
   if (result.changedRows === 0) {
     return null;
