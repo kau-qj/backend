@@ -17,6 +17,7 @@ const qjRouter = require('./route/qjRouter.js');
 const mypageRouter = require('./route/mypageRouter.js');
 const homeRouter = require('./route/homeRouter.js');
 const jobguideRoter = require('./route/jobguideRouter.js');
+const boardRouter = require('./route/boardRouter.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +27,7 @@ app.use('/qj', qjRouter);
 app.use('/mypage', mypageRouter);
 app.use('/home', homeRouter);
 app.use('/jobguide', jobguideRoter);
+app.use('/board', boardRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');

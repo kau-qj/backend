@@ -15,7 +15,7 @@ module.exports = {
     SIGNUP_MAJOR_EMPTY: { "isSuccess": false, "code": 2022, "message": "전공을 입력해주세요." },
     SIGNUP_PHONENUM_EMPTY: { "isSuccess": false, "code": 2023, "message": "휴대전화번호를 입력해주세요." },
     SIGNUP_SCHOOL_EMPTY: { "isSuccess": false, "code": 2024, "message": "학교를 입력해주세요." },
-    SIGNUP_JOBIDX_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
+    SIGNUP_JOBNAME_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
     // jeonghoon 10.21
 
     //signup
@@ -69,8 +69,7 @@ module.exports = {
 
     // home
     HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},
-
-    // mypage
+     // mypage
     MYPAGE_USERINFO_FALSE : { "isSuccess": false, "code": 8000, "message": "마이페이지에 데이터가 존재하지 않습니다."},
     MISSING_REQUIRED_FIELD : { "isSuccess": false, "code": 8001, "message": "수정할 데이터를 모두 입력해주세요."},
     MYPAGE_UPDATE_FAILURE : { "isSuccess": true, "code": 8002, "message": "수정된 데이터가 없습니다."},
@@ -95,4 +94,12 @@ module.exports = {
     JOBGUIDE_RESULT_FALSE: {"isSuccess": false, "code": 9006, "message": "관심 직무를 추가하는데 오류가 발생했습니다."},
     JOBGUIDE_IMAGE_FALSE: {"isSuccess": false, "code": 9007, "message": "이미지 정보를 가져오는데 실패했습니다."},
     JOBGUIDE_JOBDETAILS_FALSE: {"isSuccess": false, "code": 9008, "message": "직업 세부 정보를 가져오는데 실패했습니다."},
+
+     //board
+    POST_NAME_EMPTY : {"isSuccess": false, "code": 9000, "message": "게시판을 선택해 주세요."},
+    POST_TITLE_EMPTY : {"isSuccess": false, "code": 9001, "message": "제목을 입력해 주세요."},
+    POST_MAIN_TEXT_EMPTY : {"isSuccess": false, "code": 9002, "message": "내용을 입력해 주세요."},
+    POST_NOT_FOUND: {"isSuccess": false, "code": 9100, "message": "해당 게시글을 찾을 수 없습니다."},
+    POST_NOT_WRITER: {"isSuccess": false, "code": 9101, "message": "게시글의 작성자만 수정 또는 삭제가 가능합니다."},
+    POST_MAIN_TEXT_TOO_LONG: {"isSuccess": false, "code": 9102, "message": "게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요."},
 }
