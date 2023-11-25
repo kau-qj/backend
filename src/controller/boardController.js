@@ -71,3 +71,26 @@ exports.deletePost = async function (req, res) {
 
     return res.send(deletePostResponse);
 };
+
+// 댓글 생성
+exports.createComment = async function (req, res) {
+    const { postIdx } = req.params;
+    const { contents } = req.body;
+    const userIdFromJWT = req.decoded.userId;
+  
+    if (!contents) return res.send(response(baseResponse.COMMENT_CONTENTS_EMPTY));
+  
+    const createCommentResponse = await boardService.createComment(postIdx, userIdFromJWT, contents);
+    console.log("최종완료", createCommentResponse);
+    return res.send(createCommentResponse);
+};
+  
+  // 댓글 삭제
+exports.deleteComment = async function (req, res) {
+    const { postIdx, commentIdx } = req.params;
+    const userIdFromJWT = req.decoded.userId;
+  
+    const deleteCommentResponse = await boardService.deleteComment(postIdx, commentIdx, userIdFromJWT);
+  
+    return res.send(deleteCommentResponse);
+};

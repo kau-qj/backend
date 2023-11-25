@@ -28,3 +28,15 @@ exports.retrievePost = async function (postIdx) {
         return err.message;
     }
 }
+
+exports.retrieveComments = async function (postIdx) {
+    try {
+      const connection = await pool.getConnection(async (conn) => conn);
+      const result = await boardDao.selectComments(connection, postIdx);
+      connection.release();
+      return result;
+    } catch (err) {
+      logger.error(`App - retrieveComments Provider error: ${err.message}`);
+      return err.message;
+    }
+};
