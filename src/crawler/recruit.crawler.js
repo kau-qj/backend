@@ -49,7 +49,8 @@ async function runCrawler(connection) {
     } catch (error) {
         console.error('크롤러에서 오류가 발생했습니다:', error);
     } finally {
-        await browser.close();
+        await connection.release(); // connection을 닫습니다.
+        await browser.close(); // puppeteer 실행이 완료되면 브라우저를 닫습니다.
     }
 }
 
@@ -80,8 +81,8 @@ async function saveToDatabase(article, connection) {
         await connection.rollback();
         console.log('데이터베이스 오류:', err);
     } finally {
-        // 이 부분을 추가하여 연결을 해제합니다.
-        connection.release();
+        await browser.close(); // puppeteer 실행이 완료되면 브라우저를 닫습니다.
+        connection.release(); // connection을 닫습니다.
     }
 }
 
