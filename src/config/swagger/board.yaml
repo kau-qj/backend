@@ -3,7 +3,7 @@ tags:
   description: 게시판 API
 
 paths:
-  /posts:
+  /board/posts:
     post:
       tags:
         - board
@@ -47,7 +47,7 @@ paths:
         "3000":
           $ref: "#/components/responses/TokenVerificationFailure"
 
-  /posts/{postIdx}:
+  /board/posts/{postIdx}:
     patch:
       tags:
         - board
