@@ -78,6 +78,19 @@ async function updateProfile(connection, userId, userIdx, nickName, jobName, ima
       `, [userIdx, imageUrl]);
       console.log("Image insert success");
     }
+  } else {
+    // If imageUrl is null, update profile_images to set imageUrl as null
+    await connection.query(`
+        UPDATE profile_images
+        SET imageUrl = NULL
+        WHERE userIdx = ?;
+    `, [userIdx]);
+    console.log("Image set to null success");
+  }
+
+  // 변경된 행이 없으면 null 반환
+  if (result.changedRows === 0) {
+    return null;
   }
 
   // 변경된 행이 없으면 null 반환
