@@ -14,10 +14,10 @@ const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: secret.AWS_BUCKET_NAME,
-        acl: 'public-read', // 이미지 파일을 공개 읽기 권한으로 설정
+        acl: 'public-read',
         key: function (req, file, cb) {
             const uniqueFilename = Date.now() + '-' + file.originalname;
-            cb(null, `profile/${uniqueFilename}`); // 파일 이름을 고유하게 설정
+            cb(null, `profile/${uniqueFilename}`);
         }
     })
 });

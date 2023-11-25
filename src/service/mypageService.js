@@ -11,9 +11,9 @@ exports.updateMypageInfo = async function (userId, { userName, major, grade, sch
 };
 
 // 프로필 update
-exports.updateProfile = async function (userId, nickName, jobName) {
+exports.updateProfile = async function (userId, userIdx, nickName, jobName, imageUrl) {
   const connection = await pool.getConnection(async (conn) => conn);
-  const updateProfile = await mypageDao.updateProfile(connection, userId, nickName, jobName);
+  const updateProfile = await mypageDao.updateProfile(connection, userId, userIdx, nickName, jobName, imageUrl);
   connection.release();
   return updateProfile;
 }

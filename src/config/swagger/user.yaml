@@ -1,0 +1,106 @@
+tags:
+  name: user
+  description: 유저 시작 API
+
+/app/users:
+  post:
+    tags:
+      - user
+    summary: 유저 생성 (회원가입) API
+    operationId: postUsers
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 사용자 아이디
+              userPw:
+                type: string
+                description: 사용자 비밀번호
+              grade:
+                type: integer
+                description: 학년
+              major:
+                type: string
+                description: 전공
+              phoneNum:
+                type: string
+                description: 전화번호
+              school:
+                type: string
+                description: 학교
+              jobName:
+                type: string
+                description: 직업명
+            required:
+              - userId
+              - userPw
+              - grade
+              - major
+              - phoneNum
+              - school
+    responses:
+      '1000':
+        description: 성공 - 유저 생성 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                userId: "user123"
+      '2000':
+        description: 입력값 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2000
+              message: 입력값을 확인해주세요.
+
+/app/login:
+  post:
+    tags:
+      - user
+    summary: 로그인 API
+    operationId: login
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 사용자 아이디
+              userPw:
+                type: string
+                description: 사용자 비밀번호
+            required:
+              - userId
+              - userPw
+    responses:
+      '1000':
+        description: 성공 - 로그인 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                token: "jwt-token"
+      '2000':
+        description: 입력값 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2000
+              message: 입력값을 확인해주세요.

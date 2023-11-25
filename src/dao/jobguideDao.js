@@ -25,6 +25,21 @@ async function selectJobDetailsByName(connection, jobname) {
   return result[0];
 }
 
+// 이미지 URL 가져오기
+async function selectImageUrlByJobname(connection, jobname) {
+  const query = `
+    SELECT imageUrl
+    FROM job_directory_images
+    WHERE Idx = (
+      SELECT jobIdx
+      FROM JobDictionary
+      WHERE jobname = ?
+    )
+  `;
+  const [result] = await connection.query(query, [jobname]);
+  return result[0]?.imageUrl || null;
+}
+
 // // 키워드를 이용하여 진로사전 정보 가져오기
 // async function selectJobInfoByKeyword(connection, keyword) {
 //   const query = `
@@ -39,9 +54,9 @@ async function selectJobDetailsByName(connection, jobname) {
 // }
 
 // 관심 직무 최대 하나로 추가 User 테이블의 jobName
-async function insertInterestJob(connection, userIdx, jobname) {
+async function insertInterestJob(connection, userId, jobname) {
   try {
-    const cleanedJobName = jobname.trim(); // 공백을 제거한 데이터 사용
+    const cleanedJobName = String(jobname).trim();; // 공백을 제거한 데이터 사용
 
     // JobDictionary 테이블에서 jobname에 해당하는 데이터 확인
     const jobInfoQuery = `
@@ -60,9 +75,9 @@ async function insertInterestJob(connection, userIdx, jobname) {
     const currentInterestJobQuery = `
       SELECT jobName
       FROM User
-      WHERE userIdx = ?;
+      WHERE userId = ?;
     `;
-    const [currentInterestJobResult] = await connection.query(currentInterestJobQuery, [userIdx]);
+    const [currentInterestJobResult] = await connection.query(currentInterestJobQuery, [userId]);
 
     // 해당 사용자의 관심 직무가 이미 있는 경우
     if (currentInterestJobResult.length === 1 && currentInterestJobResult[0].jobName) {
@@ -73,9 +88,9 @@ async function insertInterestJob(connection, userIdx, jobname) {
     const updateInterestJobQuery = `
       UPDATE User
       SET jobName = ?
-      WHERE userIdx = ?;
+      WHERE userId = ?;
     `;
-    await connection.query(updateInterestJobQuery, [cleanedJobName, userIdx]);
+    await connection.query(updateInterestJobQuery, [cleanedJobName, userId]);
 
     // 성공 메시지 반환
     return '관심 직무가 추가되었습니다.';
@@ -154,20 +169,21 @@ async function insertInterestJob(connection, userIdx, jobname) {
 
 
 // 관심직무 검색
-async function selectInterestJobInfo(connection, userIdx) {
-  const selectInterestJobQuery = `
-      SELECT jobName
-      FROM User
-      WHERE userIdx =?;
-      `;
-  const [userRow] = await connection.query(selectInterestJobQuery, [userIdx]);
-  return userRow;
-}
+// async function selectInterestJobInfo(connection, userId) {
+//   const selectInterestJobQuery = `
+//       SELECT jobName
+//       FROM User
+//       WHERE userId =?;
+//       `;
+//   const [userRow] = await connection.query(selectInterestJobQuery, [userId]);
+//   return userRow;
+// }
 
 
 module.exports = {
   selectJobInfoByKeyword,
   selectJobDetailsByName,
-  selectInterestJobInfo,
+  //selectInterestJobInfo,
+  selectImageUrlByJobname,
   insertInterestJob,
 };

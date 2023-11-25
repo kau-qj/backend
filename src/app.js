@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { pool } = require('./config/database.js');
 const { logger } = require('./config/winston.js');
-const swaggerUi = require('swagger-ui-express');
-const secret = require('./config/secret.js')
+const { swaggerUi, specs } = require('./config/swagger/swagger.js');
+const secret = require('./config/secret.js');
 
 const app = express();
 const port = secret.PORT;
@@ -26,6 +26,7 @@ app.use('/', userRouter);
 app.use('/qj', qjRouter);
 app.use('/mypage', mypageRouter);
 app.use('/home', homeRouter);
+app.use('/jobguide', jobguideRoter);
 app.use('/board', boardRouter);
 
 app.get('/', (req, res) => {

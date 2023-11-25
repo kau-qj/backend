@@ -84,20 +84,48 @@ exports.getUserById = async function (req, res) {
  * body : email, passsword
  */
 exports.login = async function (req, res) {
-   
-    const { userId, userPw } = req.body;
-    // TODO: email, password 형식적 Validation
+    try {
+        const { userId, userPw } = req.body;
 
-    const signInResponse = await userService.postSignIn(userId, userPw);
-    // JWT 토큰을 쿠키에 설정
-    res.cookie('access_token', signInResponse.result.token, {
-        httpOnly: true, // 클라이언트 스크립트에서 쿠키에 접근 불가능
-        secure: true, // HTTPS에서만 사용
-        sameSite: 'strict', // 쿠키가 다른 사이트로 전송되지 않도록 보호
-    });
+        // TODO: email, password 형식적 Validation
 
-    return res.send(signInResponse);
+        const signInResponse = await userService.postSignIn(userId, userPw);
+
+        if (!signInResponse) {
+            // userService.postSignIn에서 에러가 발생한 경우
+            console.error('Login failed:', signInResponse.message);
+            return res.status(400).json(signInResponse);
+        }
+
+        if (!signInResponse.result || !signInResponse.result.token) {
+            // 토큰이 존재하지 않는 경우
+            console.error('Token not found in response:', signInResponse);
+            return res.status(500).json({
+                isSuccess: false,
+                code: 5000,
+                message: 'Internal Server Error',
+            });
+        }
+
+        // JWT 토큰을 쿠키에 설정
+        res.cookie('access_token', signInResponse.result.token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+        });
+
+        return res.status(200).json(signInResponse);
+    } catch (error) {
+        // 예상치 못한 에러 처리
+        console.error('Unexpected error during login:', error);
+        return res.status(500).json({
+            isSuccess: false,
+            code: 5000,
+            message: 'Internal Server Error',
+        });
+    }
 };
+
 
 
 /**
