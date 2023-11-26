@@ -45,49 +45,58 @@ async function updateUserInfo(connection, userId, updatedFields) {
 
 // 프로필 정보 수정
 async function updateProfile(connection, userId, userIdx, nickName, jobName, imageUrl) {
-  let updateQuery = `
+  // User 테이블 업데이트 쿼리
+  const updateQuery = `
       UPDATE User
       SET nickName = ?, jobName = ?
-  `;
-
-  // 이미지 URL이 제공된 경우에만 포함
-  const queryParams = [nickName, jobName];
-
-  if (imageUrl) {
-      // 이미지 URL이 제공된 경우, profile_images 테이블에 데이터 삽입 또는 업데이트
-      updateQuery += `,
-          profileImageUrl = (
-              INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?)
-              ON DUPLICATE KEY UPDATE imageUrl = VALUES(imageUrl)
-          )
-      `;
-      queryParams.push(userIdx, imageUrl);
-  }
-
-  updateQuery += `
       WHERE userId = ?;
   `;
-  queryParams.push(userId);
+  const updateParams = [nickName, jobName, userId];
 
-  // User 테이블 업데이트
-  const result = await connection.query(updateQuery, queryParams);
+  // User 테이블 업데이트 
+  const result = await connection.query(updateQuery, updateParams);
 
-  // 변경된 행이 없으면 profile_images 테이블에 데이터 추가
-  if (result.changedRows === 0 && imageUrl) {
+  // 이미지 URL이 변경되었을 경우에만 profile_images 테이블에 데이터 추가 또는 업데이트
+  if (imageUrl) {
+    const existingImage = await connection.query(`
+        SELECT * FROM profile_images
+        WHERE userIdx = ?;
+    `, [userIdx]);
+
+    if (existingImage[0].length > 0) {
+      // 이미지 URL이 이미 존재하면 업데이트
       await connection.query(`
-          INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?)
-          ON DUPLICATE KEY UPDATE imageUrl = VALUES(imageUrl);
+          UPDATE profile_images
+          SET imageUrl = ?
+          WHERE userIdx = ?;
+      `, [imageUrl, userIdx]);
+      console.log("Image update success");
+    } else {
+      // 이미지 URL이 존재하지 않으면 추가
+      await connection.query(`
+          INSERT INTO profile_images (userIdx, imageUrl) VALUES (?, ?);
       `, [userIdx, imageUrl]);
+      console.log("Image insert success");
+    }
+  } else {
+    // If imageUrl is null, update profile_images to set imageUrl as null
+    await connection.query(`
+        UPDATE profile_images
+        SET imageUrl = NULL
+        WHERE userIdx = ?;
+    `, [userIdx]);
+    console.log("Image set to null success");
   }
 
   // 변경된 행이 없으면 null 반환
   if (result.changedRows === 0) {
-      return null;
+    return null;
   }
 
   // 변경된 행이 있다면 업데이트된 사용자 정보 반환
   return { userId, nickName, jobName, profileImageUrl: imageUrl };
 }
+
 
 // qj 고유 번호 조회(제목 등 해당 아이디의 qj 데이터 목록 조회)
 async function selectQJ(connection, userId) {
