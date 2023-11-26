@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: 직업 사전 API
-  version: "1.0"
+  version: '1.0'
 tags:
   - name: jobdictionary
     description: 직업 사전 API
@@ -95,7 +95,7 @@ paths:
                 code: 500
                 message: 내부 서버 오류
 
-  /jobguide/interestjob:
+  /jobguide/interestjobs:
     post:
       tags:
         - jobdictionary

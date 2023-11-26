@@ -61,33 +61,34 @@ async function selectImageUrlByJobname(connection, jobname) {
 async function insertInterestJob(connection, userId, jobname) {
 
   // User 테이블에서 현재 관심 직무 목록 조회
-  // const currentInterestJobQuery = `
-  //   SELECT jobName
-  //   FROM User
-  //   WHERE userId = ?;
-  // `;
-  // const [currentInterestJobResult] = await connection.query(currentInterestJobQuery, [userId]);
+  const currentInterestJobQuery = `
+    SELECT jobName
+    FROM User
+    WHERE userId = ?;
+  `;
+  const [currentInterestJobResult] = await connection.query(currentInterestJobQuery, [userId]);
 
-  // // 해당 사용자의 관심 직무가 이미 있는 경우
-  // if (currentInterestJobResult.length > 0 && currentInterestJobResult[0].jobName) {
-  //   // 이미 관심 직무가 있다는 메시지 반환
-  //   return '최대 한 개의 관심 직무 등록이 가능합니다.';
-  // }
+  // 해당 사용자의 관심 직무가 이미 있는 경우
+  if (currentInterestJobResult.length > 0 && currentInterestJobResult[0].jobName) {
+    // 이미 관심 직무가 있다는 메시지 반환
+    return '최대 한 개의 관심 직무 등록이 가능합니다.';
+  }
 
   // User 테이블에 관심 직무 추가
   const insertInterestJobQuery = `
-    INSERT INTO User (userId, jobName)
-    VALUES (?, ?);
+    UPDATE User
+    SET jobName = ?
+    WHERE userId = ?;
   `;
-  const result = await connection.query(insertInterestJobQuery, [userId, jobname]);
+  const result = await connection.query(insertInterestJobQuery, [jobname, userId]);
 
-  if (result.affectedRows > 0) {
-    // 관심 직무가 성공적으로 추가되었다는 메시지 반환
-    return '관심 직무가 추가되었습니다.';
-  } else {
+  if (result.affectedRows == 0) {
     // 데이터베이스에 변경이 없다는 메시지 반환
     return null;
   }
+  // 관심 직무가 성공적으로 추가되었다는 메시지 반환
+  return '관심 직무가 추가되었습니다.';
+  
 }
 
 // 관심 직무 업데이트
