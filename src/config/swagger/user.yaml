@@ -44,7 +44,7 @@ tags:
               - phoneNum
               - school
     responses:
-      '200':
+      '1000':
         description: 성공 - 유저 생성 성공
         content:
           application/json:
@@ -54,7 +54,7 @@ tags:
               message: 성공
               result:
                 userId: "user123"
-      '400':
+      '2000':
         description: 입력값 오류
         content:
           application/json:
@@ -86,7 +86,7 @@ tags:
               - userId
               - userPw
     responses:
-      '200':
+      '1000':
         description: 성공 - 로그인 성공
         content:
           application/json:
@@ -96,7 +96,7 @@ tags:
               message: 성공
               result:
                 token: "jwt-token"
-      '400':
+      '2000':
         description: 입력값 오류
         content:
           application/json:

@@ -3,7 +3,7 @@ tags:
   description: 홈 API 
 
 
-/homepage/recruit:
+/home/recruit:
   get:
     tags:
       - home

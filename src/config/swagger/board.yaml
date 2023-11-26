@@ -3,7 +3,7 @@ tags:
   description: 게시판 API
 
 paths:
-  /posts:
+  /board/posts:
     post:
       tags:
         - board
@@ -21,13 +21,13 @@ paths:
           $ref: "#/components/responses/SuccessPost"
         "3000":
           $ref: "#/components/responses/TokenVerificationFailure"
-        "8000":
+        "9000":
           $ref: "#/components/responses/PostNameEmpty"
-        "8001":
+        "9001":
           $ref: "#/components/responses/PostTitleEmpty"
-        "8002":
+        "9002":
           $ref: "#/components/responses/PostMainTextEmpty"
-        "8102":
+        "9102":
           $ref: "#/components/responses/PostMainTextTooLong"
 
     get:
@@ -47,7 +47,7 @@ paths:
         "3000":
           $ref: "#/components/responses/TokenVerificationFailure"
 
-  /posts/{postIdx}:
+  /board/posts/{postIdx}:
     patch:
       tags:
         - board
@@ -70,11 +70,11 @@ paths:
           $ref: "#/components/responses/SuccessPost"
         "3000":
           $ref: "#/components/responses/TokenVerificationFailure"
-        "8100":
+        "9100":
           $ref: "#/components/responses/PostNotFound"
-        "8101":
+        "9101":
           $ref: "#/components/responses/PostNotWriter"
-        "8102":
+        "9102":
           $ref: "#/components/responses/PostMainTextTooLong"
 
     delete:
@@ -93,9 +93,9 @@ paths:
           $ref: "#/components/responses/SuccessPost"
         "3000":
           $ref: "#/components/responses/TokenVerificationFailure"
-        "8100":
+        "9100":
           $ref: "#/components/responses/PostNotFound"
-        "8101":
+        "9101":
           $ref: "#/components/responses/PostNotWriter"
 
 components:
