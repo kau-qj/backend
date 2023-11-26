@@ -85,7 +85,7 @@ module.exports = {
     MYPAGE_QJ_EMPTY : {"isSuccess": false, "code":8012, "message":"해당 번호는 qj(gpt)가 추천해주지 않았습니다."},
 
     // jobguide
-    JOBGUIDE_JOBNAME_EMPTY : { "isSuccess": false, "code": 9000, "message": "직업 이름을 입력해주세요."},
+    JOBGUIDE_JOBNAME_EMPTY : { "isSuccess": false, "code": 9000, "message": "직업에 대한 정보가 없습니다."},
     JOBGUIDE_REDUNDANT_INTERESTJOB : { "isSuccess": false, "code": 9001, "message": "해당 직무는 이미 관심 직무로 등록되어 있습니다."},
     JOBGUIDE_ALREADY_REGISTERED : { "isSuccess": false, "code": 9002, "message": "최대 한 개의 관심 직무 등록이 가능합니다."},
     JOBGUIDE_JOBNAME_NOT_EXIST: { "isSuccess": false, "code": 9003, "message": "해당 직업은 존재하지 않습니다."},
@@ -94,8 +94,8 @@ module.exports = {
     JOBGUIDE_ADDINTERESTJOB_FAILED: {"isSuccess": false, "code": 9006, "message": "관심 직무를 추가하는데 실패했습니다."},
     JOBGUIDE_IMAGE_FALSE: {"isSuccess": false, "code": 9007, "message": "이미지 정보를 가져오는데 실패했습니다."},
     JOBGUIDE_JOBDETAILS_FALSE: {"isSuccess": false, "code": 9008, "message": "직업 세부 정보를 가져오는데 실패했습니다."},
-    JOBGUIDE_CHECK_UPDATE_INTERESTJOB: {"isSuccess:": false, "code": 9009, "message": "관심 직무가 이미 등록되어 있습니다. 수정하시겠습니까?"},
-    JOBGUIDE_UPDATEINTERESTJOB_FAILED: {"isSuccess:": false, "code": 9010, "message": "관심 직무를 업데이트 하는데 실패했습니다."},
+    JOBGUIDE_CHECK_UPDATE_INTERESTJOB: {"isSuccess:": false, "code": 9009, "message": "관심 직무가 이미 등록되어 있습니다. 관심 직무를 수정하시겠습니까?"},
+    JOBGUIDE_UPDATEINTERESTJOB_FAILED: {"isSuccess:": false, "code": 9010, "message": "관심 직무를 수정하는데 실패했습니다."},
     
 
 
