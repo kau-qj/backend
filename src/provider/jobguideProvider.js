@@ -13,6 +13,15 @@ exports.getJobDictInfo = async function (userId) {
       return jobDictInfo;
 }
 
+// User의 관심직무가 있는 지 조회
+exports.getInterestJob = async function (userId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const currentInterestJobResult = await jobguideDao.selectInterestJob(connection, userId);
+    connection.release();
+    return currentInterestJobResult;
+};
+
+
 // 직업 세부 정보 가져오기
 exports.getJobDetails = async function (jobname) {
   const connection = await pool.getConnection(async (conn) => conn);
@@ -30,11 +39,3 @@ exports.getImageUrlByJobname = async function (jobname) {
 }
 
 
-// // userId를 이용하여 관심 직무 조회
-// exports.getMyInterestJobInfo = async function (userId) {
-//       const connection = await pool.getConnection(async (conn) => conn);
-//       const interestJobInfo = await jobguideDao.selectInterestJobInfo(connection, userId);
-//       console.log(interestJobInfo);
-//       connection.release();
-//       return interestJobInfo;
-// }
