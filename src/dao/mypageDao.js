@@ -96,6 +96,27 @@ async function updateProfile(connection, userId, userIdx, nickName, jobName, ima
   return { userId, nickName, jobName, profileImageUrl: imageUrl };
 }
 
+// qj 데이터 존재하는지 유무 체크
+async function selectQJCheck(connection, userId) {
+  const checkQjQuery = `
+    SELECT COUNT(*)
+    FROM recommendGPT
+    WHERE userId = ?
+  ;`;
+
+  try {
+    const [rows] = await connection.execute(checkQjQuery, [userId]);
+
+    const count = rows[0]['COUNT(*)'];
+
+    // COUNT(*) 값에 따라 1 또는 0을 반환
+    return count > 0 ? 1 : 0;
+  } catch (error) {
+    console.error("QJ 데이터 유무 체크 중 오류:", error);
+    throw error;
+  }
+}
+
 
 // qj 고유 번호 조회(제목 등 해당 아이디의 qj 데이터 목록 조회)
 async function selectQJ(connection, userId) {
@@ -118,7 +139,7 @@ async function selectQJ(connection, userId) {
   ;`;
   const [qjStorage] = await connection.query(selectQJStorageQuery, [setIdx]);
 
-  return qjStorage;
+  return qjStorage[0];
 }
 
 async function selectQJData(connection, setIdx, userId) {
@@ -131,10 +152,29 @@ async function selectQJData(connection, setIdx, userId) {
 
   const [QJData] = await connection.query(selectQJDataQuery, [userId, setIdx]);
 
-  return QJData;
+  // Transform the data to the desired format
+  const transformedData = {};
+  QJData.forEach(item => {
+      if (!transformedData[item.title]) {
+          transformedData[item.title] = [];
+      }
+      transformedData[item.title].push({
+          score: item.score,
+          comment: item.comment,
+      });
+  });
+
+  // Convert the transformed data to the specified response format
+  const result = Object.keys(transformedData).map(title => ({
+    title,
+    details: transformedData[title],
+  }));
+
+  return result;
 }
 
 module.exports = {
+  selectQJCheck,
   selectQJData,
   selectQJ,
   updateProfile,

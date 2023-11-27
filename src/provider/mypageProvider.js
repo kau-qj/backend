@@ -28,6 +28,14 @@ exports.getProfile = async function (userId) {
     return result;
 }
 
+// qj 유무 체크
+exports.getQjCheck = async function (userId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await mypageDao.selectQJCheck(connection, userId);
+    connection.release();
+    return result;
+}
+
 // qj 조회
 exports.getQJ = async function(userId) {
     const connection = await pool.getConnection(async (conn) => conn);
