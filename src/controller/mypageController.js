@@ -71,7 +71,7 @@ exports.updateMypageInfo = async function (req, res) {
   if(!phoneNum) return res.send(response(baseResponse.MYPAGE_PHONENUM_EMPTY));
 
   // 마이페이지 개인 정보 수정
-  const updatedUserInfo = await mypageService.updateMypageInfo(userId, { userName, major, grade, school, phoneNum });
+  const updatedUserInfo = await mypageService.updateMypageInfo(userId, userName, major, grade, school, phoneNum);
   if (updatedUserInfo === null) return res.send(response(baseResponse.NO_UPDATED_VALUES));
 
   return res.send(response(baseResponse.SUCCESS, updatedUserInfo));

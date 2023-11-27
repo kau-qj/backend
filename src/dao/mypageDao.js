@@ -25,8 +25,7 @@ async function selectUserImage(connection, userIdx) {
 }
 
 // 개인 정보 수정
-async function updateUserInfo(connection, userId, updatedFields) {
-  const { userName, major, grade, school, phoneNum } = updatedFields;
+async function updateUserInfo(connection, userId, userName, major, grade, school, phoneNum) {
   const updateUserInfoQuery = `
     UPDATE User
     SET userName = ?, major = ?, grade = ?, school = ?, phoneNum = ?
@@ -40,7 +39,7 @@ async function updateUserInfo(connection, userId, updatedFields) {
   }
 
   // 변경된 행이 있다면 업데이트된 사용자 정보 반환
-  return { userId, ...updatedFields };
+  return { userId, userName, major, grade, school, phoneNum };
 }
 
 // 프로필 정보 수정
