@@ -1,40 +1,31 @@
-// 모든 유저 조회
-async function selectUser(connection) {
-  const selectUserListQuery = `
-      SELECT userId, userPw, grade, major, phoneNum, school, jobName
-      FROM User;
+// userId 중복 검증
+async function selectUserId(connection, userId) {
+  
+  const selectUserIdQuery = `
+      SELECT userId
+      FROM User
+      WHERE userId = ?;
   `;
-  const [userRows] = await connection.query(selectUserListQuery);
-  return userRows;
-}
-  
-  // 이메일로 회원 조회
-  async function selectUserEmail(connection, email) {
-    
-    const selectUserEmailQuery = `
-        SELECT userId, userPw, grade, major, phoneNum, school
-        FROM User
-        WHERE email = ?;
-    `;
-    const [userRows] = await connection.query(selectUserEmailQuery, email);
-    return userRows;
+
+  const [userRow] = await connection.query(selectUserIdQuery, userId);
+
+  return userRow;
 }
 
-  
-  // userId 회원 조회(중복 검증)
-  async function selectUserId(connection, userId) {
-    
-    const selectUserIdQuery = `
-        SELECT userId
-        FROM User
-        WHERE userId = ?;
-    `;
+// nickName 중복 검증
+async function selectUserName(connection, userName) {
+  const selectUserNameQuery = `
+    SELECT userName
+    FROM User
+    WHERE userName = ?
+  ;`;
 
-    const [userRow] = await connection.query(selectUserIdQuery, userId);
+  const [nickNameRow] = await connection.query(selectUserNameQuery, userName);
 
-    return userRow;
+  return nickNameRow
 }
-  
+
+
 // 유저 생성
 async function insertUserInfo(connection, userInfo) {
   const userId = userInfo[0];
@@ -43,65 +34,47 @@ async function insertUserInfo(connection, userInfo) {
   const major = userInfo[3];
   const phoneNum = userInfo[4];
   const school = userInfo[5];
+  const jobName = userInfo[6];
+  const userName = userInfo[7];
 
   const insertUserInfoQuery = `
-      INSERT INTO User(userId, userPw, grade, major, phoneNum, school)
-      VALUES (?, ?, ?, ?, ?, ?);
+      INSERT INTO User(userId, userPw, grade, major, phoneNum, school, jobName, userName)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?);
   `;
   const insertUserInfoRow = await connection.query(
       insertUserInfoQuery,
-      [userId, userPw, grade, major, phoneNum, school]
+      [userId, userPw, grade, major, phoneNum, school, jobName, userName]
   );
-  return insertUserInfoRow;
-}
-
-  
-  // 패스워드 체크
-  async function selectUserPassword(connection, selectUserPasswordParams) {
-    const selectUserPasswordQuery = `
-        SELECT userId, userPw
-        FROM User
-        WHERE userId = ? AND userPw = ?;
-    `;
-    const selectUserPasswordRow = await connection.query(
-        selectUserPasswordQuery,
-        selectUserPasswordParams
-    );
-
-    return selectUserPasswordRow;
-}
-  
-  // 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
-  async function selectUserAccount(connection, userId) {
-    const selectUserAccountQuery = `
-        SELECT status, userId
-        FROM User
-        WHERE userId = ?;
-    `;
-    const [userAccountRow] = await connection.query(
-        selectUserAccountQuery,
-        userId
-    );
-    return userAccountRow;
-}
-  
-// 유저 정보 수정
-async function updateUserInfo(connection, userId, nickname) {
-  const updateUserQuery = `
-      UPDATE User
-      SET nickname = ?
+  // Retrieve the inserted user information
+  const insertedUserInfoQuery = `
+      SELECT userId, grade, major, phoneNum, school, jobName, userName
+      FROM User
       WHERE userId = ?;
   `;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, userId]);
-  return updateUserRow;
+  const [insertedUserInfo] = await connection.query(insertedUserInfoQuery, [userId]);
+
+  return insertedUserInfo[0];
+}
+
+  
+// 패스워드 체크
+async function selectUserPassword(connection, selectUserPasswordParams) {
+  const selectUserPasswordQuery = `
+      SELECT userId, userPw
+      FROM User
+      WHERE userId = ? AND userPw = ?;
+  `;
+  const selectUserPasswordRow = await connection.query(
+      selectUserPasswordQuery,
+      selectUserPasswordParams
+  );
+
+  return selectUserPasswordRow;
 }
   
-  module.exports = {
-    selectUser,
-    selectUserEmail,
-    selectUserId,
-    insertUserInfo,
-    selectUserPassword,
-    selectUserAccount,
-    updateUserInfo,
-  };
+module.exports = {
+  selectUserName,
+  selectUserId,
+  insertUserInfo,
+  selectUserPassword,
+};

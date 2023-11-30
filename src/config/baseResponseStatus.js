@@ -15,7 +15,9 @@ module.exports = {
     SIGNUP_MAJOR_EMPTY: { "isSuccess": false, "code": 2022, "message": "전공을 입력해주세요." },
     SIGNUP_PHONENUM_EMPTY: { "isSuccess": false, "code": 2023, "message": "휴대전화번호를 입력해주세요." },
     SIGNUP_SCHOOL_EMPTY: { "isSuccess": false, "code": 2024, "message": "학교를 입력해주세요." },
-    SIGNUP_JOBNAME_EMPTY: { "isSuccess": false, "code": 2025, "message": "관심직무를 입력해주세요." },
+    SIGNUP_USERNAME_EMPTY : { "isSuccess": false, "code": 2025, "message":"이름을 입력해주세요."},
+    SIGNUP_REDUNDANT_ID : { "isSuccess": false, "code": 2026, "message":"중복된 ID입니다."},
+    SIGNUP_REDUNDANT_NICKNAME : { "isSuccess": false, "code": 2027, "message":"중복된 닉네임입니다."},
     // jeonghoon 10.21
 
     //signup
@@ -42,7 +44,6 @@ module.exports = {
     USER_NICKNAME_EMPTY : { "isSuccess": false, "code": 2017, "message": "변경할 닉네임 값을 입력해주세요" },
 
     USER_STATUS_EMPTY : { "isSuccess": false, "code": 2018, "message": "회원 상태값을 입력해주세요" },
-    SIGNUP_REDUNDANT_ID : { "isSuccess": false, "code": 2019, "message":"중복된 ID입니다."},
 
     // Response error
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },

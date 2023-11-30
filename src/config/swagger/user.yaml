@@ -22,7 +22,7 @@ tags:
                 type: string
                 description: 사용자 비밀번호
               grade:
-                type: integer
+                type: string
                 description: 학년
               major:
                 type: string
@@ -35,7 +35,10 @@ tags:
                 description: 학교
               jobName:
                 type: string
-                description: 직업명
+                description: 관심직무
+              userName:
+                type: string
+                description: 실명
             required:
               - userId
               - userPw
@@ -43,6 +46,8 @@ tags:
               - major
               - phoneNum
               - school
+              - jobName
+              - userName
     responses:
       '1000':
         description: 성공 - 유저 생성 성공
@@ -54,14 +59,84 @@ tags:
               message: 성공
               result:
                 userId: "user123"
-      '2000':
-        description: 입력값 오류
+                grade: "3"
+                major: "소프트웨어"
+                phoneNum: "010-0000-0000"
+                school: "항공대"
+                jobName: ""
+                userName: 홍길동
+      '2019':
+          description: 아이디 입력 오류
+          content:
+            application/json:
+              example:
+                isSuccess: false
+                code: 2019
+                message: 아이디를 입력해주세요.
+      '2020':
+        description: 비밀번호 입력 오류
         content:
           application/json:
             example:
               isSuccess: false
-              code: 2000
-              message: 입력값을 확인해주세요.
+              code: 2020
+              message: 비밀번호를 입력해주세요.
+      '2021':
+        description: 학년 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2021
+              message: 학년을 입력해주세요.
+      '2022':
+        description: 전공 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2022
+              message: 전공을 입력해주세요.
+      '2023':
+        description: 전화번호 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2023
+              message: 휴대전화번호를 입력해주세요.
+      '2024':
+        description: 학교 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2024
+              message: 학교를 입력해주세요.
+      '2025':
+        description: 이름 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2025
+              message: 이름을 입력해주세요.
+      '2026':
+        description: 중복된 ID 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2026
+              message: 중복된 ID입니다.
+      '2027':
+        description: 중복된 닉네임 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 2027
+              message: 중복된 닉네임입니다.
 
 /app/login:
   post:

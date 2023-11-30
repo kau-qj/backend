@@ -1,21 +1,9 @@
-const jwtMiddleware = require("../middleware/jwtMiddleware");
 const userProvider = require("../provider/userProvider");
 const userService = require("../service/userService");
 const baseResponse = require("../config/baseResponseStatus");
 const {response, errResponse} = require("../config/response");
 
-const regexEmail = require("regex-email");
-const {emit} = require("nodemon");
 const baseResponseStatus = require("../config/baseResponseStatus");
-
-/**
- * API No. 0
- * API Name : 테스트 API
- * [GET] test
- */
-exports.getTest = async function (req, res) {
-    return res.send(response(baseResponse.SUCCESS))
-}
 
 /**
  * API No. 1
@@ -23,17 +11,18 @@ exports.getTest = async function (req, res) {
  * [POST] /app/users
  */
 exports.postUsers = async function (req, res) {
-    const { userId, userPw, grade, major, phoneNum, school, jobName} = req.body;
+    const { userId, userPw, grade, major, phoneNum, school, jobName, userName, nickName } = req.body;
     if (!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
     if (!userPw) return res.send(errResponse(baseResponse.SIGNUP_PASSWORD_EMPTY));
     if (!grade) return res.send(errResponse(baseResponse.SIGNUP_GRADE_EMPTY));
     if (!major) return res.send(errResponse(baseResponse.SIGNUP_MAJOR_EMPTY));
     if (!phoneNum) return res.send(errResponse(baseResponse.SIGNUP_PHONENUM_EMPTY));
     if (!school) return res.send(errResponse(baseResponse.SIGNUP_SCHOOL_EMPTY));
+    if (!userName) return res.send(errResponse(baseResponse.SIGNUP_USERNAME_EMPTY));
 
-    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobName);
+    const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobName, userName, nickName);
 
-    return res.send(signUpResponse);
+    return res.send(response(baseResponse.SUCCESS, signUpResponse));
 };
 
 
@@ -48,9 +37,9 @@ exports.login = async function (req, res) {
     try {
         const { userId, userPw } = req.body;
 
-        // TODO: userId, password 형식적 Validation
-        if(!userId) return res.send(response(baseResponseStatus.SIGNIN_USERID_EMPTY));
-        if(!userPw) return res.send(response(baseResponseStatus.SIGNIN_PASSWORD_EMPTY));
+        // 유효성 검증
+        if(!userId) return res.send(errResponse(baseResponseStatus.SIGNIN_USERID_EMPTY));
+        if(!userPw) return res.send(errResponse(baseResponseStatus.SIGNIN_PASSWORD_EMPTY));
 
         const signInResponse = await userService.postSignIn(userId, userPw);
         if (!signInResponse) {
@@ -85,32 +74,6 @@ exports.login = async function (req, res) {
             code: 5000,
             message: 'Internal Server Error',
         });
-    }
-};
-
-
-
-/**
- * API No. 5
- * API Name : 회원 정보 수정 API + JWT + Validation
- * [PATCH] /app/users/:userId
- * path variable : userId
- * body : nickname
- */
-exports.patchUsers = async function (req, res) {
-
-    // jwt - userId, path variable :userId
-    const userIdFromJWT = req.verifiedToken.userId;
-    const userId = req.params.userId;
-    const nickname = req.body.nickname;
-
-    if (userIdFromJWT != userId) {
-        return res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
-
-        const editUserInfo = await userService.editUser(userId, nickname);
-        return res.send(editUserInfo);
     }
 };
 

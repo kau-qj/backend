@@ -5,36 +5,34 @@ const userDao = require("../dao/userDao");
 const baseResponse = require("../config/baseResponseStatus");
 const {response} = require("../config/response");
 const {errResponse} = require("../config/response");
-const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const secret = require('../config/secret');
-
-dotenv.config();
-
-// const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const {connect} = require("http2");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
-exports.createUser = async function (userId, userPw, grade, major, phoneNum, school, jobName) {
+// 회원가입
+exports.createUser = async function (userId, userPw, grade, major, phoneNum, school, jobName, userName, nickName) {
     try {
         const connection = await pool.getConnection();
+
         // 아이디 중복 확인
         const userIdRows = await userDao.selectUserId(connection, userId);
-        if (userIdRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_ID);
+        if (userIdRows.length > 0) return errResponse(baseResponse.SIGNUP_REDUNDANT_ID);
+
+        // 닉네임 중복 확인
+        const nickNameRows = await userDao.selectUserName(connection, userName);
+        if (nickNameRows.length > 0) return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
         
         // 패스워드 암호화
         const hashedPassword = await crypto.createHash("sha512").update(userPw).digest("hex");
         
-        const insertUserInfoParams = [userId, hashedPassword, grade, major, phoneNum, school, jobName];
-
+        // 회원가입 쿼리
+        const insertUserInfoParams = [userId, hashedPassword, grade, major, phoneNum, school, jobName, userName, nickName];
         const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
-        console.log(`추가된 회원 : ${userIdResult[0].insertId}`);
+
         connection.release();
-        
-        return response(baseResponse.SUCCESS);
+        return userIdResult;
     } catch (err) {
         logger.error(`App - createUser Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
@@ -42,7 +40,7 @@ exports.createUser = async function (userId, userPw, grade, major, phoneNum, sch
 };
 
 
-// TODO: After 로그인 인증 방법 (JWT)
+// 로그인
 exports.postSignIn = async function (userId, userPw) {
     try {
         // 아이디 확인
@@ -89,22 +87,6 @@ exports.postSignIn = async function (userId, userPw) {
         });
     } catch (err) {
         logger.error(`App - createSignIn Service error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
-    }
-};
-
-
-exports.editUser = async function (userId, nickname) {
-    try {
-        const connection = await pool.getConnection(async (conn) => conn);
-
-        const editUserInfo = await userDao.updateUserInfo(connection, userId, nickname);
-
-        connection.release();
-
-        return response(baseResponse.SUCCESS, editUserInfo[0]);
-    } catch (err) {
-        logger.error(`App - editUser Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
