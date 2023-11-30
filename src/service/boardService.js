@@ -3,15 +3,16 @@ const { logger } = require('../config/winston');
 const baseResponse = require("../config/baseResponseStatus");
 const boardDao = require('../dao/boardDao');
 const {errResponse} = require("../config/response");
+const {response} = require("../config/response");
 
 // 게시글 생성
 exports.createPost = async function (postName, userId, title, mainText, postType) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await boardDao.createPost(connection, [postName, userId, title, mainText, postType]);
+        console.log(`게시글 작성 완료. 제목 : ${result[0]}`);
         connection.release();
-        console.log(baseResponse.SUCCESS);
-        return result
+        return response(baseResponse.SUCCESS);
     } catch (err) {
         logger.error(`App - createPost Service error
 : ${err.message}`);
@@ -25,7 +26,7 @@ exports.getPosts = async function () {
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await boardDao.getPosts(connection);
         connection.release();
-        return result;
+        return response(baseResponse.SUCCESS);
     } catch (err) {
         logger.error(`App - getPosts Service error
 : ${err.message}`);
@@ -39,7 +40,7 @@ exports.updatePost = async function (postIdx, title, mainText) {
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await boardDao.updatePost(connection, [title, mainText, postIdx]);
         connection.release();
-        return result;
+        return response(baseResponse.SUCCESS);
     } catch (err) {
         logger.error(`App - updatePost Service error
 : ${err.message}`);
@@ -53,7 +54,7 @@ exports.deletePost = async function (postIdx) {
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await boardDao.deletePost(connection, postIdx);
         connection.release();
-        return result;
+        return response(baseResponse.SUCCESS);
     } catch (err) {
         logger.error(`App - deletePost Service error
 : ${err.message}`);
@@ -74,7 +75,7 @@ exports.createComment = async function (postIdx, userId, contents) {
     await connection.commit(); // 트랜잭션 커밋
     connection.release();
     console.log("커넥션 릴리즈 완료");
-    return comment;
+    return response(baseResponse.SUCCESS);
   } catch (err) {
     logger.error(`App - createComment Service error: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
@@ -108,7 +109,7 @@ exports.deleteComment = async function (postIdx, commentIdx, userId) {
     await connection.commit(); // 트랜잭션 커밋
     connection.release();
 
-    return baseResponse.SUCCESS;
+    return response(baseResponse.SUCCESS);
   } catch (err) {
     logger.error(`App - deleteComment Service error: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
