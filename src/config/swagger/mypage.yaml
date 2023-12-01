@@ -56,7 +56,7 @@ tags:
               result:
                 userName: "박준규"
                 major: "소프트웨어"
-                grade: 4
+                grade: "3"
                 school: "서울대학교"
                 phoneNum: "010-1234-5678"
       '3000':
@@ -96,7 +96,7 @@ tags:
                 type: string
                 description: 전공
               grade:
-                type: integer
+                type: string
                 description: 학년
               school:
                 type: string
@@ -122,7 +122,7 @@ tags:
               result:
                 userName: "박준규"
                 major: "소프트웨어"
-                grade: 4
+                grade: "3"
                 school: "서울대학교"
                 phoneNum: "010-1234-5678"
       '3000':
@@ -239,6 +239,8 @@ tags:
       - mypage
     summary: QJ 보관함(요약조회)
     operationId: getQJStorage
+    security:
+      - BearerAuth: []
     responses:
       '1000':
         description: 성공 - QJ 보관함 요약 조회 성공
@@ -250,10 +252,21 @@ tags:
               message: 성공
               result:
                 qjSummary:
-                  - setIdx: 1
-                    title: "QJ 제목 1"
-                  - setIdx: 2
-                    title: "QJ 제목 2"
+                  - setIdx: 5423
+                    title: "데이터 엔지니어"
+                    createAt: "2023-11-28"
+                  - setIdx: 5372
+                    title: "백엔드 개발자"
+                    createAt: "2023-11-27"
+                  - setIdx: 5389
+                    title: "백엔드 개발자"
+                    createAt: "2023-11-27"
+                  - setIdx: 5406
+                    title: "백엔드 개발자"
+                    createAt: "2023-11-27"
+                  - setIdx: 5340
+                    title: "IT Developer"
+                    createAt: "2023-11-25"
       '3000':
         description: 토큰 검증 실패
         content:
@@ -270,6 +283,7 @@ tags:
               isSuccess: false
               code: 8010
               message: 저장된 QJ가 없습니다.
+
 
 /mypage/qj/{setIdx}:
   get:
@@ -294,10 +308,38 @@ tags:
               code: 1000
               message: 성공
               result:
-                setIdx: 1
-                title: "QJ 제목 1"
-                content: "QJ 내용 1"
-                createdAt: "2023-11-20T12:34:56Z"
+                title: "프론트엔드 개발자"
+                details:
+                  - score: 5
+                    comment: "웹SW스튜디오 및 재능기부 - 웹 프론트엔드 개발에 필요한 프로그래밍 능력을 향상시킬 수 있습니다."
+                  - score: 4
+                    comment: "프로그래밍입문 - 프론트엔드 개발의 기본 프로그래밍 기술을 습득할 수 있습니다."
+                  - score: 4
+                    comment: "객체지향프로그래밍 - 객체 지향 프로그래밍은 프론트엔드 개발에 필수적이며, 이 강좌에서 다룹니다."
+                  - score: 3
+                    comment: "AI프로그래밍 - 인공지능 프로그래밍 기술을 배우면 프론트엔드 개발에 도움이 됩니다."
+                  - score: 3
+                    comment: "시스템프로그래밍 - 시스템 수준 이해는 프론트엔드 개발자에게 도움이 되고, 이 강좌는 관련 지식을 제공합니다."
+                  - score: 3
+                    comment: "프로젝트개발입문 - 프론트엔드 개발의 프로젝트 경험을 쌓을 수 있습니다."
+                  - score: 3
+                    comment: "웹디자인 - 디자인 기술을 통해 사용자 친화적인 웹 애플리케이션을 개발할 수 있습니다."
+                  - score: 3
+                    comment: "알고리즘 해석 및 설계 - 프론트엔드 개발에서 효율적인 알고리즘을 설계하는 것이 중요합니다."
+                  - score: 2
+                    comment: "웹프론트엔드기초 - 웹 프론트엔드 개발의 기본 개념을 배울 수 있습니다."
+                  - score: 2
+                    comment: "인공지능플래닝 - 이 강좌는 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                  - score: 2
+                    comment: "데이터사이언스응용 - 이 강좌는 프론트엔드 개발과 주요 관련성이 제한적입니다."
+                  - score: 1
+                    comment: "Adventure Design - 이 강좌는 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
+                  - score: 1
+                    comment: "IoT - IoT와 클라우드 연결에 대한 이해는 프론트엔드 개발에서 중요하지 않습니다."
+                  - score: 1
+                    comment: "데이터베이스기초 - 데이터베이스 관련 지식은 프론트엔드 개발보다는 백엔드 개발에 더 필요합니다."
+                  - score: 1
+                    comment: "디자인패턴 - 이 강좌는 프론트엔드 개발과 직접적인 관련성이 제한적입니다."
       '3000':
         description: 토큰 검증 실패
         content:
@@ -306,11 +348,11 @@ tags:
               isSuccess: false
               code: 3000
               message: JWT 토큰 검증 실패
-      '8012':
+      '8011':
         description: QJ 보관함 데이터 없음
         content:
           application/json:
             example:
               isSuccess: false
-              code: 8012
-              message: 해당 번호는 QJ가 추천해주지 않았습니다.
+              code: 8011
+              message: 해당 QJ 번호는 존재하지 않습니다.

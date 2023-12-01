@@ -3,9 +3,9 @@ const { logger } = require('../config/winston.js');
 const { pool } = require('../config/database.js');
 
 // 마이페이지 update
-exports.updateMypageInfo = async function (userId, { userName, major, grade, school, phoneNum }) {
+exports.updateMypageInfo = async function (userId, userName, major, grade, school, phoneNum) {
   const connection = await pool.getConnection(async (conn) => conn);
-  const updatedUserInfo = await mypageDao.updateUserInfo(connection, userId, updatedFields);
+  const updatedUserInfo = await mypageDao.updateUserInfo(connection, userId, userName, major, grade, school, phoneNum);
   connection.release();
   return updatedUserInfo;
 };

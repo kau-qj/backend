@@ -2,6 +2,7 @@ const { response, errResponse } = require('../config/response');
 const mypageService = require('../service/mypageService.js');
 const baseResponse = require('../config/baseResponseStatus.js');
 const mypageProvider = require('../provider/mypageProvider.js');
+const baseResponseStatus = require('../config/baseResponseStatus.js');
 
 // 마이페이지 정보 조회
 /**
@@ -11,10 +12,8 @@ const mypageProvider = require('../provider/mypageProvider.js');
  */
 exports.getMypage = async (req, res) => {
 
-  // const userId = req.decoded.userId;
-  // if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-
-  const userId = 'csb';
+  const userId = req.decoded.userId;
+  if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
   const userInfo = await mypageProvider.getMypageInfo(userId);
   if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
@@ -38,10 +37,8 @@ exports.getMypage = async (req, res) => {
  */
 exports.getMypageInfo = async function(req, res) {
 
-  // const userId = req.decoded.userId;
-  // if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-
-  const userId = 'csb';
+  const userId = req.decoded.userId;
+  if(!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
   const userInfo = await mypageProvider.getMypageInfo(userId);
   if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
@@ -62,10 +59,8 @@ exports.getMypageInfo = async function(req, res) {
  * [PUT] /mypage/info
  */
 exports.updateMypageInfo = async function (req, res) {
-  // const userId = req.decoded.userId;
-  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-
-  const userId = 'csb';
+  const userId = req.decoded.userId;
+  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
   const { userName, major, grade, school, phoneNum } = req.body;
 
@@ -77,7 +72,7 @@ exports.updateMypageInfo = async function (req, res) {
   if(!phoneNum) return res.send(response(baseResponse.MYPAGE_PHONENUM_EMPTY));
 
   // 마이페이지 개인 정보 수정
-  const updatedUserInfo = await mypageService.updateMypageInfo(userId, { userName, major, grade, school, phoneNum });
+  const updatedUserInfo = await mypageService.updateMypageInfo(userId, userName, major, grade, school, phoneNum);
   if (updatedUserInfo === null) return res.send(response(baseResponse.NO_UPDATED_VALUES));
 
   return res.send(response(baseResponse.SUCCESS, updatedUserInfo));
@@ -90,10 +85,8 @@ exports.updateMypageInfo = async function (req, res) {
  */
 exports.getProfile = async function (req, res) {
     
-  // const userId = req.decoded.userId;
-  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-
-  const userId = 'csb';
+  const userId = req.decoded.userId;
+  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
   const userInfo = await mypageProvider.getProfile(userId);
   if(!userInfo) return res.send(response(baseResponse.MYPAGE_USERINFO_FALSE));
@@ -115,10 +108,8 @@ exports.getProfile = async function (req, res) {
  * [PUT] /mypage/profile
  */
 exports.updateProfile = async function (req, res) {
-  // const userId = req.decoded.userId;
-  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-
-  const userId = 'csb';
+  const userId = req.decoded.userId;
+  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
   const { nickName, jobName } = req.body;
 
@@ -149,13 +140,13 @@ exports.updateProfile = async function (req, res) {
  * [GET] /mypage/qj
  */
 exports.getQJStorage = async function (req, res) {
-  // const userId = req.decoded.userId;
-  // if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-  
-  const userId = 'csb';
+  const userId = req.decoded.userId;
+  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
+
+  const qjCheck = await mypageProvider.getQjCheck(userId);
+  if (qjCheck === 0) return res.send(response(baseResponse.MYPAGE_QJ_EMPTY));
 
   const qjStorage = await mypageProvider.getQJ(userId);
-  if(!qjStorage) return res.send(response(baseResponse.MYPAGE_QJ_EMPTY));
 
   return res.send(response(baseResponse.SUCCESS, qjStorage));
 }
@@ -167,34 +158,14 @@ exports.getQJStorage = async function (req, res) {
  * [GET] /mypage/qj/:setIdx
  */
 exports.getqjData = async function (req, res) {
-  try {
-      const userId = 'csb'; // 이 부분은 토큰에서 추출하도록 수정해야 함
-      const setIdx = req.params.setIdx;
 
-      if (!userId) return res.status(400).json(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-      if (!setIdx) return res.status(400).json(response(baseResponse.MYPAGE_SETIDX_EMPTY));
+  const userId = req.decoded.userId;
+  const setIdx = req.params.setIdx;
 
-      const qjData = await mypageProvider.getQJData(setIdx, userId);
+  if (!userId) return res.send(response(baseResponseStatus.TOKEN_VERIFICATION_FAILURE));
+  if (!setIdx) return res.send(response(baseResponseStatus.MYPAGE_SETIDX_EMPTY));
 
-      if (!qjData || qjData.length === 0) {
-          return res.status(404).json(response(baseResponse.MYPAGE_QJ_EMPTY));
-      }
+  const qjData = await mypageProvider.getQJData(setIdx, userId);
 
-      // OpenAPI 문서에 명시된 형식으로 응답 구성
-      const responseObj = {
-          isSuccess: true,
-          code: 1000,
-          message: '성공',
-          result: qjData.map(item => ({
-              title: item.title,
-              score: item.score,
-              comment: item.comment,
-          })),
-      };
-
-      return res.status(200).json(responseObj);
-  } catch (error) {
-      console.error('Unexpected error during getqjData:', error);
-      return res.status(500).json(response(baseResponse.DB_ERROR));
-  }
+  return res.send(response(baseResponseStatus.SUCCESS, qjData));
 };

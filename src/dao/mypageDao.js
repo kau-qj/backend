@@ -25,8 +25,7 @@ async function selectUserImage(connection, userIdx) {
 }
 
 // 개인 정보 수정
-async function updateUserInfo(connection, userId, updatedFields) {
-  const { userName, major, grade, school, phoneNum } = updatedFields;
+async function updateUserInfo(connection, userId, userName, major, grade, school, phoneNum) {
   const updateUserInfoQuery = `
     UPDATE User
     SET userName = ?, major = ?, grade = ?, school = ?, phoneNum = ?
@@ -40,7 +39,7 @@ async function updateUserInfo(connection, userId, updatedFields) {
   }
 
   // 변경된 행이 있다면 업데이트된 사용자 정보 반환
-  return { userId, ...updatedFields };
+  return { userId, userName, major, grade, school, phoneNum };
 }
 
 // 프로필 정보 수정
@@ -93,13 +92,29 @@ async function updateProfile(connection, userId, userIdx, nickName, jobName, ima
     return null;
   }
 
-  // 변경된 행이 없으면 null 반환
-  if (result.changedRows === 0) {
-    return null;
-  }
-
   // 변경된 행이 있다면 업데이트된 사용자 정보 반환
   return { userId, nickName, jobName, profileImageUrl: imageUrl };
+}
+
+// qj 데이터 존재하는지 유무 체크
+async function selectQJCheck(connection, userId) {
+  const checkQjQuery = `
+    SELECT COUNT(*)
+    FROM recommendGPT
+    WHERE userId = ?
+  ;`;
+
+  try {
+    const [rows] = await connection.execute(checkQjQuery, [userId]);
+
+    const count = rows[0]['COUNT(*)'];
+
+    // COUNT(*) 값에 따라 1 또는 0을 반환
+    return count > 0 ? 1 : 0;
+  } catch (error) {
+    console.error("QJ 데이터 유무 체크 중 오류:", error);
+    throw error;
+  }
 }
 
 
@@ -124,7 +139,7 @@ async function selectQJ(connection, userId) {
   ;`;
   const [qjStorage] = await connection.query(selectQJStorageQuery, [setIdx]);
 
-  return qjStorage;
+  return qjStorage[0];
 }
 
 async function selectQJData(connection, setIdx, userId) {
@@ -137,10 +152,29 @@ async function selectQJData(connection, setIdx, userId) {
 
   const [QJData] = await connection.query(selectQJDataQuery, [userId, setIdx]);
 
-  return QJData;
+  // Transform the data to the desired format
+  const transformedData = {};
+  QJData.forEach(item => {
+      if (!transformedData[item.title]) {
+          transformedData[item.title] = [];
+      }
+      transformedData[item.title].push({
+          score: item.score,
+          comment: item.comment,
+      });
+  });
+
+  // Convert the transformed data to the specified response format
+  const result = Object.keys(transformedData).map(title => ({
+    title,
+    details: transformedData[title],
+  }));
+
+  return result;
 }
 
 module.exports = {
+  selectQJCheck,
   selectQJData,
   selectQJ,
   updateProfile,

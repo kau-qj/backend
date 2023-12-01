@@ -8,7 +8,13 @@ exports.addInterestJob = async function(userId, jobname){
       const connection = await pool.getConnection(async (conn) => conn);
       const interestJobInfo = await jobguideDao.insertInterestJob(connection, userId, jobname);
       connection.release();
-      // console.log("interestJobInfo: ", interestJobInfo);
       return interestJobInfo;
 }
 
+// 관심 직무 업데이트
+exports.updateInterestJob = async function(userId, jobname){
+      const connection = await pool.getConnection(async (conn) => conn);
+      const interestJobInfo = await jobguideDao.updateInterestJob(connection, userId, jobname);
+      connection.release();
+      return interestJobInfo;
+}

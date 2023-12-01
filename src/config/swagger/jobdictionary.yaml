@@ -1,3 +1,7 @@
+openapi: 3.0.0
+info:
+  title: 직업 사전 API
+  version: '1.0'
 tags:
   - name: jobdictionary
     description: 직업 사전 API
@@ -64,8 +68,7 @@ paths:
                 message: 성공
                 result:
                   jobName: '정보보안 전문가'
-                  jobDescription: |
-                    [직업 설명]
+                  jobDescription: [직업 설명]
                   jobImage: 'https://example.com/dev-image.jpg'
         '9007':
           description: 이미지 정보 조회 실패
@@ -92,19 +95,23 @@ paths:
                 code: 500
                 message: 내부 서버 오류
 
-  /jobguide/interestjob/{jobname}:
+  /jobguide/interestjobs:
     post:
       tags:
         - jobdictionary
       summary: 관심 직무 추가
       operationId: addInterestJob
-      parameters:
-        - in: path
-          name: jobname
-          required: true
-          description: 직업 이름
-          schema:
-            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jobname
+              properties:
+                jobname:
+                  type: string
       responses:
         '200':
           description: 성공 - 관심 직무 추가 성공
@@ -122,22 +129,53 @@ paths:
                 isSuccess: false
                 code: 9001
                 message: '이미 관심 직무가 등록되어 있습니다.'
-        '9002':
-          description: 실패 - 최대 한 개의 관심 직무 등록이 가능함
+        '9006':
+          description: 실패 - 관심 직무를 추가 실패
           content:
             application/json:
               example:
                 isSuccess: false
-                code: 9002
-                message: '최대 한 개의 관심 직무 등록이 가능합니다.'
-        '9003':
-          description: 실패 - 해당 직업은 존재하지 않음
+                code: 9006
+                message: '관심 직무를 추가하는데 실패했습니다.'
+        '500':
+          description: 실패 - 내부 서버 오류
           content:
             application/json:
               example:
                 isSuccess: false
-                code: 9003
-                message: '해당 직업은 존재하지 않습니다.'
+                code: 500
+                message: '내부 서버 오류'
+
+  /jobguide/interestjobs/{jobname}:
+    put:
+      tags:
+        - jobdictionary
+      summary: 관심 직무 수정
+      operationId: updateInterestJob
+      parameters:
+        - in: path
+          name: jobname
+          required: true
+          description: 수정할 관심 직무 이름
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 성공 - 관심 직무 수정 성공
+          content:
+            application/json:
+              example:
+                isSuccess: true
+                code: 1000
+                message: '관심 직무가 업데이트되었습니다.'
+        '9010':
+          description: 실패 - 관심 직무 수정 실패
+          content:
+            application/json:
+              example:
+                isSuccess: false
+                code: 9010
+                message: '관심 직무를 수정하지 못했습니다.'
         '500':
           description: 실패 - 내부 서버 오류
           content:

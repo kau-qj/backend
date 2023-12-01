@@ -7,6 +7,6 @@ const jwt = require('../middleware/jwtMiddleware');
 // router.get('/', home.getAddvertisements);
 
 // 2. 채용 공고
-router.get('/recruit', home.getRecruit);
+router.get('/recruit', jwt, home.getRecruit);
 
 module.exports = router;

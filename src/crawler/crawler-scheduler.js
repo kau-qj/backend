@@ -6,7 +6,8 @@ const { pool } = require('../config/database');
 const crawlerJob = schedule.scheduleJob('30 10,16 * * *', async function () {
     console.log('crawler start:', new Date());
     try {
-        const result = await runCrawler(pool); // 데이터베이스 연결 풀을 runCrawler에 전달
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await runCrawler(connection); // 데이터베이스 연결 풀을 runCrawler에 전달
         if (result === 'Duplicate data found') {
             console.log('duplicate data:', new Date());
             crawlerJob.cancel();

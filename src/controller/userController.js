@@ -6,6 +6,7 @@ const {response, errResponse} = require("../config/response");
 
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
+const baseResponseStatus = require("../config/baseResponseStatus");
 
 /**
  * API No. 0
@@ -34,63 +35,24 @@ exports.postUsers = async function (req, res) {
 
     return res.send(signUpResponse);
 };
-/**
- * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
- */
-exports.getUsers = async function (req, res) {
-
-    /**
-     * Query String: email
-     */
-    const email = req.query.email;
-
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
-    }
-};
-
-/**
- * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
- */
-exports.getUserById = async function (req, res) {
-
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
-
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
-
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
-};
 
 
 // TODO: After 로그인 인증 방법 (JWT)
 /**
- * API No. 4
+ * API No. 2
  * API Name : 로그인 API
  * [POST] /app/login
- * body : email, passsword
+ * body : userId, userPw
  */
 exports.login = async function (req, res) {
     try {
         const { userId, userPw } = req.body;
 
-        // TODO: email, password 형식적 Validation
+        // TODO: userId, password 형식적 Validation
+        if(!userId) return res.send(response(baseResponseStatus.SIGNIN_USERID_EMPTY));
+        if(!userPw) return res.send(response(baseResponseStatus.SIGNIN_PASSWORD_EMPTY));
 
         const signInResponse = await userService.postSignIn(userId, userPw);
-
         if (!signInResponse) {
             // userService.postSignIn에서 에러가 발생한 경우
             console.error('Login failed:', signInResponse.message);
@@ -151,16 +113,6 @@ exports.patchUsers = async function (req, res) {
         return res.send(editUserInfo);
     }
 };
-
-
-
-
-
-
-
-
-
-
 
 /** JWT 토큰 검증 API
  * [GET] /app/auto-login

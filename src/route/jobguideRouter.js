@@ -14,7 +14,10 @@ router.get('/jobdetails/:jobname', jobguideController.getJobDetails);
 // router.get('/interestjobinfo', jwt, jobguideController.getMyInterestJobInfo);
 
 // 관심 직무 추가하기
-router.post('/interestjob/:Jobname', jwt, jobguideController.addInterestJob);
+router.post('/interestjobs', jwt, jobguideController.addInterestJob);
+
+// 관심 직무 수정하기
+router.put('/interestjobs/:jobname', jwt, jobguideController.updateInterestJob);
 
 module.exports = router;
 

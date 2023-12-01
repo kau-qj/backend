@@ -81,7 +81,6 @@ async function saveToDatabase(article, connection) {
         await connection.rollback();
         console.log('데이터베이스 오류:', err);
     } finally {
-        await browser.close(); // puppeteer 실행이 완료되면 브라우저를 닫습니다.
         connection.release(); // connection을 닫습니다.
     }
 }
