@@ -53,7 +53,6 @@ exports.getPost = async function (req, res) {
         createAt: post[0].createAt,
         comments: post.comments
     };
-    console.log("postDetails: ",postDetails);
   
     return res.send(response(baseResponse.SUCCESS, postDetails));
 };
