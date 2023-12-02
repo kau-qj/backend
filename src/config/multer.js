@@ -1,9 +1,9 @@
-const { S3 } = require('@aws-sdk/client-s3');
+const { S3Client } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const secret = require('./secret');
 
-const s3 = new S3({
+const s3 = new S3Client({
   region: secret.AWS_REGION,
   credentials: {
     accessKeyId: secret.AWS_ACCESS_KEY_ID,
