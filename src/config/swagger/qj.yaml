@@ -82,19 +82,19 @@ tags:
               message: GPT 호출에 에러가 발생했습니다.
 
 
-/qj/newJob:
-  post:
+/qj/newJob/{job}:
+  get:
     tags:
       - qj
     summary: 다른 직무 강의 추천
     description: 다른 관심 직무를 바탕으로 강의를 추천해줍니다.
-    requestBody:
-      description: 사용자의 관심 직무
-      required: true
-      content:
-        application/json:
-          example:
-            job: "데이터 엔지니어"
+    parameters:
+      - in: path
+        name: job
+        required: true
+        description: 사용자의 관심 직무
+        schema:
+          type: string
     responses:
       '1000':
         description: 성공 - 강좌 정보 조회

@@ -40,15 +40,11 @@ exports.getRecommend = async function (req, res) {
 /**
  * API No. 2
  * API Name : 다른 직무 강의 추천
- * [POST] /qj/newJob
+ * [GET] /qj/newJob/{job}
  */
-exports.postInputJobRecommend = async function (req, res) {
-    
-    /**
-     * Body: job
-     */
+exports.getNewJobRecommend = async function (req, res) {
 
-    const job = req.body.job;
+    const job = req.params.job;
     if (!job) return res.send(response(baseResponse.QJ_JOB_WRONG));
 
     const userId = req.decoded.userId;
