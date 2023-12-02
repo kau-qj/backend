@@ -98,11 +98,11 @@ exports.getProfile = async function (req, res) {
   // 이미지 파일
   const userimageUrl = await mypageProvider.getUserImage(userIdx);
 
-  const nickname = userInfo[0].nickName;
+  const nickName = userInfo[0].nickName;
   const jobName = userInfo[0].jobName;
   const imageUrl = userimageUrl[0].imageUrl;
 
-  return res.send(response(baseResponse.SUCCESS, { nickname, jobName, imageUrl}));
+  return res.send(response(baseResponse.SUCCESS, { nickName, jobName, imageUrl}));
 }
 
 /**
