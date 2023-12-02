@@ -6,11 +6,10 @@ const {errResponse} = require("../config/response");
 const {response} = require("../config/response");
 
 // 게시글 생성
-exports.createPost = async function (postName, userId, title, mainText, postType) {
+exports.createPost = async function (postName, userId, Title, mainText, postType) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.createPost(connection, [postName, userId, title, mainText, postType]);
-        console.log(`게시글 작성 완료. 제목 : ${result[0]}`);
+        const result = await boardDao.createPost(connection, [postName, userId, Title, mainText, postType]);
         connection.release();
         return response(baseResponse.SUCCESS);
     } catch (err) {
@@ -20,25 +19,11 @@ exports.createPost = async function (postName, userId, title, mainText, postType
     }
 }
 
-// 게시글 조회
-exports.getPosts = async function () {
-    try {
-        const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.getPosts(connection);
-        connection.release();
-        return response(baseResponse.SUCCESS);
-    } catch (err) {
-        logger.error(`App - getPosts Service error
-: ${err.message}`);
-        return err.message;
-    }
-}
-
 // 게시글 수정
-exports.updatePost = async function (postIdx, title, mainText) {
+exports.updatePost = async function (PostIdx, Title, mainText) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.updatePost(connection, [title, mainText, postIdx]);
+        const result = await boardDao.updatePost(connection, [Title, mainText, PostIdx]);
         connection.release();
         return response(baseResponse.SUCCESS);
     } catch (err) {
@@ -46,13 +31,13 @@ exports.updatePost = async function (postIdx, title, mainText) {
 : ${err.message}`);
         return err.message;
     }
-}
+} 
 
 // 게시글 삭제
-exports.deletePost = async function (postIdx) {
+exports.deletePost = async function (PostIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.deletePost(connection, postIdx);
+        const result = await boardDao.deletePost(connection, PostIdx);
         connection.release();
         return response(baseResponse.SUCCESS);
     } catch (err) {
@@ -63,18 +48,16 @@ exports.deletePost = async function (postIdx) {
 }
 
 // 댓글 생성
-exports.createComment = async function (postIdx, userId, contents) {
+exports.createComment = async function (PostIdx, userId, contents) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
 
     await connection.beginTransaction(); // 트랜잭션 시작
     
-    const commentIdx = await boardDao.createComment(connection, postIdx, userId, contents); // 댓글 
+    const commentIdx = await boardDao.createComment(connection, PostIdx, userId, contents); // 댓글 
     const comment = await boardDao.selectComment(connection, commentIdx); // 생성된 댓글 조회
-    console.log("댓글조회완료");
     await connection.commit(); // 트랜잭션 커밋
     connection.release();
-    console.log("커넥션 릴리즈 완료");
     return response(baseResponse.SUCCESS);
   } catch (err) {
     logger.error(`App - createComment Service error: ${err.message}`);
@@ -83,13 +66,12 @@ exports.createComment = async function (postIdx, userId, contents) {
 };
 
 // 댓글 삭제
-exports.deleteComment = async function (postIdx, commentIdx, userId) {
+exports.deleteComment = async function (PostIdx, commentIdx, userId) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
 
     await connection.beginTransaction(); // 트랜잭션 시작
     const comment = await boardDao.selectComment(connection, commentIdx); // 댓글 조회
-    console.log("comment: ", comment[0].userId);
     // 댓글이 존재하지 않는 경우
     if (!comment) {
       await connection.rollback(); // 트랜잭션 롤백
