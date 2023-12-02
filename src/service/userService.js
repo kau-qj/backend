@@ -77,7 +77,7 @@ exports.postSignIn = async function (userId, userPw) {
             },
             secret.JWT_SECRET, // 사용할 secret 키
             {
-                expiresIn: '1d' // 토큰 만료 시간 일단 하루로 설정
+                expiresIn: '365d' // 토큰 만료 시간
             }
         );
 
