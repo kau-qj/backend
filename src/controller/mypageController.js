@@ -23,7 +23,8 @@ exports.getMypage = async (req, res) => {
   // 이미지 파일
   const userimageUrl = await mypageProvider.getUserImage(userIdx);
 
-  const imageUrl = userimageUrl[0].imageUrl;
+  // userimageUrl가 null이거나 비어있을 경우 에러를 방지하기 위해 체크
+  const imageUrl = userimageUrl && userimageUrl.length > 0 ? userimageUrl[0].imageUrl : null;
   const userName = userInfo[0].userName;
   const jobName = userInfo[0].jobName;
 
