@@ -18,16 +18,23 @@ exports.getRecommend = async function (req, res) {
     const job = await qjProvider.getJob(userId);
     if (!job) return res.send(response(baseResponse.QJ_JOB_EMPTY));
 
-    // 과목 정보
-    const subjectInfo = await qjProvider.getSubjectInfo();
-    if (!subjectInfo) return res.send(response(baseResponse.QJ_SUBJECTINFO_FALSE));
-    const gpt = req.gpt;
+    // 최적화
+    const jobCheck = await qjProvider.getJobCheck(job);
+    
+    if (jobCheck == 0) {
+        // 과목 정보
+        // const subjectInfo = await qjProvider.getSubjectInfo();
+        // if (!subjectInfo) return res.send(response(baseResponse.QJ_SUBJECTINFO_FALSE));
+        // const gpt = req.gpt;
 
-    console.log("GPT START : " + Date(0).toString());
-    const responseGetData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
-    console.log("GPT END : " + Date(0).toString());
-
-    return res.send(response(baseResponse.SUCCESS, responseGetData));
+        // console.log("GPT START : " + Date(0).toString());
+        // const responseGetData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
+        // console.log("GPT END : " + Date(0).toString());
+        // return res.send(response(baseResponse.SUCCESS, responseGetData));
+    } else {
+        const responseGetData = await qjProvider.getRgData(job, userId);
+        return res.send(response(baseResponse.SUCCESS, responseGetData));
+    }
 }
 
 /**

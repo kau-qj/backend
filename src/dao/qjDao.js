@@ -120,7 +120,124 @@ async function insertRgData(connection, userId, job, subjectInfo, gpt) {
     return [result] ;
 }
 
+// gpt가 해당 job에 대답한 경험이 있는지 체크
+async function getJobCheck(connection, job) {
+    const jobCheckQuery = `
+        SELECT COUNT(*) as count
+        FROM recommendGPT
+        WHERE title = ?;
+    `;
+    
+    const [result] = await connection.query(jobCheckQuery, [job]);
+    const rowCount = result[0].count;
+
+    // 데이터 유무 체크
+    return rowCount;
+}
+
+// 랜덤 setIdx 추출
+async function getRandomSetIdx(connection, job) {
+    const getSetIdxQuery = `
+        SELECT DISTINCT setIdx
+        FROM recommendGPT
+        WHERE title = ?
+    ;`;
+
+    const [setIdxRows] = await connection.query(getSetIdxQuery, [job]);
+    const setIdxArray = setIdxRows.map(row => row.setIdx);
+
+    // 17개인 setIdx 배열 생성
+    const seventeenSetIdx = [];
+    for (const setIdx of setIdxArray) {
+        const getCountQuery = `
+            SELECT COUNT(*) as count
+            FROM recommendGPT
+            WHERE setIdx = ?;
+        `;
+
+        const [countResult] = await connection.query(getCountQuery, [setIdx]);
+        const rowCount = countResult[0].count;
+
+        if (rowCount === 17) {
+            seventeenSetIdx.push(setIdx);
+        }
+    }
+
+    // 17개인 setIdx 중에서 랜덤으로 하나 선택
+    const randomSetIdx = seventeenSetIdx[Math.floor(Math.random() * seventeenSetIdx.length)];
+
+    return randomSetIdx;
+}
+
+// 랜덤 setIdx 바탕으로 데이터 조회
+async function getRgData(connection, randomSetIdx, userId) {
+    const getDetailsQuery = `
+        SELECT title, score, comment
+        FROM recommendGPT
+        WHERE setIdx = ?
+        ORDER BY score DESC;
+    `;
+
+    const [detailsRows] = await connection.query(getDetailsQuery, [randomSetIdx]);
+
+    // 결과를 저장할 배열 초기화
+    let result = [];
+
+    // 현재 처리 중인 title 초기화
+    let currentTitle = null;
+
+    // 각 title에 대한 score와 comment를 저장할 배열 초기화
+    let currentDetails = [];
+
+    // 각 행에 대해 반복
+    detailsRows.forEach(row => {
+        const { title, score, comment } = row;
+
+        // 새로운 title이 시작될 때
+        if (title !== currentTitle) {
+            // 이전 title에 대한 결과를 저장
+            if (currentTitle !== null) {
+                result.push({
+                    userId: userId,
+                    setIdx: randomSetIdx,
+                    title: currentTitle,
+                    details: currentDetails.map(detail => ({
+                        comment: detail.comment,
+                        score: detail.score,
+                    })),
+                });
+            }
+
+            // 현재 처리 중인 title 및 score, comment 배열 초기화
+            currentTitle = title;
+            currentDetails = [{ score, comment }];
+        } else {
+            // 현재 처리 중인 title에 대해 score와 comment를 배열에 추가
+            currentDetails.push({ score, comment });
+        }
+    });
+
+    // 마지막으로 처리된 title에 대한 결과를 저장
+    if (currentTitle !== null) {
+        result.push({
+            userId: userId,
+            setIdx: randomSetIdx,
+            title: currentTitle,
+            details: currentDetails.map(detail => ({
+                comment: detail.comment,
+                score: detail.score,
+            })),
+        });
+    }
+
+    return result;
+}
+
+
 module.exports = {
+    getRgData,
+    getRandomSetIdx,
+    getJobCheck,
     getJob,
     getSubjectInfo,
     insertRgData

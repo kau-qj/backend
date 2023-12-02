@@ -17,7 +17,17 @@ router.put('/info', jwt, mypageController.updateMypageInfo);
 router.get('/profile', jwt, mypageController.getProfile);
 
 // 마이페이지 -> 프로필 설정 수정
-router.put('/profile', upload.single('profileImage'), jwt, mypageController.updateProfile);
+router.put('/profile', jwt, upload.single('profileImage'), async (req, res, next) => {
+    try {
+      // 이미지 업로드 로직 수행 (s3에 업로드)
+      const imageUrl = req.file ? req.file.location : null;
+  
+      // 이후에 mypageController.updateProfile 호출
+      await mypageController.updateProfile(req, res, imageUrl);
+    } catch (error) {
+      next(error);
+    }
+});
 
 // 마이페이지 -> QJ 보관함(요약조회)
 router.get('/qj', jwt, mypageController.getQJStorage);

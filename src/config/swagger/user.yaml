@@ -39,6 +39,9 @@ tags:
               userName:
                 type: string
                 description: 실명
+              nickName:
+                type: string
+                description: 닉네임
             required:
               - userId
               - userPw
@@ -48,6 +51,7 @@ tags:
               - school
               - jobName
               - userName
+              - nickName
     responses:
       '1000':
         description: 성공 - 유저 생성 성공
@@ -64,7 +68,8 @@ tags:
                 phoneNum: "010-0000-0000"
                 school: "항공대"
                 jobName: ""
-                userName: 홍길동
+                userName: "홍길동"
+                nickName: "참외"
       '2019':
           description: 아이디 입력 오류
           content:
