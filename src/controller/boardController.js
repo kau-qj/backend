@@ -6,16 +6,16 @@ const {response, errResponse} = require('../config/response');
 
 // 게시글 생성
 exports.createPost = async function (req, res) {
-    const {postName, Title, mainText, postType} = req.body;
+    const {Title, mainText, postType} = req.body;
     const userId = req.decoded.userId; 
     // const userId = "csb";
 
-    if (!postName) return res.send(errResponse(baseResponse.POST_NAME_EMPTY));
     if (!Title) return res.send(errResponse(baseResponse.POST_TITLE_EMPTY));
     if (!mainText) return res.send(errResponse(baseResponse.POST_MAIN_TEXT_EMPTY));
+    if (!postType) return res.send(errResponse(baseResponse.POST_TYPE_EMPTY));
     if (mainText.length > 65535) return res.send(errResponse(baseResponse.POST_MAIN_TEXT_TOO_LONG));
 
-    const createPostResponse = await boardService.createPost(postName, userId, Title, mainText, postType);
+    const createPostResponse = await boardService.createPost(userId, Title, mainText, postType);
 
     return res.send(createPostResponse);
 };
@@ -107,7 +107,7 @@ exports.createComment = async function (req, res) {
     const { contents } = req.body;
     const userIdFromJWT = req.decoded.userId;
   
-    if (!contents) return res.send(errResponse(baseResponse.COMMENT_CONTENTS_EMPTY));
+    if (!contents) return res.send(errResponse(baseResponse.TEXT_EMPTY));
   
     const createCommentResponse = await boardService.createComment(PostIdx, userIdFromJWT, contents);
     return res.send(createCommentResponse);
