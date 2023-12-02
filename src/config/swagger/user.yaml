@@ -62,7 +62,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                userId: "user123"
+                userId: "홍길동"
                 grade: "3"
                 major: "소프트웨어"
                 phoneNum: "010-0000-0000"

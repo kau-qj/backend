@@ -18,7 +18,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                userName: "박준규"
+                userName: "홍길동"
                 jobName: "백엔드 개발자"
                 imageUrl: "https://kau-sanhak-qj.s3.ap-northeast-2.amazonaws.com/profile/1700730095307-KakaoTalk_20231118_152522010.jpg"
       '3000':
@@ -54,7 +54,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                userName: "박준규"
+                userName: "홍길동"
                 major: "소프트웨어"
                 grade: "3"
                 school: "서울대학교"
@@ -120,7 +120,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                userName: "박준규"
+                userName: "홍길동"
                 major: "소프트웨어"
                 grade: "3"
                 school: "서울대학교"
@@ -158,7 +158,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                nickName: "박준규"
+                nickName: "홍길동"
                 jobName: "개발자"
                 imageUrl: null
       '3000':
@@ -213,7 +213,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                nickName: "박준규"
+                nickName: "홍길동"
                 jobName: "개발자"
                 imageUrl: "https://example.com/profile-image.jpg"
       '3000':
@@ -239,8 +239,6 @@ tags:
       - mypage
     summary: QJ 보관함(요약조회)
     operationId: getQJStorage
-    security:
-      - BearerAuth: []
     responses:
       '1000':
         description: 성공 - QJ 보관함 요약 조회 성공

@@ -18,7 +18,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                - userId: "csb"
+                - userId: "홍길동"
                   title: "프론트엔드"
                   setIdx: 3866
                   details:
@@ -105,7 +105,7 @@ tags:
               code: 1000
               message: 성공
               result:
-                - userId: "csb"
+                - userId: "홍길동"
                   title: "프론트엔드"
                   setIdx: 3866
                   details:
