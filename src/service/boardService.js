@@ -10,7 +10,6 @@ exports.createPost = async function (postName, userId, Title, mainText, postType
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await boardDao.createPost(connection, [postName, userId, Title, mainText, postType]);
-        console.log(`게시글 작성 완료. 제목 : ${result[0]}`);
         connection.release();
         return response(baseResponse.SUCCESS);
     } catch (err) {
@@ -73,7 +72,6 @@ exports.deleteComment = async function (PostIdx, commentIdx, userId) {
 
     await connection.beginTransaction(); // 트랜잭션 시작
     const comment = await boardDao.selectComment(connection, commentIdx); // 댓글 조회
-    console.log("comment: ", comment[0].userId);
     // 댓글이 존재하지 않는 경우
     if (!comment) {
       await connection.rollback(); // 트랜잭션 롤백
