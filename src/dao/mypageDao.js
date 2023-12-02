@@ -20,7 +20,6 @@ async function selectUserImage(connection, userIdx) {
 
   // 프로필 이미지 유무 체크
   if (userImageUrl.length === 0) return null;
-
   return userImageUrl;
 }
 

@@ -20,7 +20,7 @@ tags:
               result:
                 userName: "박준규"
                 jobName: "백엔드 개발자"
-                userimageUrl: "https://kau-sanhak-qj.s3.ap-northeast-2.amazonaws.com/profile/1700730095307-KakaoTalk_20231118_152522010.jpg"
+                imageUrl: "https://kau-sanhak-qj.s3.ap-northeast-2.amazonaws.com/profile/1700730095307-KakaoTalk_20231118_152522010.jpg"
       '3000':
         description: 토큰 검증 실패
         content:
@@ -160,7 +160,7 @@ tags:
               result:
                 nickname: "박준규"
                 jobName: "개발자"
-                image: null
+                imageUrl: null
       '3000':
         description: 토큰 검증 실패
         content:
@@ -215,7 +215,7 @@ tags:
               result:
                 nickname: "박준규"
                 jobName: "개발자"
-                image: "https://example.com/profile-image.jpg"
+                imageUrl: "https://example.com/profile-image.jpg"
       '3000':
         description: 토큰 검증 실패
         content:

@@ -23,10 +23,11 @@ exports.getMypage = async (req, res) => {
   // 이미지 파일
   const userimageUrl = await mypageProvider.getUserImage(userIdx);
 
+  const imageUrl = userimageUrl[0].imageUrl;
   const userName = userInfo[0].userName;
   const jobName = userInfo[0].jobName;
 
-  return res.send(response(baseResponse.SUCCESS, { userName, jobName, userimageUrl } ));
+  return res.send(response(baseResponse.SUCCESS, { userName, jobName, imageUrl } ));
 };
 
 // 마이페이지 개인 정보 모두 조회
@@ -98,8 +99,9 @@ exports.getProfile = async function (req, res) {
 
   const nickname = userInfo[0].nickName;
   const jobName = userInfo[0].jobName;
+  const imageUrl = userimageUrl[0].imageUrl;
 
-  return res.send(response(baseResponse.SUCCESS, { nickname: nickname, jobName: jobName, image: userimageUrl}));
+  return res.send(response(baseResponse.SUCCESS, { nickname, jobName, imageUrl}));
 }
 
 /**
