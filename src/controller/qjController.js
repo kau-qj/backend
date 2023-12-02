@@ -54,15 +54,21 @@ exports.postInputJobRecommend = async function (req, res) {
     const userId = req.decoded.userId;
     if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE)); 
 
-    // 과목 정보
-    const subjectInfo = await qjProvider.getSubjectInfo();
-    if (!subjectInfo) return res.send(response(baseResponse.QJ_SUBJECTINFO_FALSE));
-    const gpt = req.gpt;
+    // 최적화
+    const jobCheck = await qjProvider.getJobCheck(job);
+    
+    if (jobCheck == 0) {
+        // 과목 정보
+        // const subjectInfo = await qjProvider.getSubjectInfo();
+        // if (!subjectInfo) return res.send(response(baseResponse.QJ_SUBJECTINFO_FALSE));
+        // const gpt = req.gpt;
 
-    console.log("GPT START : " + Date(0).toString());
-    console.log("job:", job);
-    const responsePostData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
-    console.log("GPT END : " + Date(0).toString());
-
-    return res.send(response(baseResponse.SUCCESS, responsePostData));
+        // console.log("GPT START : " + Date(0).toString());
+        // const responseGetData = await qjService.insertRgData(userId, job, subjectInfo, gpt);
+        // console.log("GPT END : " + Date(0).toString());
+        // return res.send(response(baseResponse.SUCCESS, responseGetData));
+    } else {
+        const responseGetData = await qjProvider.getRgData(job, userId);
+        return res.send(response(baseResponse.SUCCESS, responseGetData));
+    }
 }
