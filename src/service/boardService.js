@@ -6,10 +6,10 @@ const {errResponse} = require("../config/response");
 const {response} = require("../config/response");
 
 // 게시글 생성
-exports.createPost = async function (postName, userId, Title, mainText, postType) {
+exports.createPost = async function (userId, Title, mainText, postType) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const result = await boardDao.createPost(connection, [postName, userId, Title, mainText, postType]);
+        const result = await boardDao.createPost(connection, [userId, Title, mainText, postType]);
         connection.release();
         return response(baseResponse.SUCCESS);
     } catch (err) {
@@ -55,7 +55,7 @@ exports.createComment = async function (PostIdx, userId, contents) {
     await connection.beginTransaction(); // 트랜잭션 시작
     
     const commentIdx = await boardDao.createComment(connection, PostIdx, userId, contents); // 댓글 
-    const comment = await boardDao.selectComment(connection, commentIdx); // 생성된 댓글 조회
+    // const comment = await boardDao.selectComment(connection, commentIdx); // 생성된 댓글 조회
     await connection.commit(); // 트랜잭션 커밋
     connection.release();
     return response(baseResponse.SUCCESS);

@@ -2,162 +2,397 @@ tags:
   name: board
   description: 게시판 API
 
-paths:
-  /board/posts:
-    post:
-      tags:
-        - board
-      summary: 게시글 생성 API
-      description: 게시글을 생성합니다.
-      parameters:
-        - in: body
-          name: obj
-          description: 게시글 정보
-          required: true
-          schema:
-            $ref: "#/components/schemas/Post"
-      responses:
-        "1000":
-          $ref: "#/components/responses/SuccessPost"
-        "3000":
-          $ref: "#/components/responses/TokenVerificationFailure"
-        "9000":
-          $ref: "#/components/responses/PostNameEmpty"
-        "9001":
-          $ref: "#/components/responses/PostTitleEmpty"
-        "9002":
-          $ref: "#/components/responses/PostMainTextEmpty"
-        "9102":
-          $ref: "#/components/responses/PostMainTextTooLong"
+/board/postType/{postType}:
+  get:
+    tags:
+      - board
+    summary: 특정 게시판 게시글 조회
+    operationId: getPosts
+    parameters:
+      - in: path
+        name: postType
+        required: true
+        description: 게시판 타입
+        schema:
+          type: integer
+    responses:
+      "1000":
+        description: 성공 - 게시글 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                [
+                  {
+                    "PostIdx": 1,
+                    "Title": "제목",
+                    "mainText": "내용",
+                    "createAt": "2023-11-11T12:09:41.000Z",
+                    "userId": "hoon1",
+                  },
+                  {
+                    "PostIdx": 2,
+                    "Title": "제목1",
+                    "mainText": "내용1",
+                    "createAt": "2023-11-17T02:35:26.000Z",
+                    "userId": "kjh",
+                  },
+                ]
+      "3000":
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      "9100":
+        description: 게시글 찾을 수 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9100
+              message: 해당 게시글을 찾을 수 없습니다.
 
-    get:
-      tags:
-        - board
-      summary: 게시글 조회 API
-      description: 게시글을 조회합니다.
-      responses:
-        "1000":
-          description: 게시글 조회 성공
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Post"
-        "3000":
-          $ref: "#/components/responses/TokenVerificationFailure"
+/board/posts/{PostIdx}:
+  get:
+    tags:
+      - board
+    summary: 특정 게시글 상세 조회
+    operationId: getPost
+    parameters:
+      - in: path
+        name: PostIdx
+        required: true
+        description: 게시글 ID
+        schema:
+          type: integer
+    responses:
+      "1000":
+        description: 성공 - 게시글 상세 조회 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+              result:
+                {
+                  "userId": "csb",
+                  "Title": "삼성전자 채용 언제 하나요?",
+                  "mainText": "안녕하세요! 2024년 상반기 공채 언제 열리는지 아시는 분 계시나요?",
+                  "createAt": "2023-12-02T09:46:00.000Z",
+                  "comments":
+                    [
+                      {
+                        "CommentIdx": 15,
+                        "PostIdx": 24,
+                        "userId": "csb",
+                        "contents": "1월 8일 입니다!",
+                        "createAt": "2023-12-02T09:51:31.000Z",
+                      },
+                    ],
+                }
+      "3000":
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      "9100":
+        description: 게시글 찾을 수 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9100
+              message: 해당 게시글을 찾을 수 없습니다.
 
-  /board/posts/{postIdx}:
-    patch:
-      tags:
-        - board
-      summary: 게시글 수정 API
-      description: 게시글을 수정합니다.
-      parameters:
-        - name: postIdx
-          in: path
-          required: true
-          schema:
-            type: integer
-        - in: body
-          name: obj
-          description: 수정할 게시글 정보
-          required: true
-          schema:
-            $ref: "#/components/schemas/Post"
-      responses:
-        "1000":
-          $ref: "#/components/responses/SuccessPost"
-        "3000":
-          $ref: "#/components/responses/TokenVerificationFailure"
-        "9100":
-          $ref: "#/components/responses/PostNotFound"
-        "9101":
-          $ref: "#/components/responses/PostNotWriter"
-        "9102":
-          $ref: "#/components/responses/PostMainTextTooLong"
-
-    delete:
-      tags:
-        - board
-      summary: 게시글 삭제 API
-      description: 게시글을 삭제합니다.
-      parameters:
-        - name: postIdx
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        "1000":
-          $ref: "#/components/responses/SuccessPost"
-        "3000":
-          $ref: "#/components/responses/TokenVerificationFailure"
-        "9100":
-          $ref: "#/components/responses/PostNotFound"
-        "9101":
-          $ref: "#/components/responses/PostNotWriter"
-
-components:
-  responses:
-    SuccessPost:
-      description: "성공 - 게시글 생성, 수정, 삭제 성공"
+  patch:
+    tags:
+      - board
+    summary: 게시글 수정
+    operationId: updatePost
+    parameters:
+      - in: path
+        name: PostIdx
+        required: true
+        description: 게시글 ID
+        schema:
+          type: integer
+    requestBody:
+      description: 수정할 게시글 정보
+      required: true
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Post"
+            type: object
+            properties:
+              Title:
+                type: string
+                description: 게시글 제목
+              mainText:
+                type: string
+                description: 게시글 내용
+            required:
+              - title
+              - content
+    responses:
+      "1000":
+        description: 성공 - 게시글 수정 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+      "3000":
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      "9100":
+        description: 게시글 찾을 수 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9100
+              message: 해당 게시글을 찾을 수 없습니다.
+      "9101":
+        description: 작성자만 수정 가능
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9101
+              message: 게시글의 작성자만 수정 또는 삭제가 가능합니다.
 
-    TokenVerificationFailure:
-      $ref: "#/components/schemas/TokenVerificationFailure"
+  delete:
+    tags:
+      - board
+    summary: 게시글 삭제
+    operationId: deletePost
+    parameters:
+      - in: path
+        name: PostIdx
+        required: true
+        description: 게시글 ID
+        schema:
+          type: integer
+    responses:
+      "1000":
+        description: 성공 - 게시글 삭제 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+      "3000":
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      "9100":
+        description: 게시글 찾을 수 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9100
+              message: 해당 게시글을 찾을 수 없습니다.
+      "9101":
+        description: 작성자만 삭제 가능
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9101
+              message: 게시글의 작성자만 수정 또는 삭제가 가능합니다.
 
-    PostNameEmpty:
-      $ref: "#/components/schemas/PostNameEmpty"
+/board/posts:
+  post:
+    tags:
+      - board
+    summary: 게시글 작성
+    operationId: createPost
+    requestBody:
+      description: 게시글 정보
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Title:
+                type: string
+                description: 게시글 제목
+              mainText:
+                type: string
+                description: 게시글 내용
+              postType:
+                type: integer
+                description: 게시판 종류
+            required:
+              - title
+              - mainText
+              - postType
+    responses:
+      "1000":
+        description: 성공 - 게시글 작성 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+      "3000":
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      "9000":
+        description: 게시판 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9000
+              message: 게시판을 선택해 주세요.
+      "9001":
+        description: 제목 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9001
+              message: 제목을 입력해 주세요.
+      "9002":
+        description: 내용 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9002
+              message: 내용을 입력해 주세요.
+      "9102":
+        description: 내용 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9102
+              message: 게시글 내용이 너무 깁니다. 65535자 이내로 작성해주세요.
 
-    PostTitleEmpty:
-      $ref: "#/components/schemas/PostTitleEmpty"
+/board/posts/{PostIdx}/comments:
+  post:
+    tags:
+      - board
+    summary: 댓글 작성
+    operationId: createComment
+    parameters:
+      - in: path
+        name: PostIdx
+        required: true
+        description: 게시글 ID
+        schema:
+          type: integer
+    requestBody:
+      description: 댓글 정보
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              contents:
+                type: string
+                description: 댓글 내용
+            required:
+              - contents
+    responses:
+      "1000":
+        description: 성공 - 댓글 작성 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+      "3000":
+        description: 토큰 검증 실패
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 3000
+              message: JWT 토큰 검증 실패
+      "9100":
+        description: 게시글 찾을 수 없음
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 9100
+              message: 해당 게시글을 찾을 수 없습니다.
+      "10000":
+        description: 댓글 내용 입력 오류
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 10000
+              message: 댓글 내용을 입력해주세요
 
-    PostMainTextEmpty:
-      $ref: "#/components/schemas/PostMainTextEmpty"
-
-    PostMainTextTooLong:
-      $ref: "#/components/schemas/PostMainTextTooLong"
-
-    PostNotFound:
-      $ref: "#/components/schemas/PostNotFound"
-
-    PostNotWriter:
-      $ref: "#/components/schemas/PostNotWriter"
-
-  schemas:
-    Post:
-      type: object
-      properties:
-        postName:
-          type: string
-        title:
-          type: string
-        mainText:
-          type: string
-        postType:
-          type: string
-
-    TokenVerificationFailure:
-      $ref: "#/components/schemas/TokenVerificationFailure"
-
-    PostNameEmpty:
-      $ref: "#/components/schemas/PostNameEmpty"
-
-    PostTitleEmpty:
-      $ref: "#/components/schemas/PostTitleEmpty"
-
-    PostMainTextEmpty:
-      $ref: "#/components/schemas/PostMainTextEmpty"
-
-    PostMainTextTooLong:
-      $ref: "#/components/schemas/PostMainTextTooLong"
-
-    PostNotFound:
-      $ref: "#/components/schemas/PostNotFound"
-
-    PostNotWriter:
-      $ref: "#/components/schemas/PostNotWriter"
+/board/posts/{PostIdx}/comments/{commentIdx}:
+  delete:
+    tags:
+      - board
+    summary: 댓글 삭제
+    operationId: deleteComment
+    parameters:
+      - in: path
+        name: PostIdx
+        required: true
+        description: 게시글 ID
+        schema:
+          type: integer
+      - in: path
+        name: CommentIdx
+        required: true
+        description: 댓글 ID
+        schema:
+          type: integer
+    responses:
+      "1000":
+        description: 성공 - 댓글 작성 성공
+        content:
+          application/json:
+            example:
+              isSuccess: true
+              code: 1000
+              message: 성공
+      "10003":
+        description: 댓글 작성자 불일치
+        content:
+          application/json:
+            example:
+              isSucess: false
+              code: 10003
+              message: 댓글의 작성자만 수정 또는 삭제가 가능합니다.
