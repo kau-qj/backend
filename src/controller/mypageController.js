@@ -98,11 +98,12 @@ exports.getProfile = async function (req, res) {
   // 이미지 파일
   const userimageUrl = await mypageProvider.getUserImage(userIdx);
 
+  // userimageUrl가 null이거나 비어있을 경우 에러를 방지하기 위해 체크
+  const imageUrl = userimageUrl && userimageUrl.length > 0 ? userimageUrl[0].imageUrl : null;
   const nickName = userInfo[0].nickName;
   const jobName = userInfo[0].jobName;
-  const imageUrl = userimageUrl[0].imageUrl;
-
-  return res.send(response(baseResponse.SUCCESS, { nickName, jobName, imageUrl}));
+  
+  return res.send(response(baseResponse.SUCCESS, { nickName, jobName, imageUrl }));
 }
 
 /**

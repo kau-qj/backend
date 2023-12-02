@@ -43,36 +43,59 @@ DB에서 검증해야 하는 의미적 Validation은 Service에서 처리하면 
 │   │   ├── baseResponseStatus.js       # Response 시의 Status 모음.
 │   │   ├── database.js                 # 데이터베이스 관련 설정
 │   │   ├── express.js                  # express Framework 설정 파일
+│   │   ├── multer.js                   # S3 설정 파일
 │   │   ├── response.js                 # HTTP 요청에 대한 응답을 구성
 │   │   ├── winston.js                  # logger 라이브러리 설정
 │   │   ├── swagger                     # API 문서
-│ 	│   │   ├── swagger.js              # swagger 환경 설정
-│ 	│   │   ├── swagger-output.json     # swagger autogen output
+│ 	│   │   ├── board.yaml
+│ 	│   │   ├── homepage.yaml
+│ 	│   │   ├── jobdictionary.yaml
+│ 	│   │   ├── mypage.yaml
+│ 	│   │   ├── qj.yaml
+│ 	│   │   ├── swagger.js              # swagger 설정
+│ 	│   │   ├── user.yaml
 │   ├── controller                      # req, res 처리
-│ 	│   ├── userController.js
+│ 	│   ├── boardController.js
+│ 	│   ├── homeController.js
+│ 	│   ├── jobguideController.js
 │ 	│   ├── mypageController.js
 │ 	│   ├── qjController.js
+│ 	│   ├── userController.js
+│   ├── controller                      # 크롤링
+│ 	│   ├── crawler-scheduler.js        # 크롤링 일정
+│ 	│   ├── recruit.crawler.js          # 크롤링 처리 코드
 │   ├── dao                             # query 처리
-│ 	│   ├── userDao.js
+│ 	│   ├── boardDao.js
+│ 	│   ├── homeDao.js
+│ 	│   ├── jobguideDao.js
 │ 	│   ├── mypageDao.js
 │ 	│   ├── qjDao.js
+│ 	│   ├── userDao.js
 │   ├── middleware                      # 미들웨어
 │ 	│   ├── jwtMiddleware.js
 │ 	│   ├── gptMiddleware.js
 │   ├── provider                        # Read 처리
-│ 	│   ├── userProvider.js
+│ 	│   ├── boardProvider.js
+│ 	│   ├── homeProvider.js
+│ 	│   ├── jobguideProvider.js
 │ 	│   ├── mypageProvider.js
 │ 	│   ├── qjProvider.js
+│ 	│   ├── userProvider.js
 │   ├── route                           # route(endpoint) 처리
-│ 	│   ├── userRouter.js
+│ 	│   ├── boardRouter.js
+│ 	│   ├── homeRouter.js
+│ 	│   ├── jobguideRouter.js
 │ 	│   ├── mypageRouter.js
 │ 	│   ├── qjRouter.js
+│ 	│   ├── userRouter.js
 │   ├── service                         # CUD 처리
-│ 	│   ├── userService.js
+│ 	│   ├── boardService.js
+│ 	│   ├── homeService.js
+│ 	│   ├── jobguideService.js
 │ 	│   ├── mypageService.js
 │ 	│   ├── qjService.js
+│ 	│   ├── userService.js
 │   ├── app.js                          # 포트 설정 및 시작 파일(상위 라우터)
-├── .env                        # 환경 변수 값 저장
 ├── .gitignore                  # git 에 포함되지 않아야 하는 폴더, 파일들을 작성 해놓는 곳
 ├── LICENSE
 ├── package-lock.json
