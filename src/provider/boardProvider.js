@@ -23,7 +23,6 @@ exports.retrievePost = async function (PostIdx) {
         const post = await boardDao.getPost(connection, PostIdx);
         const comments = await boardDao.selectComments(connection, PostIdx);
         if (post) post.comments = comments;
-        console.log("post: ", post);
         connection.release();
         return post;
     } catch (err) {
@@ -32,6 +31,18 @@ exports.retrievePost = async function (PostIdx) {
     }
 }
 
+// 게시글 작성자 조회
+exports.retrievePostUserId = async function (postIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const userId = await boardDao.selectPostUserId(connection, postIdx);
+        connection.release();
+        return userId ? userId : null;
+    } catch (err) {
+        logger.error(`App - retrievePostUserId Provider error: ${err.message}`);
+        return err.message;
+    }
+}
 
 
 exports.retrieveComments = async function (PostIdx) {

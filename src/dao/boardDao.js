@@ -15,7 +15,7 @@ async function createPost(connection, [postName, userId, Title, mainText, postTy
 // 특정 게시판 게시글 조회
 async function selectPosts(connection, postType) {
     const selectPostsQuery = `
-        SELECT PostIdx, Title, SUBSTRING(mainText, 1, 1) AS mainText, createAt, userId
+        SELECT PostIdx, Title, SUBSTRING(mainText, 1, 20) AS mainText, createAt, userId
         FROM Board
         WHERE postType = ?;
     `;
@@ -45,7 +45,16 @@ async function selectComments(connection, PostIdx) {
     return commentsRows;
 }
 
-
+// 게시글 작성자 조회
+async function selectPostUserId(connection, postIdx) {
+    const selectPostUserIdQuery = `
+        SELECT userId 
+        FROM Board
+        WHERE postIdx = ?;
+    `;
+    const [postRow] = await connection.query(selectPostUserIdQuery, postIdx);
+    return postRow.length > 0 ? postRow[0].userId : null;
+}
 
 // 게시글 수정
 async function updatePost(connection, [Title, mainText, PostIdx]) {
@@ -80,7 +89,6 @@ async function createComment(connection, PostIdx, userId, contents) {
       VALUES (?, ?, ?);
     `;
     const [createCommentRow] = await connection.query(createCommentQuery, [PostIdx, userId, contents]);
-    console.log("createCommentRow: ", createCommentRow.insertId);
     return createCommentRow.insertId;
 }
 
@@ -93,7 +101,6 @@ async function selectComment(connection, commentIdx) {
         WHERE CommentIdx = ?;
     `;
     const [commentRow] = await connection.query(selectCommentQuery, commentIdx);
-    console.log("commentRow: ", commentRow);
     return commentRow;
 }
 
@@ -113,6 +120,7 @@ module.exports = {
     selectPosts,
     getPost,
     selectComments,
+    selectPostUserId,
     updatePost,
     deletePost,
     createComment,

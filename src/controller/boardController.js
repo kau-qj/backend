@@ -44,7 +44,6 @@ exports.getPost = async function (req, res) {
   
     // 게시글 조회
     const post = await boardProvider.retrievePost(PostIdx);
-    console.log("control post: ", post);
     // 게시글 작성자, 제목, 내용, 작성 시간, 댓글 가져오기
     const postDetails = {
         userId: post[0].userId,
@@ -70,13 +69,13 @@ exports.updatePost = async function (req, res) {
     // 게시글 내용이 너무 긴 경우
     if (mainText.length > 65535) return res.send(errResponse(baseResponse.POST_MAIN_TEXT_TOO_LONG));
 
-    const post = await boardProvider.retrievePost(PostIdx); // 게시글 조회
+    const userIdFromPost = await boardProvider.retrievePostUserId(PostIdx); // 게시글 작성자 조회
 
     // 게시글이 존재하지 않는 경우
-    if (!post) return res.send(errResponse(baseResponse.POST_NOT_FOUND));
+    if (!userIdFromPost) return res.send(errResponse(baseResponse.POST_NOT_FOUND));
 
     // JWT의 userId와 게시글의 작성자가 일치하지 않는 경우
-    if (post[0].userId !== userIdFromJWT) return res.send(errResponse(baseResponse.POST_NOT_WRITER));
+    if (userIdFromPost !== userIdFromJWT) return res.send(errResponse(baseResponse.POST_NOT_WRITER));
 
     const updatePostResponse = await boardService.updatePost(PostIdx, Title, mainText);
 
@@ -111,7 +110,6 @@ exports.createComment = async function (req, res) {
     if (!contents) return res.send(errResponse(baseResponse.COMMENT_CONTENTS_EMPTY));
   
     const createCommentResponse = await boardService.createComment(PostIdx, userIdFromJWT, contents);
-    console.log("최종완료", createCommentResponse);
     return res.send(createCommentResponse);
 };
   
