@@ -107,7 +107,7 @@ exports.getProfile = async function (req, res) {
  * API Name : 마이페이지 프로필 정보 수정
  * [PUT] /mypage/profile
  */
-exports.updateProfile = async function (req, res) {
+exports.updateProfile = async function (req, res, imageUrl) {
   const userId = req.decoded.userId;
   if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
@@ -122,13 +122,13 @@ exports.updateProfile = async function (req, res) {
   const userIdx = userInfo[0].userIdx;
   
   // 프로필 이미지 업로드
-  let imageUrl = null;
-    if (req.file) {
-        // 이미지 업로드 로직 수행 (s3에 업로드)
-        imageUrl = req.file.location;
-    }
+  let updatedImageUrl = imageUrl;
+  if (req.file) {
+    // 이미지 업로드 로직 수행 (s3에 업로드)
+    updatedImageUrl = req.file.location;
+  }
 
-  const updateInfo = await mypageService.updateProfile(userId, userIdx, nickName, jobName, imageUrl);
+  const updateInfo = await mypageService.updateProfile(userId, userIdx, nickName, jobName, updatedImageUrl);
   if (updateInfo === null) return res.send(response(baseResponse.NO_UPDATED_VALUES));
 
   return res.send(response(baseResponse.SUCCESS, updateInfo));

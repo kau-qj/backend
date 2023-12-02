@@ -20,3 +20,20 @@ exports.getSubjectInfo = async function () {
   connection.release();
   return subjectInfo;
 }
+
+// 직무 존재 여부 파악
+exports.getJobCheck = async function (job) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const jobCheck = await qjDao.getJobCheck(connection, job);
+  connection.release();
+  return jobCheck;
+}
+
+// rgData 조회
+exports.getRgData = async function (job, userId) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const randomSetIdx = await qjDao.getRandomSetIdx(connection, job);
+  const rgData = await qjDao.getRgData(connection, randomSetIdx, userId);
+  connection.release();
+  return rgData;
+}

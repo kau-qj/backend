@@ -19,6 +19,7 @@ exports.postUsers = async function (req, res) {
     if (!phoneNum) return res.send(errResponse(baseResponse.SIGNUP_PHONENUM_EMPTY));
     if (!school) return res.send(errResponse(baseResponse.SIGNUP_SCHOOL_EMPTY));
     if (!userName) return res.send(errResponse(baseResponse.SIGNUP_USERNAME_EMPTY));
+    if (!nickName) return res.send(errResponse(baseResponse.SIGNUP_NICKNAME_EMPTY));
 
     const signUpResponse = await userService.createUser(userId, userPw, grade, major, phoneNum, school, jobName, userName, nickName);
 
