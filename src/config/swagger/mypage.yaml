@@ -197,7 +197,7 @@ tags:
               jobName:
                 type: string
                 description: 관심직무
-              profileImage:
+              imageUrl:
                 type: string
                 format: binary
                 description: 프로필 이미지
