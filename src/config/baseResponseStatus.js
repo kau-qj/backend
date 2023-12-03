@@ -67,6 +67,7 @@ module.exports = {
     QJ_SUBJECTINFO_FALSE : { "isSuccess": false, "code": 6001, "message": "과목 조회가 되지 않습니다."},
     QJ_GPT_FALSE : { "isSuccess": false, "code": 6002, "message": "gpt 호출에 에러가 발생했습니다."},
     QJ_JOB_WRONG : { "isSuccess": false, "code": 6003, "message": "관심 직무 입력이 올바르지 않습니다."},
+    QJ_GPT_STOP : { "isSuccess": false, "code":6004, "message": "지금 잠시 gpt call을 멈췄습니다."},
 
     // home
     HOME_RECRUIT_FALSE : { "isSuccess": false, "code": 7000, "message": "채용 공고가 존재하지 않습니다."},

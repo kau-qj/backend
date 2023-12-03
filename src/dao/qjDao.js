@@ -19,17 +19,6 @@ async function getSubjectInfo(connection) {
     `;
 
     const [subjects] = await connection.query(getSubjectInfoQuery);
-    // console.log("subject:", subjects);
-    // const subjectInfo = {};
-
-    // for (const subject of subjects) {
-    //     const subjectName = subject.subjectName;
-    //     const text = subject.text;
-
-    //     subjectInfo[subjectName] = text;
-    // }
-
-    // console.log("subjectInfo:", subjectInfo);
 
     return subjects;
 }
@@ -170,7 +159,7 @@ async function getRandomSetIdx(connection, job) {
 }
 
 // 랜덤 setIdx 바탕으로 데이터 조회
-async function getRgData(connection, randomSetIdx, userId) {
+async function insertRgDataWithSetIdx(connection, randomSetIdx, userId) {
     const getDetailsQuery = `
         SELECT title, score, comment
         FROM recommendGPT
@@ -179,6 +168,17 @@ async function getRgData(connection, randomSetIdx, userId) {
     `;
 
     const [detailsRows] = await connection.query(getDetailsQuery, [randomSetIdx]);
+
+    // recommendGPT 테이블에서 가장 마지막 rgIdx 조회
+    const getLastRgIdxQuery = `
+        SELECT MAX(rgIdx) as lastRgIdx
+        FROM recommendGPT;
+    `;
+
+    const [lastRgIdxResult] = await connection.query(getLastRgIdxQuery);
+
+    // 새로운 setIdx 할당 (가장 마지막 rgIdx + 1)
+    const newSetIdx = lastRgIdxResult[0].lastRgIdx + 1;
 
     // 결과를 저장할 배열 초기화
     let result = [];
@@ -190,8 +190,15 @@ async function getRgData(connection, randomSetIdx, userId) {
     let currentDetails = [];
 
     // 각 행에 대해 반복
-    detailsRows.forEach(row => {
+    for (const row of detailsRows) {
         const { title, score, comment } = row;
+
+        const insertRgDataQuery = `
+            INSERT INTO recommendGPT (userId, setIdx, title, comment, score)
+            VALUES (?, ?, ?, ?, ?)
+        ;`;
+
+        await connection.query(insertRgDataQuery, [userId, newSetIdx, title, comment, score]);
 
         // 새로운 title이 시작될 때
         if (title !== currentTitle) {
@@ -199,7 +206,7 @@ async function getRgData(connection, randomSetIdx, userId) {
             if (currentTitle !== null) {
                 result.push({
                     userId: userId,
-                    setIdx: randomSetIdx,
+                    setIdx: newSetIdx,
                     title: currentTitle,
                     details: currentDetails.map(detail => ({
                         comment: detail.comment,
@@ -215,13 +222,13 @@ async function getRgData(connection, randomSetIdx, userId) {
             // 현재 처리 중인 title에 대해 score와 comment를 배열에 추가
             currentDetails.push({ score, comment });
         }
-    });
+    };
 
     // 마지막으로 처리된 title에 대한 결과를 저장
     if (currentTitle !== null) {
         result.push({
             userId: userId,
-            setIdx: randomSetIdx,
+            setIdx: newSetIdx,
             title: currentTitle,
             details: currentDetails.map(detail => ({
                 comment: detail.comment,
@@ -235,7 +242,7 @@ async function getRgData(connection, randomSetIdx, userId) {
 
 
 module.exports = {
-    getRgData,
+    insertRgDataWithSetIdx,
     getRandomSetIdx,
     getJobCheck,
     getJob,
