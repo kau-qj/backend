@@ -80,6 +80,14 @@ tags:
               isSuccess: false
               code: 6002
               message: GPT 호출에 에러가 발생했습니다.
+      '6004':
+        description: 실패 - 지금 잠시 gpt call을 멈췄습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6004
+              message: gpt call stop
 
 
 /qj/newJob/{job}:
@@ -167,3 +175,11 @@ tags:
               isSuccess: false
               code: 6003
               message: 관심 직무 입력이 올바르지 않습니다.
+      '6004':
+        description: 실패 - 지금 잠시 gpt call을 멈췄습니다.
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 6004
+              message: gpt call stop
