@@ -108,7 +108,7 @@ exports.getJobDictInfo = async (req, res) => {
 /**
 * API No.2
 * API Name: 직업 세부 정보 조회
-* [GET] /jobdetails/:jobname
+* [GET] /jobdetails/:jobName
 */
 exports.getJobDetails = async (req, res) => {
   /*
@@ -179,12 +179,12 @@ exports.getJobDetails = async (req, res) => {
   }
   */
 
-  const jobname = req.params.jobname;
-  if (!jobname) res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
+  const jobName = req.params.jobName;
+  if (!jobName) res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
 
 
   // jobname을 이용하여 job_directory_images 테이블에서 imageUrl을 가져옵니다.
-  const imageUrl = await jobguideProvider.getImageUrlByJobname(jobname);
+  const imageUrl = await jobguideProvider.getImageUrlByJobname(jobName);
 
   if (!imageUrl) {
     // imageUrl이 없을 경우, 실패 응답을 반환합니다.
@@ -192,7 +192,7 @@ exports.getJobDetails = async (req, res) => {
   }
 
   // 이미지 URL 정보를 response에 추가하여 클라이언트로 전송합니다.
-  const jobDetails = await jobguideProvider.getJobDetails(jobname);
+  const jobDetails = await jobguideProvider.getJobDetails(jobName);
 
   if (!jobDetails) {
     // 직업 세부 정보가 없을 경우, 실패 응답을 반환합니다.
