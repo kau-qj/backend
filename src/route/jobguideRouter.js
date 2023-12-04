@@ -13,11 +13,8 @@ router.get('/jobdetails/:jobname', jobguideController.getJobDetails);
 // User의 관심 직무(jobName) 조회하기
 // router.get('/interestjobinfo', jwt, jobguideController.getMyInterestJobInfo);
 
-// 관심 직무 추가하기
-router.post('/interestjobs', jwt, jobguideController.addInterestJob);
-
-// 관심 직무 수정하기
-router.put('/interestjobs/:jobname', jwt, jobguideController.updateInterestJob);
+// 관심 직무 추가 or 수정하기
+router.put('/interestjob', jwt, jobguideController.addOrUpdateInterestJob);
 
 module.exports = router;
 
