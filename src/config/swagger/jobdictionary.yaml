@@ -111,7 +111,7 @@ paths:
               required:
                 - jobname
               properties:
-                jobname:
+                jobName:
                   type: string
                   description: 추가 또는 수정할 관심 직무의 이름
                   example: 데이터 사이언티스트
