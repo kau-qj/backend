@@ -291,11 +291,11 @@ exports.addOrUpdateInterestJob = async (req, res) => {
   // console.log(userId); // Ex) ktg
   if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
   
-  const jobname = req.body.jobname
+  const jobName = req.body.jobName
   // console.log(jobname); // Ex) 데이터 사이언티스트
-  if (!jobname) return res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
+  if (!jobName) return res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
 
-  const result = await jobguideService.addOrUpdateInterestJob(userId, jobname);
+  const result = await jobguideService.addOrUpdateInterestJob(userId, jobName);
   if (!result) return res.send(baseResponse.JOBGUIDE_ADDINTERESTJOB_FAILED);
   
   return res.send(response(baseResponse.SUCCESS, result));
