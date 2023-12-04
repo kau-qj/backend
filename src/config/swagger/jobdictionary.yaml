@@ -44,7 +44,7 @@ paths:
                 code: 500
                 message: 내부 서버 오류
 
-  /jobguide/jobdetails/{jobname}:
+  /jobguide/jobdetails/{jobName}:
     get:
       tags:
         - jobdictionary
@@ -52,7 +52,7 @@ paths:
       operationId: getJobDetails
       parameters:
         - in: path
-          name: jobname
+          name: jobName
           required: true
           description: 세부 정보를 조회할 직업 이름
           schema:
