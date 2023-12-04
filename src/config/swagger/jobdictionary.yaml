@@ -96,90 +96,90 @@ paths:
                 message: 내부 서버 오류
 
   /jobguide/interestjob:
-  put:
-    tags:
-      - jobdictionary
-    summary: 관심 직무 추가 또는 수정
-    description: 사용자의 관심 직무를 추가하거나 수정합니다.
-    operationId: addOrUpdateInterestJob
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - jobname
-            properties:
-              jobname:
-                type: string
-                description: 추가 또는 수정할 관심 직무의 이름
-                example: 데이터 사이언티스트
-    responses:
-      '1000':
-        description: 성공 - 관심 직무 추가 또는 수정 성공
+    put:
+      tags:
+        - jobdictionary
+      summary: 관심 직무 추가 또는 수정
+      description: 사용자의 관심 직무를 추가하거나 수정합니다.
+      operationId: addOrUpdateInterestJob
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+                - jobname
               properties:
-                isSuccess:
-                  type: boolean
-                  example: true
-                code:
-                  type: integer
-                  example: 1000
-                message:
+                jobname:
                   type: string
-                  example: 성공
-                result:
-                  type: string
-                  example: 관심 직무가 추가되었습니다. / 관심 직무가 업데이트되었습니다.
-      '9000':
-        description: 실패 - 직업 이름 누락
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                isSuccess:
-                  type: boolean
-                  example: false
-                code:
-                  type: integer
-                  example: 9000
-                message:
-                  type: string
-                  example: 직업에 대한 정보가 없습니다.
-      '2000':
-        description: 실패 - JWT 토큰 누락
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                isSuccess:
-                  type: boolean
-                  example: false
-                code:
-                  type: integer
-                  example: 2000
-                message:
-                  type: string
-                  example: JWT 토큰을 입력해주세요.
-      '500':
-        description: 실패 - 내부 서버 오류
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                isSuccess:
-                  type: boolean
-                  example: false
-                code:
-                  type: integer
-                  example: 500
-                message:
-                  type: string
-                  example: 내부 서버 오류
+                  description: 추가 또는 수정할 관심 직무의 이름
+                  example: 데이터 사이언티스트
+      responses:
+        '1000':
+          description: 성공 - 관심 직무 추가 또는 수정 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 1000
+                  message:
+                    type: string
+                    example: 성공
+                  result:
+                    type: string
+                    example: 관심 직무가 추가되었습니다. / 관심 직무가 업데이트되었습니다.
+        '9000':
+          description: 실패 - 직업 이름 누락
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 9000
+                  message:
+                    type: string
+                    example: 직업에 대한 정보가 없습니다.
+        '2000':
+          description: 실패 - JWT 토큰 누락
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: JWT 토큰을 입력해주세요.
+        '500':
+          description: 실패 - 내부 서버 오류
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: 내부 서버 오류
