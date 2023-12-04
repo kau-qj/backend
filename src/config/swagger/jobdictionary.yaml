@@ -109,7 +109,7 @@ paths:
             schema:
               type: object
               required:
-                - jobname
+                - jobName
               properties:
                 jobName:
                   type: string
