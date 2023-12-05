@@ -92,7 +92,7 @@ async function updateProfile(connection, userId, userIdx, nickName, jobName, ima
   }
 
   // 변경된 행이 있다면 업데이트된 사용자 정보 반환
-  return { userId, nickName, jobName, profileImageUrl: imageUrl };
+  return { userId, nickName, jobName, imageUrl };
 }
 
 // qj 데이터 존재하는지 유무 체크
