@@ -204,157 +204,102 @@ exports.getJobDetails = async (req, res) => {
   return res.send(response(baseResponse.SUCCESS, { ...jobDetails, imageUrl }));
 }
 
-
-
-// 관심 직무 추가하기 -> 최대 3개 jobName1, jobName2, jobName3
-// exports.addInterestJob = async (req, res) => {
-//   try {
-//     const { userIdx, jobname } = req.params; // 사용자 및 직업이름 가져오기
-
-//     if (!jobname) {
-//       return res.status(400).json({
-//         success: false,
-//         message: 'jobname이 제공되지 않았습니다.',
-//       });
-//     }
-
-//     // 관심 직무 목록 길이 확인
-//     // result는 Router -> Controller -> Service -> Dao -> Service -> Controller 가 보낸 정보임.
-//     const result = await jobguideService.addInterestJob(userIdx, jobname);
-
-//     if (result === '관심 직무가 추가되었습니다.') {
-//       return res.status(200).json({
-//         success: true,
-//         message: result,
-//       });
-//     } 
-//     else if (result === '최대 3개의 관심 직무가 등록 가능합니다.' || result === '이미 추가되어 있는 관심 직무 입니다.') {
-//       return res.status(400).json({
-//         success: false,
-//         message: result,
-//       });
-//     }
-//     else {
-//       return res.status(500).json({
-//         success: false,
-//         message: '관심 직무 추가 중 오류가 발생했습니다.',
-//       });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       success: false,
-//       message: '내부 서버 오류',
-//     });
-//   }
-// };
-
-
 /**
  * API No.3
- * API Name: 관심 직무 추가
- * [POST] /jobguide/interestjobs
+ * API Name: 관심 직무 추가 or 수정
+ * [PUT] /jobguide/interestjob
  */
-  
-/*
-  #swagger.tags = ['jobguide']
-  #swagger.summary = 'User 관심 직무 추가'
-  #swagger.description = '유저의 관심 직무를 추가합니다.'
-  #swagger.parameters['userIdx'] = {
-    in: 'path',
-    description: '사용자 인덱스',
-    required: true,
-    type: 'integer'
-  }
-  #swagger.parameters['jobname'] = {
-    in: 'path',
-    description: '직업 이름',
-    required: true,
-    type: 'string'
-  }
-  #swagger.responses[1000] = {
-    description: "성공 - 관심 직무 추가 성공",
-    schema: { $ref: "#/definitions/SuccessResponse" },
-    examples: {
-      application/json: { isSuccess: true, message: "관심 직무가 추가되었습니다." }
-    }
-  }
-  #swagger.responses[9001] = {
-    description: "실패 - 이미 관심 직무가 등록되어 있음",
-    schema: { $ref: "#/definitions/ErrorResponse" },
-    examples: {
-      application/json: { isSuccess: false, message: "이미 관심 직무가 등록되어 있습니다." }
-    }
-  }
-  #swagger.responses[9002] = {
-    description: "실패 - 최대 한 개의 관심 직무 등록이 가능함",
-    schema: { $ref: "#/definitions/ErrorResponse" },
-    examples: {
-      application/json: { isSuccess: false, message: "최대 한 개의 관심 직무 등록이 가능합니다." }
-    }
-  }
-  #swagger.responses[9003] = {
-    description: "실패 - 해당 직업은 존재하지 않음",
-    schema: { $ref: "#/definitions/ErrorResponse" },
-    examples: {
-      application/json: { isSuccess: false, message: "해당 직업은 존재하지 않습니다." }
-    }
-  }
-  #swagger.responses[500] = {
-    description: "실패 - 내부 서버 오류",
-    schema: { $ref: "#/definitions/ErrorResponse" },
-    examples: {
-      application/json: { isSuccess: false, message: "Internal server error" }
-    }
-  }
-  */
+exports.addOrUpdateInterestJob = async (req, res) => {
+  /*
+ #swagger.tags = ['jobguide']
+ #swagger.summary = '관심 직무 추가 또는 수정'
+ #swagger.description = '사용자의 관심 직무를 추가하거나 수정합니다.'
+ #swagger.parameters['jobname'] = {
+   in: 'body',
+   required: true,
+   type: 'string',
+   description: '추가 또는 수정할 관심 직무의 이름',
+   example: '데이터 사이언티스트'
+ }
+ #swagger.responses[1000] = { 
+   description: "성공 - 관심 직무 추가 또는 수정 성공",
+   schema: {
+     type: "object",
+     properties: {
+       isSuccess: {
+         type: "boolean",
+         example: true
+       },
+       code: {
+         type: "integer",
+         example: 1000
+       },
+       message: {
+         type: "string",
+         example: "성공"
+       },
+       result: {
+         type: "string",
+         example: "관심 직무가 추가되었습니다. / 관심 직무가 업데이트되었습니다."
+       }
+     }
+   }
+ }
+ #swagger.responses[9000] = {
+   description: "직업 이름 누락",
+   schema: {
+     type: "object",
+     properties: {
+       isSuccess: {
+         type: "boolean",
+         example: false
+       },
+       code: {
+         type: "integer",
+         example: 9000
+       },
+       message: {
+         type: "string",
+         example: "직업에 대한 정보가 없습니다."
+       }
+     }
+   }
+ }
+ #swagger.responses[2000] = {
+   description: "JWT 토큰 누락",
+   schema: {
+     type: "object",
+     properties: {
+       isSuccess: {
+         type: "boolean",
+         example: false
+       },
+       code: {
+         type: "integer",
+         example: 2000
+       },
+       message: {
+         type: "string",
+         example: "JWT 토큰을 입력해주세요."
+       }
+     }
+   }
+ }
+ */
 
-
-// 관심 직무 추가하기
-exports.addInterestJob = async (req, res) => {
   const userId = req.decoded.userId;
   // console.log(userId); // Ex) ktg
   if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
   
-  const jobname = req.body.jobname
+  const jobName = req.body.jobName
   // console.log(jobname); // Ex) 데이터 사이언티스트
-  if (!jobname) return res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
+  if (!jobName) return res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
 
-  // userId에 해당하는 jobName을 User 테이블에서 조회
-  // Ex) 백엔드 개발자
-  const currentInterestJobResult = await jobguideProvider.getInterestJob(userId);
+  const result = await jobguideService.addOrUpdateInterestJob(userId, jobName);
+  if (!result) return res.send(baseResponse.JOBGUIDE_ADDINTERESTJOB_FAILED);
   
-  // 이미 관심 직무가 있는 경우
-  if (currentInterestJobResult) return res.send(response(baseResponse.JOBGUIDE_CHECK_UPDATE_INTERESTJOB));
-
-  // 관심직무가 없는 경우, 관심직무 추가 로직 수행
-  const addResult = await jobguideService.addInterestJob(userId, jobname);
-
-  // 관심직무 추가에 실패한 경우
-  if (!addResult) return res.send(response(baseResponse.JOBGUIDE_ADDINTERESTJOB_FAILED));
-  
-  return res.send(response(baseResponse.SUCCESS));
+  return res.send(response(baseResponse.SUCCESS, result));
 
 };
 
-
-/**
- * API No.4
- * API Name: 관심 직무 수정
- * [PUT] /jobguide/interestjobs/:jobname
- */
-// 관심 직무 수정하기
-exports.updateInterestJob = async (req, res) => {
-  const userId = req.decoded.userId;
-  if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
-  
-  const jobname = req.params.jobname; // URL 파라미터에서 jobname을 가져옴
-  if (!jobname) return res.send(response(baseResponse.JOBGUIDE_JOBNAME_EMPTY));
-
-  const updateResult = await jobguideService.updateInterestJob(userId, jobname);
-  if (!updateResult) return res.send(response(baseResponse.JOBGUIDE_UPDATEINTERESTJOB_FAILED));
-  
-  return res.send(response(baseResponse.SUCCESS));
-
-};
 

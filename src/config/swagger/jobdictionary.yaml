@@ -44,7 +44,7 @@ paths:
                 code: 500
                 message: 내부 서버 오류
 
-  /jobguide/jobdetails/{jobname}:
+  /jobguide/jobdetails/{jobName}:
     get:
       tags:
         - jobdictionary
@@ -52,7 +52,7 @@ paths:
       operationId: getJobDetails
       parameters:
         - in: path
-          name: jobname
+          name: jobName
           required: true
           description: 세부 정보를 조회할 직업 이름
           schema:
@@ -95,12 +95,13 @@ paths:
                 code: 500
                 message: 내부 서버 오류
 
-  /jobguide/interestjobs:
-    post:
+  /jobguide/interestjob:
+    put:
       tags:
         - jobdictionary
-      summary: 관심 직무 추가
-      operationId: addInterestJob
+      summary: 관심 직무 추가 또는 수정
+      description: 사용자의 관심 직무를 추가하거나 수정합니다.
+      operationId: addOrUpdateInterestJob
       requestBody:
         required: true
         content:
@@ -108,79 +109,77 @@ paths:
             schema:
               type: object
               required:
-                - jobname
+                - jobName
               properties:
-                jobname:
+                jobName:
                   type: string
+                  description: 추가 또는 수정할 관심 직무의 이름
+                  example: 데이터 사이언티스트
       responses:
-        '200':
-          description: 성공 - 관심 직무 추가 성공
+        '1000':
+          description: 성공 - 관심 직무 추가 또는 수정 성공
           content:
             application/json:
-              example:
-                isSuccess: true
-                code: 1000
-                message: '관심 직무가 추가되었습니다.'
-        '9001':
-          description: 실패 - 이미 관심 직무가 등록되어 있음
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 1000
+                  message:
+                    type: string
+                    example: 성공
+                  result:
+                    type: string
+                    example: 관심 직무가 추가되었습니다. / 관심 직무가 업데이트되었습니다.
+        '9000':
+          description: 실패 - 직업 이름 누락
           content:
             application/json:
-              example:
-                isSuccess: false
-                code: 9001
-                message: '이미 관심 직무가 등록되어 있습니다.'
-        '9006':
-          description: 실패 - 관심 직무를 추가 실패
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 9000
+                  message:
+                    type: string
+                    example: 직업에 대한 정보가 없습니다.
+        '2000':
+          description: 실패 - JWT 토큰 누락
           content:
             application/json:
-              example:
-                isSuccess: false
-                code: 9006
-                message: '관심 직무를 추가하는데 실패했습니다.'
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: JWT 토큰을 입력해주세요.
         '500':
           description: 실패 - 내부 서버 오류
           content:
             application/json:
-              example:
-                isSuccess: false
-                code: 500
-                message: '내부 서버 오류'
-
-  /jobguide/interestjobs/{jobname}:
-    put:
-      tags:
-        - jobdictionary
-      summary: 관심 직무 수정
-      operationId: updateInterestJob
-      parameters:
-        - in: path
-          name: jobname
-          required: true
-          description: 수정할 관심 직무 이름
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 성공 - 관심 직무 수정 성공
-          content:
-            application/json:
-              example:
-                isSuccess: true
-                code: 1000
-                message: '관심 직무가 업데이트되었습니다.'
-        '9010':
-          description: 실패 - 관심 직무 수정 실패
-          content:
-            application/json:
-              example:
-                isSuccess: false
-                code: 9010
-                message: '관심 직무를 수정하지 못했습니다.'
-        '500':
-          description: 실패 - 내부 서버 오류
-          content:
-            application/json:
-              example:
-                isSuccess: false
-                code: 500
-                message: '내부 서버 오류'
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: 내부 서버 오류

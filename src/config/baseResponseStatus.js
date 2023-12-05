@@ -92,15 +92,11 @@ module.exports = {
     JOBGUIDE_ALREADY_REGISTERED : { "isSuccess": false, "code": 9002, "message": "최대 한 개의 관심 직무 등록이 가능합니다."},
     JOBGUIDE_JOBNAME_NOT_EXIST: { "isSuccess": false, "code": 9003, "message": "해당 직업은 존재하지 않습니다."},
     JOBGUIDE_JOBDICTINFO_EMPTY: { "isSuccess": false, "code": 9004, "message": "직업 정보를 가져오는데 실패했습니다."},  
-    JOBGUIDE_INTERESTJOBINFO_FALSE: { "isSuccess": false, "code": 9005, "message": "관심 직무 조회가 되지 않습니다."},
-    JOBGUIDE_ADDINTERESTJOB_FAILED: {"isSuccess": false, "code": 9006, "message": "관심 직무를 추가하는데 실패했습니다."},
-    JOBGUIDE_IMAGE_FALSE: {"isSuccess": false, "code": 9007, "message": "이미지 정보를 가져오는데 실패했습니다."},
-    JOBGUIDE_JOBDETAILS_FALSE: {"isSuccess": false, "code": 9008, "message": "직업 세부 정보를 가져오는데 실패했습니다."},
-    JOBGUIDE_CHECK_UPDATE_INTERESTJOB: {"isSuccess:": false, "code": 9009, "message": "관심 직무가 이미 등록되어 있습니다. 관심 직무를 수정하시겠습니까?"},
-    JOBGUIDE_UPDATEINTERESTJOB_FAILED: {"isSuccess:": false, "code": 9010, "message": "관심 직무를 수정하는데 실패했습니다."},
+    JOBGUIDE_INTERESTJOBINFO_FALSE: { "isSuccess": false, "code": 9005, "message": "관심 직무 추가 또는 수정에 실패했습니다."},
+    JOBGUIDE_IMAGE_FALSE: {"isSuccess": false, "code": 9006, "message": "이미지 정보를 가져오는데 실패했습니다."},
+    JOBGUIDE_JOBDETAILS_FALSE: {"isSuccess": false, "code": 9007, "message": "직업 세부 정보를 가져오는데 실패했습니다."},
+
     
-
-
     //board
     POST_TYPE_EMPTY : {"isSuccess": false, "code": 9000, "message": "게시판을 선택해 주세요."},
     POST_TITLE_EMPTY : {"isSuccess": false, "code": 9001, "message": "제목을 입력해 주세요."},
