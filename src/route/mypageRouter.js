@@ -18,15 +18,25 @@ router.get('/profile', jwt, mypageController.getProfile);
 
 // 마이페이지 -> 프로필 설정 수정
 router.put('/profile', jwt, upload.single('profileImage'), async (req, res, next) => {
-    try {
-      // 이미지 업로드 로직 수행 (s3에 업로드)
-      const imageUrl = req.file ? req.file.location : null;
-  
-      // 이후에 mypageController.updateProfile 호출
-      await mypageController.updateProfile(req, res, imageUrl);
-    } catch (error) {
-      next(error);
+  try {
+    let imageUrl = null;
+    
+    // Case 1: No image (null)
+    if (req.body.s3ImageUrl === null) {
+      imageUrl = null;
+    } else if (req.file) {
+      // Case 2: Image file uploaded
+      imageUrl = req.file.location; // Use S3 URL from the uploaded file
+    } else if (req.body.s3ImageUrl) {
+      // Case 3: S3 URL provided directly
+      imageUrl = req.body.s3ImageUrl;
     }
+
+    // 이후에 mypageController.updateProfile 호출
+    await mypageController.updateProfile(req, res, imageUrl);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // 마이페이지 -> QJ 보관함(요약조회)

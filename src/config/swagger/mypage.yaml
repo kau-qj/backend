@@ -182,9 +182,9 @@ tags:
     tags:
       - mypage
     summary: 마이페이지 프로필 정보 수정
-    operationId: updateProfile
+    operationId: updateMypageProfile
     requestBody:
-      description: 수정할 프로필 정보
+      description: 프로필 정보를 업데이트합니다.
       required: true
       content:
         multipart/form-data:
@@ -193,19 +193,25 @@ tags:
             properties:
               nickName:
                 type: string
-                description: 닉네임
+                description: 사용자의 닉네임
               jobName:
                 type: string
-                description: 관심직무
+                description: 사용자의 직업 관심사
               imageUrl:
                 type: string
                 format: binary
                 description: 프로필 이미지
+                example: "https://example.com/profile-image.jpg"
             required:
               - nickName
+    parameters:
+      - in: formData
+        name: s3ImageUrl
+        type: string
+        description: 선택 사항. S3에 있는 프로필 이미지에 대한 직접적인 링크.
     responses:
       '1000':
-        description: 성공 - 마이페이지 프로필 정보 수정 성공
+        description: 성공 - 마이페이지 프로필 정보가 성공적으로 업데이트됨
         content:
           application/json:
             example:
@@ -225,13 +231,22 @@ tags:
               code: 3000
               message: JWT 토큰 검증 실패
       '8002':
-        description: 수정된 데이터 없음
+        description: 업데이트된 데이터 없음
         content:
           application/json:
             example:
               isSuccess: true
               code: 8002
-              message: 수정된 데이터가 없습니다.
+              message: 업데이트된 데이터가 없습니다.
+      '400':
+        description: 잘못된 요청
+        content:
+          application/json:
+            example:
+              isSuccess: false
+              code: 400
+              message: 잘못된 요청
+
 
 /mypage/qj:
   get:
