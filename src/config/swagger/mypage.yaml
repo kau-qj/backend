@@ -204,11 +204,6 @@ tags:
                 example: "https://example.com/profile-image.jpg"
             required:
               - nickName
-    parameters:
-      - in: formData
-        name: s3ImageUrl
-        type: string
-        description: 선택 사항. S3에 있는 프로필 이미지에 대한 직접적인 링크.
     responses:
       '1000':
         description: 성공 - 마이페이지 프로필 정보가 성공적으로 업데이트됨
@@ -246,6 +241,7 @@ tags:
               isSuccess: false
               code: 400
               message: 잘못된 요청
+
 
 
 /mypage/qj:
