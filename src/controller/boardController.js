@@ -44,9 +44,10 @@ exports.getPost = async function (req, res) {
   
     // 게시글 조회
     const post = await boardProvider.retrievePost(PostIdx);
-    // 게시글 작성자, 제목, 내용, 작성 시간, 댓글 가져오기
+    // 게시글 작성자, 작성자 닉네임, 제목, 내용, 작성 시간, 댓글 가져오기
     const postDetails = {
         userId: post[0].userId,
+        nickName: post[0].nickName,
         Title: post[0].Title,
         mainText: post[0].mainText,
         createAt: post[0].createAt,
@@ -55,6 +56,7 @@ exports.getPost = async function (req, res) {
   
     return res.send(response(baseResponse.SUCCESS, postDetails));
 };
+
 
 // 게시글 수정
 exports.updatePost = async function (req, res) {

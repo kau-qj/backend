@@ -26,9 +26,10 @@ async function selectPosts(connection, postType) {
 // 게시글 상세보기
 async function getPost(connection, PostIdx) {
     const getPostQuery = `
-        SELECT userId, Title, mainText, createAt
+        SELECT Board.userId, User.nickName, Board.Title, Board.mainText, Board.createAt
         FROM Board
-        WHERE PostIdx = ?;
+        INNER JOIN User ON Board.userId = User.userId
+        WHERE Board.PostIdx = ?;
     `;
     const [postRow] = await connection.query(getPostQuery, PostIdx);
     return postRow;
@@ -37,13 +38,15 @@ async function getPost(connection, PostIdx) {
 // 게시글에 대한 댓글 조회
 async function selectComments(connection, PostIdx) {
     const selectCommentsQuery = `
-        SELECT CommentIdx, PostIdx, userId, contents, createAt
+        SELECT Comment.CommentIdx, Comment.PostIdx, Comment.userId, User.nickName, Comment.contents, Comment.createAt
         FROM Comment
-        WHERE PostIdx = ?;
+        INNER JOIN User ON Comment.userId = User.userId
+        WHERE Comment.PostIdx = ?;
     `;
     const [commentsRows] = await connection.query(selectCommentsQuery, PostIdx);
     return commentsRows;
 }
+
 
 // 게시글 작성자 조회
 async function selectPostUserId(connection, postIdx) {
