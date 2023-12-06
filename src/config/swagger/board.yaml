@@ -83,6 +83,7 @@ tags:
               result:
                 {
                   "userId": "csb",
+                  "nickName": "슈빈",
                   "Title": "삼성전자 채용 언제 하나요?",
                   "mainText": "안녕하세요! 2024년 상반기 공채 언제 열리는지 아시는 분 계시나요?",
                   "createAt": "2023-12-02T09:46:00.000Z",
@@ -92,6 +93,7 @@ tags:
                         "CommentIdx": 15,
                         "PostIdx": 24,
                         "userId": "csb",
+                        "nickName": "슈빈",
                         "contents": "1월 8일 입니다!",
                         "createAt": "2023-12-02T09:51:31.000Z",
                       },
