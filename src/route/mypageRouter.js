@@ -19,22 +19,23 @@ router.get('/profile', jwt, mypageController.getProfile);
 // 마이페이지 -> 프로필 설정 수정
 router.put('/profile', jwt, upload.single('profileImage'), async (req, res, next) => {
   try {
+    console.log('Entered profile router');  // Check if the request is reaching this route
+
     let imageUrl = null;
     
-    // Case 1: 이미지 파일이 등록되지 않은 경우 (null)
     if (req.body.s3ImageUrl === null) {
       imageUrl = null;
     } else if (req.file && req.file.location) {
-      // Case 2: 이미지 파일을 최초로 등록하는 경우 (현재 imeageUrl이 S3로 처리 되지않은 경우)
       imageUrl = req.file.location;
     } else if (req.body.s3ImageUrl) {
-      // Case 3: 이미지 파일을 등록한 적이 있어서 url로 저장되어 있는 경우(현재 imageUrl이 S3로 처리 되어있는 경우)
       imageUrl = req.body.s3ImageUrl;
     }
 
-    // 이후에 mypageController.updateProfile 호출
+    console.log('Image URL:', imageUrl);  // Check the value of imageUrl
+
     await mypageController.updateProfile(req, res, imageUrl);
   } catch (error) {
+    console.error('Error in profile router:', error);  // Log the error
     next(error);
   }
 });

@@ -112,12 +112,13 @@ exports.getProfile = async function (req, res) {
  * [PUT] /mypage/profile
  */
 exports.updateProfile = async function (req, res, imageUrl) {
+  console.log('Entered updateProfile');  // Check if the function is being called
+
   const userId = req.decoded.userId;
   if (!userId) return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE));
 
   const { nickName, jobName } = req.body;
 
-  // 유효성 검증
   if (!nickName) return res.send(response(baseResponse.MYPAGE_NICKNAME_EMPTY));
 
   const userInfo = await mypageProvider.getProfile(userId);
@@ -125,12 +126,12 @@ exports.updateProfile = async function (req, res, imageUrl) {
 
   const userIdx = userInfo[0].userIdx;
   
-  // 프로필 이미지 업로드
   let updatedImageUrl = imageUrl;
   if (req.file && req.file.location) {
-    // 이미지 업로드 로직 수행 (s3에 업로드)
     updatedImageUrl = req.file.location;
   }
+
+  console.log('Updated Image URL:', updatedImageUrl);  // Check the updated value of imageUrl
 
   const updateInfo = await mypageService.updateProfile(userId, userIdx, nickName, jobName, updatedImageUrl);
   if (updateInfo === null) return res.send(response(baseResponse.NO_UPDATED_VALUES));
