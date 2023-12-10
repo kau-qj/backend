@@ -199,9 +199,7 @@ tags:
                 description: 사용자의 직업 관심사
               imageUrl:
                 type: string
-                format: binary
-                description: 프로필 이미지
-                example: "https://example.com/profile-image.jpg"
+                description: 프로필 이미지 URL 또는 이미지 파일. 이미지 파일을 업로드할 경우 multipart/form-data 형식을 사용. 이미지 URL을 입력할 경우 일반적인 string 형식을 사용. 이미지를 업로드하지 않을 경우 null 값을 사용.
             required:
               - nickName
     responses:

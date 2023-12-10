@@ -127,7 +127,7 @@ exports.updateProfile = async function (req, res, imageUrl) {
   
   // 프로필 이미지 업로드
   let updatedImageUrl = imageUrl;
-  if (req.file) {
+  if (req.file && req.file.location) {
     // 이미지 업로드 로직 수행 (s3에 업로드)
     updatedImageUrl = req.file.location;
   }

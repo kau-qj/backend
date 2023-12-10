@@ -21,14 +21,14 @@ router.put('/profile', jwt, upload.single('profileImage'), async (req, res, next
   try {
     let imageUrl = null;
     
-    // Case 1: No image (null)
+    // Case 1: 이미지 파일이 등록되지 않은 경우 (null)
     if (req.body.s3ImageUrl === null) {
       imageUrl = null;
-    } else if (req.file) {
-      // Case 2: Image file uploaded
-      imageUrl = req.file.location; // Use S3 URL from the uploaded file
+    } else if (req.file && req.file.location) {
+      // Case 2: 이미지 파일을 최초로 등록하는 경우 (현재 imeageUrl이 S3로 처리 되지않은 경우)
+      imageUrl = req.file.location;
     } else if (req.body.s3ImageUrl) {
-      // Case 3: S3 URL provided directly
+      // Case 3: 이미지 파일을 등록한 적이 있어서 url로 저장되어 있는 경우(현재 imageUrl이 S3로 처리 되어있는 경우)
       imageUrl = req.body.s3ImageUrl;
     }
 
