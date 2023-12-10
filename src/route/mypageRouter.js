@@ -17,7 +17,7 @@ router.put('/info', jwt, mypageController.updateMypageInfo);
 router.get('/profile', jwt, mypageController.getProfile);
 
 // 마이페이지 -> 프로필 설정 수정
-router.put('/profile', jwt, upload.single('profileImage'), async (req, res, next) => {
+router.put('/profile', jwt, upload.single('imageUrl'), async (req, res, next) => {
   try {
     console.log('Entered profile router');  // Check if the request is reaching this route
 
