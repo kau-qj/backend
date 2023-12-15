@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 // 크롤링 스케줄러 실행 코드
-require('./crawler/crawler-scheduler.js');
+// require('./crawler/crawler-scheduler.js');
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
