@@ -99,12 +99,6 @@ AWS에서는 다음과 같은 서비스를 사용했습니다.
 └── README.md
 ```
 
-## 패턴: CQRS
-
-이 프로젝트는 CQRS (Command Query Responsibility Segregation) 패턴을 따르고 있습니다.
-
-CQRS 패턴은 명령(Command)과 조회(Query)를 분리함으로써 시스템의 확장성을 향상시키는 아키텍처 패턴 중 하나입니다. 명령과 조회가 서로 다른 모델을 가질 수 있도록 하여, 서비스의 확장성 및 유지보수성을 향상시킬 수 있습니다.
-
 ### 특징
 - **명령(Command):** 시스템 상태를 변경하는 동작을 수행합니다. 주로 Create, Update, Delete (CUD)에 해당합니다.
 - **조회(Query):** 시스템의 상태를 반환하거나 표시하는 동작을 수행합니다. 주로 Read (R)에 해당합니다.
